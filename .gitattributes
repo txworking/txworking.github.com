@@ -21,3 +21,4 @@
 *.RTF	 diff=astextplain
 *.png  binary
 *.jpg  binary
+*.swf  binary
