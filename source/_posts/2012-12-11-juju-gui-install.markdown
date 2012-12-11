@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Juju-Gui Install"
+title: "Juju-Gui 安装笔记"
 date: 2012-12-11 11:01
 comments: true
 categories: [juju, juju-gui, DevOps]
