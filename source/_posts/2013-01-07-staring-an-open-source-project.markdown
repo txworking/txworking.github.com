@@ -1,0 +1,119 @@
+---
+layout: post
+title: "Staring An Open-Source Project"
+date: 2013-01-07 21:44
+comments: true
+categories: [open-source]
+---
+
+在开源中国上参与翻译了一篇如何运作开源项目的文章，把自己翻译的部分整理下发出来。
+[译文](http://www.oschina.net/translate/starting-open-source-project)
+[原文](http://coding.smashingmagazine.com/2013/01/03/starting-open-source-project/)
+
+### Tag Versions in Source Control
+
+When you decide on a new release, use a source-control tag to mark the state of the code for that release. I started doing this for CSS Lint as soon as we started using version numbers. I didn’t think much of it until the first time I forgot to tag a release and a bug was filed by someone looking for that tag. It turns out that developers like to check out particular versions of code.
+
+Tie the tag obviously to the version number by including the version number directly in the tag’s name. With CSS Lint, our tags are in the format of “v0.9.9.” This will make it very easy for anyone looking through tags to figure out what those tags mean — including you, because you’ll be able to better keep track of what changes have been made in each release. 
+
+### Change Logs
+
+Another benefit of versioning is in producing change logs. Change logs are important for communicating version differences to both end users and contributors. The added benefit of tagging versions and source control is that you can automatically generate change logs based on those tags. CSS Lint’s build system automatically creates a change log for each release that includes not just the commit message but also the contributor. In this way, the change log becomes a record not only of code changes, but also of contributions from the community.
+
+### Availability Announcements
+
+Whenever a new version of the project is available, announce its availability somewhere. Whether you do this on a blog or on the mailing list (or in both places), formally announcing that a new version is available is very important. The announcement should include any major changes made in the code, as well as who has contributed those changes. Contributors tend to contribute more if they get some recognition for their work, so reward the people who have taken the time to contribute to your project by acknowledging their contribution. 
+
+## Managing Contributions
+
+Once you have everything set up, the next step is to figure out how you will accept contributions. Your contribution model can be as informal or formal as you’d like, depending on your goals. For a personal project, you might not have any formal contribution process. The developer guide would lay out what is necessary in order for the code to be merged into the repository and would state that as long as a submission follows that format, then the contribution will be accepted. For a larger project, you might want to have a more formal policy.
+
+The first thing to look into is whether you will require a contributor license agreement (CLA). CLAs are used in many large open-source projects to protect the legal rights of the project. Every person who submits code to the project would need to fill out a CLA certifying that any contributed code is original work and that the copyright for that work is being turned over to the project. CLAs also give the project owner license to use the contribution as part of the project, and it warrants that the contributor isn’t knowingly including code to which someone else has a copyright, patent or other right. jQuery, YUI and Dojo all require CLAs for code submissions. If you are considering requiring a CLA from contributors, then getting legal advice regarding it and your licensing structure would be worthwhile.
+
+ 
+Next, you may want to establish a hierarchy of people working on the project. Open-source projects typically have three primary designations: 
+
+* Contributor
+
+Anyone who has had source code merged into the repository is considered a contributor. The contributor cannot access the repository directly but has submitted patches that have been accepted.
+
+* Committer
+
+People who have direct access to the repository are committers. These people work on features and fix bugs regularly, and they submit code directly to the repository.
+
+* Reviewer
+
+The highest level of contributor, reviewers are commanders who also have directional impact on the project. Reviewers fulfill their title by reviewing submissions from contributors and committers, approving or denying patches, promoting or demoting committers, and generally running the project.
+
+If you’re going to have a formal hierarchy such as this, you’ll need to draft a document that describes the role of each type of contributor and how one may be promoted through the ranks. YUI has just created a formal “ Contributor Model,” along with excellent documentation on roles and responsibilities.
+
+At the moment, CSS Lint doesn’t require a CLA and doesn’t have a formal contribution model in place, but everyone should consider it as their open-source project grows.
+
+## The Proof
+
+It probably took us about six months from its initial release to get CSS Lint to the point of being a fully functioning open-source project. Since then, over a dozen contributors have submitted code that is now included in the project. While that number might seem small by the standard of a large open-source project, we take great pride in it. Getting one external contribution is easy; getting contributions over an extended period of time is difficult.
+
+And we know that we’ve been doing something right because of the feedback we receive. Jonathan Klein recently took to the mailing list to ask some questions and ended up submitting a pull request that was accepted into the project. He then emailed me this feedback:
+
+>I just wanted to say that I think CSS Lint is a model open-source project — great documentation, easy to extend, clean code, 
+>fast replies on the mailing list and to pull requests, and easily customizable to fit any environment. Starting to do 
+>development on CSS Lint was as easy as reading a couple of wiki pages, and the fact that you explicitly called out the typical 
+>workflow of a change made the barrier to entry extremely low. I wish more open-source projects would follow suit and make it 
+>easy to contribute.
+
+Getting emails like this has become commonplace for CSS Lint, and it can become the norm for your project, too, if you take the time to set up a sustainable eco-system. We all want our projects to succeed, and we want people to want to contribute to them. As Jonathan said, make the barrier to entry as low as possible and developers will find ways to help out.
+
+
+### 源码控制中的标记版本
+
+当你决定要发布一个新版本时，应用源码控制标记来标注此版本的代码状态。当我们开始在CSS Lint中使用版本号，我也就开始这么做了。开始我没考虑那么多，直到有一次我忘了给一个发布版添加标记，但是发现某位开发者提交的bug却是针对那个特定标记的。这说明开发者们更倾向于检出特定版本的代码。
+
+要让标记和版本号的绑定关系更明确，就把版本号直接包含在标记名称中。在CSS Lint中，我们的标记都使用“v0.9.9”这种格式。这样可以让每个人都能够很容易地通过标记名称来识别其含义 — 包括你自己，因为你也将能够更好地跟踪每次版本发布的改动。
+
+
+### 变更日志
+
+版本管理还有一个好处就是能够生成变更日志。不管是对最终用户和贡献者，变更日志都是沟通版本差异时的重要依据。版本标记和源码控制有一个附加好处，你能基于这些标记自动生成变更日志。CSS Lint的构建系统能够在每次发布是自动生成一个包含提交信息及其贡献者的变更日志。这样变更日志就不仅只是一个代码变更记录，也是社区贡献值的记录。
+
+
+
+### 可用宣告
+
+每当项目发布一个新版本时，都应该在某处发布宣告。不论是在你的博客或邮件列表或是在两者上都发布，正式宣告项目新版本已经可用是非常重要的。这份宣告应该包括项目代码的主要改动及其贡献者。对贡献者工作的认同是对他们的最大鼓励，能从贡献代码中获得更多的认同感他们就更有动力做更多的贡献。所以给予那些耗费无数精力在你的项目中的开发者以最大的赞扬吧。
+
+## 管理代码贡献
+
+万事俱备，下一步就是解决如何接受代码贡献。 你的贡献模型是非常规范还是很随意，取决于你的喜好和目标。对于个人项目，可能不需要什么规范的贡献流程。开发者指南应该说明合并代码到仓库的必要条件，一个提交先要满足这些条件才会被接受。对于更大的项目，则应该要有更多规范的策略。
+
+首先要考虑的是是否需要一个贡献者许可协议（CLA）。CLA在很多大型开源项目中使用以保护项目的合法权利。每位提交代码的开发者都需要同意CLA，以承诺任何贡献的代码都是原创的同时将代码的版权移交给项目所有。CLA也赋予项目所有者将贡献的代码作为项目一部分的授权，而且要求贡献者保证不会故意将他人具有版权、专利或其他权利的代码包含在自己的代码中进行提交。jQuery, YUI 和 Dojo 在代码提交时都要求贡献者同意CLA。如果你正在考虑使用CLA，那么寻求一些法律咨询是很值得的。
+
+接下来，你可能想要为项目的工作人员建立一个权限层次。开源项目一般都会设置三个主要的称号：
+
+* 贡献者
+
+任何对项目做过代码贡献的人都可以算作贡献者。贡献者不能直接访问代码仓库，但是提交的补丁可以被接受。
+
+* 提交者
+
+提交者有权限直接访问代码仓库。他们经常对项目做特性添加和bug修正，也能够直接提交代码到代码仓库。
+
+* 审查者
+
+审查者是更高一级的贡献者，是能够对项目产生直接影响的指挥官。他们的职责就是审查贡献者和提交者提交的代码，批准或者否决补丁，任命或者撤销提交者称号，总的来说就是运作这个项目。
+
+
+如果你打算采用刚才所说的权限层次，那么接下来就需要起草一份文档来描述每种类型的贡献者的角色和贡献者角色如何通过排名来进行提升。YUI最近创建了一个很正式的“贡献者模型”，有很优秀的文档来描述角色和职责。
+
+目前CSS Lint没有CLA，也没有正式的贡献者模型，但是每个人都应该在自己的开源项目成长过程中认真考虑这件事。
+
+
+## 证明
+
+从CSS Lint第一次发布到形成一个全功能的开源项目大概花了我们差不多6个月时间。从那时开始，超过一打的贡献者提交的代码被接受。尽管这个数字按照一个大型开源项目的标准来说有点少，但我们仍然对此感到骄傲。获得一次外部贡献很容易，在很长一段时间内都能持续获得帮助可不容易。
+
+而且我们明白自己做的所有努力都是正确的，原因就是我们收到很多积极的反馈。乔纳森·克莱因最近到项目的邮件列表里问了几个问题，在最后他也提交了一个pull request并被项目接受了。接着他就给我发了一封反馈邮件：
+
+>我想说CSS Lint就是开源项目的典范-文档优秀，扩展方便，代码简洁，反馈及时，定制方便。基于CSS Lint做开发就像阅读wiki一样容易，而且事
+>实上你提出的特有更改工作流使得项目的进入门槛变得很低。我希望有更多的开源项目能照着做，让开发者为其做共享更容易。
+
+对CSS Lint来说收到这样的邮件已经是司空见惯的事了。如果你愿意花点时间为自己的项目建立一个可持续发展的生态系统，这种事在你的项目里也一样会成为常态。每个人都希望自己的项目能成功，都希望有大量的开发者来做贡献。但是就像乔纳森说的一样：尽量降低门槛，开发者们自然会找到方法来帮忙的。
