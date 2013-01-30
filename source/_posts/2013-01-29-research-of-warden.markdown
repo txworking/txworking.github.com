@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "research-of-warden"
+title: "Warden初步研究"
 date: 2013-01-29 23:25
 comments: true
-categories: 
+categories: [warden, PaaS, cloudfoundry]
 ---
