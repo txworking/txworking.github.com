@@ -6,24 +6,24 @@ comments: true
 categories: [bosh, DevOps]
 ---
 
-h1. BOSH的组件结构
+# BOSH的组件结构
 
-h2. BOSH总体架构
+## BOSH总体架构
 
-h2. Director
+## Director
 
-h2. Worker
+## Worker
 
-h2. Agent
+## Agent
 
-h2. Message Bus
+## Message Bus
 
-h2. Health Monitor
+## Health Monitor
 
-h1. BOSH执行部署的主要流程
+# BOSH执行部署的主要流程
 
 
-h1. BOSH release的组成
+# BOSH release的组成
 
-h1. BOSH stemcell的组成
+# BOSH stemcell的组成
 
