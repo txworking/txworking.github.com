@@ -6,16 +6,331 @@ comments: true
 categories: [PaaS, CloudComputing]
 ---
 
-|| || AWS || Elatic || Beanstalk || Google App Engine || Windows Azure || Cloud Foundry || Heroku || OpenShift || SAE || BAE || tsuru(基于Juju) ||
-| Java      | x | x | x | x  | x | x | x | x |  |
-| Ruby      | x |   |   | x  | x | x |   |   |  |
-| PHP       | x |   | x | x* |   | x | x | x |  |
-| Python    | x | x | x | x* | x | x | x | x |  |
-| .NET      | x |   | x | x* |   |   |   |   |  |
-| Node.js   |   |   | x | x  | x | x |   |   |  |
-| Perl      |   |   |   |    |   |   |   |   |  |
-| Standalone|   |   |   | x  |   |   |   |   |  |
-| DIY       | x |   |   |    |   | x |   |   |x |
+<table style="width:100%;" border="1" bordercolor="#000000" cellpadding="2" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+				<br />
+			</td>
+			<td>
+				<span></span>AWS<span></span> Elastic Beanstalk<br />
+			</td>
+			<td>
+				GAE<br />
+			</td>
+			<td>
+				Windows Azure<br />
+			</td>
+			<td>
+				CloudFoundry<br />
+			</td>
+			<td>
+				Heroku<br />
+			</td>
+			<td>
+				OpenShift<br />
+			</td>
+			<td>
+				SAE<br />
+			</td>
+			<td>
+				BAE<br />
+			</td>
+			<td>
+				tsuru(基于Juju）<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Java<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Ruby<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; <br />
+			</td>
+			<td>
+				&nbsp;<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				PHP<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x <br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*<br />
+			</td>
+			<td>
+				&nbsp;&nbsp; <br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Python<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*&nbsp; <br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				.NET<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*<br />
+			</td>
+			<td>
+				&nbsp;<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp; <br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Node.js<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x <br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Perl<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Standalone<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				DIY<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+		</tr>
+	</tbody>
+</table>
+<br />
 
 * Cloud Foundry对这些语言的支持是社区提供的。
  Cloud Foundry.com支持Java、Ruby和Node，而ActiveState添加了对Python的支持，Tier 3添加了对.NET的支持，AppFog添加了对PHP的支持。
