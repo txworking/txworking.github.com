@@ -5,3 +5,336 @@ date: 2013-03-15 21:36
 comments: true
 categories: [PaaS, CloudComputing]
 ---
+
+<table style="width:100%;" border="1" bordercolor="#000000" cellpadding="2" cellspacing="0">
+	<tbody>
+		<tr>
+			<td>
+				<br />
+			</td>
+			<td>
+				<span></span>AWS<span></span> Elastic Beanstalk<br />
+			</td>
+			<td>
+				GAE<br />
+			</td>
+			<td>
+				Windows Azure<br />
+			</td>
+			<td>
+				CloudFoundry<br />
+			</td>
+			<td>
+				Heroku<br />
+			</td>
+			<td>
+				OpenShift<br />
+			</td>
+			<td>
+				SAE<br />
+			</td>
+			<td>
+				BAE<br />
+			</td>
+			<td>
+				tsuru(基于Juju）<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Java<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Ruby<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; <br />
+			</td>
+			<td>
+				&nbsp;<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				PHP<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x <br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*<br />
+			</td>
+			<td>
+				&nbsp;&nbsp; <br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Python<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*&nbsp; <br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				.NET<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*<br />
+			</td>
+			<td>
+				&nbsp;<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp; <br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Node.js<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x <br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Perl<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Standalone<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				DIY<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				<br />
+			</td>
+			<td>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+			</td>
+		</tr>
+	</tbody>
+</table>
+<br />
+
+* Cloud Foundry对这些语言的支持是社区提供的。
+ Cloud Foundry.com支持Java、Ruby和Node，而ActiveState添加了对Python的支持，Tier 3添加了对.NET的支持，AppFog添加了对PHP的支持。
+
+ 免费的AWS Elastic Beanstalk其实还包含了一种IaaS（Infrastructure-as-a-Service）产品。开发人员和管理员可以直接访问应用程序后 面的AWS基础设施，这意味着他们可以修改服务器配置或访问服务端的日志文件。用户负责各种基础设施相关的任务，包括选择（及更新）服务器的操作系统和应 用程序栈。AWS Elastic Beanstalk确实也自动化了很多管理任务，包括通过一条命令重新启动所有的web服务器、通过中心位置访问所有的服务器日志文件以及监控所有节点的性能。
+
+OpenShift也提供对IaaS基础设施的直接访问，这样就可以让用户添加所有想要的语言和框架。其后台使用的是 Red Hat Enterprise Linux 6.2 running on x64 systems.
