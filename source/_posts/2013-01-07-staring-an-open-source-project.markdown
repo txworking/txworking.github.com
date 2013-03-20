@@ -3,7 +3,7 @@ layout: post
 title: "Staring An Open-Source Project"
 date: 2013-01-07 21:44
 comments: true
-categories: [open-source]
+categories: [OpenSource]
 ---
 
 在开源中国上参与翻译了一篇如何运作开源项目的文章，把自己翻译的部分整理下发出来。
