@@ -338,3 +338,10 @@ categories: [PaaS, CloudComputing]
  免费的AWS Elastic Beanstalk其实还包含了一种IaaS（Infrastructure-as-a-Service）产品。开发人员和管理员可以直接访问应用程序后 面的AWS基础设施，这意味着他们可以修改服务器配置或访问服务端的日志文件。用户负责各种基础设施相关的任务，包括选择（及更新）服务器的操作系统和应 用程序栈。AWS Elastic Beanstalk确实也自动化了很多管理任务，包括通过一条命令重新启动所有的web服务器、通过中心位置访问所有的服务器日志文件以及监控所有节点的性能。
 
 OpenShift也提供对IaaS基础设施的直接访问，这样就可以让用户添加所有想要的语言和框架。其后台使用的是 Red Hat Enterprise Linux 6.2 running on x64 systems.
+
+表格部分内容来自 [InfoQ] ，争取能定时更新此表格
+
+
+   [infoQ]: http://www.infoq.com/cn/news/2012/11/aws-elastic-beanstalk-ruby
+
+
