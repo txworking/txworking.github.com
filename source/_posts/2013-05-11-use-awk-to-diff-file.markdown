@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "use awk to diff file"
+title: "使用awk比较文件"
 date: 2013-05-11 18:46
 comments: true
 categories: [bash, shell, linux, awk, diff]
