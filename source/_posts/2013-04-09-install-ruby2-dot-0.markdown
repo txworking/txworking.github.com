@@ -25,9 +25,12 @@ Ruby中关键字参数的两个要点：
 * 使用：调用时必须指明参数名称。这点和Python不同，Python可以根据参数的顺序来推断。
     
 对于如下定义的函数
+
+```ruby
     def func(a: 1, b: 2, c: 3) 
       print a,b,c 
     end
+```
 
 调用时使用`func(4,5,6)`会提示`wrong number of arguments`，
 只能是`func(a: 4, b: 5, c: 6)`的形式，这个时候顺序可以随意了。
