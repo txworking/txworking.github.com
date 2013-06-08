@@ -10,7 +10,9 @@ categories: [Git, Tips]
 
 ### 添加submodule ###
 
+```shell
     git submodule add git@github.com:xxx/submoule.git src/submodule
+```
 
 在项目中就会自动生成一个.gitmodules文件来保存submodule的关系，再提交到远程库就ok了
 
