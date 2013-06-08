@@ -11,11 +11,11 @@ categories: [Git, WinMerge]
 ### 使用CMD
 
 #### 添加配置
-	
+```sh	
 	git config --global diff.tool winmerge
 	git config --global difftool.winmerge.cmd "C:/git-difftool.bat \"$LOCAL\" \"$REMOTE\""
 	git config --global difftool.prompt false
-
+```
 也可以手动在.gitconfig文件中添加如下配置
 
 	[diff]
@@ -36,11 +36,11 @@ categories: [Git, WinMerge]
 步骤和之前的一样，只是需要注意**转义符**和**路径**的写法。
 
 #### 添加配置
-	
+```sh	
 	git config --global diff.tool winmerge
 	git config --global difftool.winmerge.cmd "/C/git-difftool.bat \"\$LOCAL\" \"\$REMOTE\" "
 	git config --global difftool.prompt false
-
+```
 也可以手动在.gitconfig文件中添加如下配置
 
 	[diff]

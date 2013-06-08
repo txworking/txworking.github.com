@@ -27,9 +27,9 @@ Ruby中关键字参数的两个要点：
 对于如下定义的函数
 
 ```ruby
-    def func(a: 1, b: 2, c: 3) 
-      print a,b,c 
-    end
+def func(a: 1, b: 2, c: 3) 
+  print a,b,c 
+end
 ```
 
 调用时使用`func(4,5,6)`会提示`wrong number of arguments`，

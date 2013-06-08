@@ -9,9 +9,9 @@ categories: [bash, shell, linux, awk, diff]
 平时在CLI环境里面需要经常比较两个小文件的内容，最近专门搜索了下，收集了两个简单的比较方案。
 
 ### 方案1：###
-
+```sh
     cat a | grep -vFf b
-
+```
 如果想要不区分大小写，加-i参数即可
 
 ### 方案2：###
@@ -28,11 +28,11 @@ qq            d
 123           cd
 
 列出b文件中完全不包含a文件的行
-
+``` awk
 	awk 'ARGIND==1 {arr[$0]} ARGIND>1&&!($0 in arr) {print $0}' a b
    
 	awk 'NR==FNR {arr[$0]} NR>FNR&&!($0 in arr) {print $0}' a b
-
+```
 解释：
 
 首先awk会按顺序先处理a文件，在处理b文件；
