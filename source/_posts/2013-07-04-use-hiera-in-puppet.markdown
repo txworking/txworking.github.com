@@ -51,7 +51,7 @@ Hiera能实现动态加载的主要点就在`:hierarchy`的配置，此配置项
        key: value
 ```
 你可以自己写一个module，其中的init.pp可以这样写：
-```puppet
+```
     # init.pp
     class my_mod(
       $string = hiera("string"),
@@ -83,7 +83,7 @@ Hiera也支持**自动赋值**，如果你的node1.yaml文件是这样的：
 只需要在`site.pp`中加上一句`hiera_include("classes")`，
 
 在node1.yaml中再添加上classes。
-```
+```yaml
     # node1.yaml
     ---
     classes:
