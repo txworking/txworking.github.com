@@ -28,7 +28,6 @@ categories: [Nagios, Monitor]
     password=nagios   # password和encryption配置需要和服务器端的nsca配置一致
     encryption=1
     
-    
     [/settings/eventlog/real-time]
     enabled = true
      
@@ -45,4 +44,26 @@ categories: [Nagios, Monitor]
 incron是类似cron的工具，cron是基于时间，incron则是基于文件事件，底层使用了inotify系统调用。
 
 
-
+    $scriptpath = '/usr/bin/nagios/libexec:/usr/local/nagios/bin';
+    $MACROS = {
+        CL_NAGIOS_HOST_ADDRESS => '%server_ip%',
+        CL_NSCA_HOSTNAME => '%node_name%',
+        CL_NSCA_PORT => 5667,
+        CL_NSCA_CONFIG_FILE => '%send_nsca.cfg%'
+    };
+    @searches = (
+      {
+        options => 'supersmartscript,noprotocol',
+        tag => 'puppet',
+        logfile => '%puppet_run_log%',
+        criticalpatterns => [
+          'Tongtech',
+          'err'
+        ],
+        script => sub {
+          (my $line = "$ENV{CHECK_LOGFILES_NSCA_HOSTNAME}\t$ENV{CHECK_LOGFILES_SERVICEDESC}\t$ENV{CHECK_LOGFILES_SERVICESTATEID}\t$ENV{CHECK_LOGFILES_SERVICEOUTPUT}");
+          #system("echo '$line'");
+          system("echo '$line'|%send_nsca% -H $ENV{CHECK_LOGFILES_NAGIOS_HOST_ADDRESS} -c $ENV{CHECK_LOGFILES_NSCA_CONFIG_FILE} " );
+        }
+      },
+    );
