@@ -1,0 +1,26 @@
+---
+layout: post
+title: "Ruby和Ruby2.0相关文章汇总"
+date: 2013-12-02 11:31
+comments: true
+categories: [Ruby, Ruby2.0]
+---
+
+记录一些Ruby和Ruby2.0的文章
+## Ruby2.0相关
+* [Ruby2.1](http://rkh.im/ruby-2.1)
+* [Ruby 2.0 by example](http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil?utm_source=rubyweekly&utm_medium=email)
+* [Profile Ruby 2.0 apps using DTrace - Part 1]( http://crypt.codemancers.com/posts/2013-04-16-profile-ruby-apps-dtrace-part1/?utm_source=rubyweekly&utm_medium=email)
+* [What's new in Ruby 2.0](https://speakerdeck.com/shyouhei/whats-new-in-ruby-2-dot-0?utm_source=rubyweekly&utm_medium=email)
+* [Ruby 2.0 in details](http://globaldev.co.uk/2013/03/ruby-2-0-0-in-detail/)
+* [Unmentioned Features of Ruby 2.0](http://whitequark.org/blog/2013/04/14/unmentioned-features-of-ruby-2-dot-0/?utm_source=rubyweekly&utm_medium=email)
+* [Understand method lookup in Ruby 2.0](http://tech.pro/tutorial/1149/understanding-method-lookup-in-ruby-20) [译文](http://www.oschina.net/translate/understanding-method-lookup-in-ruby-20)
+* [Implementation Details of Ruby2.0 VM](http://www.confreaks.com/videos/1272-rubyconf2012-implementation-details-of-ruby-2-0-vm)
+
+##Ruby相关
+* [Nobody understands the GIL](http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil?utm_source=rubyweekly&utm_medium=email)
+* [Comparing Ruby Background Processing Libraries/](http://www.sitepoint.com/series/comparing-ruby-background-processing-libraries/)
+* [理解Ruby Symbol](http://www.ibm.com/developerworks/cn/opensource/os-cn-rubysbl/)
+* [How Ruby Executy Your Code](http://patshaughnessy.net/2012/6/29/how-ruby-executes-your-code)
+* [Ruby Tips Part 1](http://globaldev.co.uk/2013/09/ruby-tips-part-1/)
+
