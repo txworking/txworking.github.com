@@ -330,7 +330,7 @@ task :setup_github_pages, :repo do |t, args|
   end
   url = "http://#{user}.github.io"
   url += "/#{project}" unless project == ''
-  jekyll_config = IO.read('_config.yml')
+  jekyll_config = IO.read('_config.yml', :encoding => "utf-8")
   jekyll_config.sub!(/^url:.*$/, "url: #{url}")
   File.open('_config.yml', 'w') do |f|
     f.write jekyll_config

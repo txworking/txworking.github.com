@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Ruby2.0使用小记"
+title: "Ruby2.0关键字参数使用小记"
 date: 2013-04-09 11:26
 comments: true
 categories: [Ruby]
