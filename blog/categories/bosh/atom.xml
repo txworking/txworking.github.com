@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Bosh | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/bosh/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2014-01-03T11:36:31+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[BOSH初步研究]]></title>
+    <link href="http://txworking.github.io/blog/2013/01/29/research-of-bosh/"/>
+    <updated>2013-01-29T23:24:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/01/29/research-of-bosh</id>
+    <content type="html"><![CDATA[<h1>BOSH的组件结构</h1>
+
+<h2>BOSH总体架构</h2>
+
+<h2>Director</h2>
+
+<h2>Worker</h2>
+
+<h2>Agent</h2>
+
+<h2>Message Bus</h2>
+
+<h2>Health Monitor</h2>
+
+<h1>BOSH执行部署的主要流程</h1>
+
+<h1>BOSH release的组成</h1>
+
+<h1>BOSH stemcell的组成</h1>
+]]></content>
+  </entry>
+  
+</feed>

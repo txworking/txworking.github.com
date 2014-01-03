@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: WinMerge | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/winmerge/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2014-01-03T11:36:31+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在Windows7的Git环境中使用WinMerge作为difftool]]></title>
+    <link href="http://txworking.github.io/blog/2012/12/11/using-winmerge-with-git/"/>
+    <updated>2012-12-11T14:55:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2012/12/11/using-winmerge-with-git</id>
+    <content type="html"><![CDATA[<p>在Git使用WinMerge作为difftool，使用Git的环境不同需要不一样的配置，而且两种配置不通用。</p>
+
+<h3>使用CMD</h3>
+
+<h4>添加配置</h4>
+
+<p>```sh</p>
+
+<pre><code>git config --global diff.tool winmerge
+git config --global difftool.winmerge.cmd "C:/git-difftool.bat \"$LOCAL\" \"$REMOTE\""
+git config --global difftool.prompt false
+</code></pre>
+
+<p>```
+也可以手动在.gitconfig文件中添加如下配置</p>
+
+<pre><code>[diff]
+    tool = winmerge
+[difftool "winmerge"]
+    cmd = C:/git-difftool.bat \"$LOCAL\" \"$REMOTE\"
+[difftool]
+    prompt = false
+</code></pre>
+
+<h4>在指定位置创建git-difftool.bat</h4>
+
+<h4>在git-difftool.bat中添加一行</h4>
+
+<pre><code>"C:/Program Files/WinMerge/WinMergeU.exe" -e -ub -dl "Base" -dr "Mine" "$1" "$2"
+</code></pre>
+
+<h3>使用Git Bash</h3>
+
+<p>步骤和之前的一样，只是需要注意<strong>转义符</strong>和<strong>路径</strong>的写法。</p>
+
+<h4>添加配置</h4>
+
+<p>```sh</p>
+
+<pre><code>git config --global diff.tool winmerge
+git config --global difftool.winmerge.cmd "/C/git-difftool.bat \"\$LOCAL\" \"\$REMOTE\" "
+git config --global difftool.prompt false
+</code></pre>
+
+<p>```
+也可以手动在.gitconfig文件中添加如下配置</p>
+
+<pre><code>[diff]
+    tool = winmerge
+[difftool "winmerge"]
+    cmd = /C/git-difftool.bat "$LOCAL" "$REMOTE"
+[difftool]
+    prompt = false
+</code></pre>
+
+<h4>在指定位置创建git-difftool.bat</h4>
+
+<h4>在git-difftool.bat中添加一行</h4>
+
+<pre><code>"/C/Program Files/WinMerge/WinMergeU.exe" -e -ub -dl "Base" -dr "Mine" "$1" "$2"
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

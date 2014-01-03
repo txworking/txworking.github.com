@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2014-01-03T11:36:31+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby和Ruby2.0相关文章汇总]]></title>
+    <link href="http://txworking.github.io/blog/2013/12/02/ruby2-dot-0/"/>
+    <updated>2013-12-02T11:31:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/12/02/ruby2-dot-0</id>
+    <content type="html"><![CDATA[<p>记录一些Ruby和Ruby2.0的文章</p>
+
+<h2>Ruby2.0相关</h2>
+
+<ul>
+<li><a href="http://rkh.im/ruby-2.1">Ruby2.1</a></li>
+<li><a href="http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil?utm_source=rubyweekly&amp;utm_medium=email">Ruby 2.0 by example</a></li>
+<li><a href="http://crypt.codemancers.com/posts/2013-04-16-profile-ruby-apps-dtrace-part1/?utm_source=rubyweekly&amp;utm_medium=email">Profile Ruby 2.0 apps using DTrace - Part 1</a></li>
+<li><a href="https://speakerdeck.com/shyouhei/whats-new-in-ruby-2-dot-0?utm_source=rubyweekly&amp;utm_medium=email">What's new in Ruby 2.0</a></li>
+<li><a href="http://globaldev.co.uk/2013/03/ruby-2-0-0-in-detail/">Ruby 2.0 in details</a></li>
+<li><a href="http://whitequark.org/blog/2013/04/14/unmentioned-features-of-ruby-2-dot-0/?utm_source=rubyweekly&amp;utm_medium=email">Unmentioned Features of Ruby 2.0</a></li>
+<li><a href="http://tech.pro/tutorial/1149/understanding-method-lookup-in-ruby-20">Understand method lookup in Ruby 2.0</a> <a href="http://www.oschina.net/translate/understanding-method-lookup-in-ruby-20">译文</a></li>
+<li><a href="http://www.confreaks.com/videos/1272-rubyconf2012-implementation-details-of-ruby-2-0-vm">Implementation Details of Ruby2.0 VM</a></li>
+</ul>
+
+
+<h2>Ruby相关</h2>
+
+<ul>
+<li><a href="http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil?utm_source=rubyweekly&amp;utm_medium=email">Nobody understands the GIL</a></li>
+<li><a href="http://www.sitepoint.com/series/comparing-ruby-background-processing-libraries/">Comparing Ruby Background Processing Libraries/</a></li>
+<li><a href="http://www.ibm.com/developerworks/cn/opensource/os-cn-rubysbl/">理解Ruby Symbol</a></li>
+<li><a href="http://patshaughnessy.net/2012/6/29/how-ruby-executes-your-code">How Ruby Executy Your Code</a></li>
+<li><a href="http://globaldev.co.uk/2013/09/ruby-tips-part-1/">Ruby Tips Part 1</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby2.0关键字参数使用小记]]></title>
+    <link href="http://txworking.github.io/blog/2013/04/09/install-ruby2-dot-0/"/>
+    <updated>2013-04-09T11:26:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/04/09/install-ruby2-dot-0</id>
+    <content type="html"><![CDATA[<p>Ruby2.0发布了，于是下来试试手。
+下载了源码包，直接<code>./configure &amp;&amp; make &amp;&amp; make install</code>安装，没加特殊的flag。</p>
+
+<p>安装过程中出现了几个问题：</p>
+
+<ul>
+<li>系统时间不对，在<code>make</code>的时候检查文件时间戳出错，不断的重复执行<code>configure</code>，使用ntp服务同步时间解决</li>
+<li>在pry环境中不能使用上下方向键，错误信息是rb-readline有问题，在pry的 <a href="https://github.com/pry/pry/issues/863/">Github Issues</a> 里面找到问题，是rb-readline版本问题，重新安装最新版本解决</li>
+</ul>
+
+
+<p>然后试用了几个2.0的新特性，对我来说<code>关键字参数</code>最适用，其他几个<code>Refinements</code>、<code>Lazy enumerables</code>、<code>Module prepending</code>平时元编程和函数编程用得不多，暂时用不上。</p>
+
+<p>对于关键字参数，Python里面已经有了，没什么好说的。</p>
+
+<p>Ruby中关键字参数的两个要点：</p>
+
+<ul>
+<li>位置：定义的时候只能是 <code>a, *b, c: 1, **d, &amp;e</code> 的顺序</li>
+<li>使用：调用时必须指明参数名称。这点和Python不同，Python可以根据参数的顺序来推断。</li>
+</ul>
+
+
+<p>对于如下定义的函数</p>
+
+<p><code>ruby
+def func(a: 1, b: 2, c: 3)
+  print a,b,c
+end
+</code></p>
+
+<p>调用时使用<code>func(4,5,6)</code>会提示<code>wrong number of arguments</code>，
+只能是<code>func(a: 4, b: 5, c: 6)</code>的形式，这个时候顺序可以随意了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[autoload in ruby]]></title>
+    <link href="http://txworking.github.io/blog/2013/03/21/autoload-in-ruby/"/>
+    <updated>2013-03-21T16:56:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/03/21/autoload-in-ruby</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+</feed>

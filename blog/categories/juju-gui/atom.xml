@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Juju-GUI | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/juju-gui/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2014-01-03T11:36:31+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Juju-Gui 安装笔记]]></title>
+    <link href="http://txworking.github.io/blog/2012/12/11/juju-gui-install/"/>
+    <updated>2012-12-11T11:01:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2012/12/11/juju-gui-install</id>
+    <content type="html"><![CDATA[<p>在Ubuntu12.04 AMD64上安装成功，基本按照项目中的README照做就行了。</p>
+
+<h4>juju-gui使用了<code>Node.js</code>和<code>sphinx</code>，所以需要先安装Node环境，<code>jshint</code>是可选的。</h4>
+
+<p>```sh</p>
+
+<pre><code>sudo add-apt-repository ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install nodejs npm
+sudo npm install -g jshint
+sudo apt-get install python-sphinx
+</code></pre>
+
+<p>```</p>
+
+<h4>从<code>Lanunchpad</code>下载代码</h4>
+
+<p>```sh</p>
+
+<pre><code>sudo apt-get install bzr
+bzr launchpad-login yourid
+bzr branch lp:juju-gui 
+cd juju-gui
+make server
+</code></pre>
+
+<p><code>``
+这就可以访问localhost:8888看到界面了。要能操作还需要一个Juju环境，根据文档说Juju默认版本里面没有api-server这功能，最好是使用</code>lp:~hazmat/juju/rapi-delta`这个分支。</p>
+
+<h4>安装Juju</h4>
+
+<p>```sh</p>
+
+<pre><code>cd ~
+sudo bzr branch lp:~hazmat/juju/rapi-delta
+cd rapi-delta
+python setup.py install
+</code></pre>
+
+<p><code>``
+然后修改用户目录下的</code>.juju/environments.yaml<code>，在最后添加</code> api-port: 8081 `，特别要注意缩进，不然启动都出错。</p>
+
+<p>再到bin目录下启动Juju
+```sh</p>
+
+<pre><code>cd bin
+sudo ./juju bootstrap
+</code></pre>
+
+<p>```
+看到 Starting api server 就说明配置成功了</p>
+
+<p>这时用netstat查看会发现8081端口并没有开始监听，需要先手动部署一个服务。
+```sh</p>
+
+<pre><code>sudo ./juju deploy mysql
+</code></pre>
+
+<p><code>``
+Juju默认是会到官方的</code>Charm Store`查找到mysql进行部署。</p>
+
+<p>8081端口也会看到是listen状态了。</p>
+
+<h4>连接Gui和Juju</h4>
+
+<p>默认连接Juju的方式是在页面使用<code>Websocket</code>去连接<code>http://localhost:8081/ws</code>，所以需要修改配置把localhost改了，不然只能在本地访问。</p>
+
+<p>修改Juju-gui里的config.js和app/config.js，把里面的localhost都改成服务器ip或者能解析的域名，重启一下服务，再访问就能看到已经有一个mysql部署好了，其他的charm也随你意安装了。</p>
+]]></content>
+  </entry>
+  
+</feed>

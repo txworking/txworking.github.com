@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Hiera | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/hiera/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2014-01-03T11:36:31+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在Puppet中使用Hiera]]></title>
+    <link href="http://txworking.github.io/blog/2013/07/04/use-hiera-in-puppet/"/>
+    <updated>2013-07-04T23:38:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/07/04/use-hiera-in-puppet</id>
+    <content type="html"><![CDATA[<p>Puppet3.x开始Hiera成为了必需的组件，实现类似ENC的功能，正好现在试试效果。</p>
+
+<p>使用Hiera可以用更格式化的组织节点的定义，而且支持动态的查找加载。</p>
+
+<p>以前在puppetmaster运行过程中加入pp文件，puppet是不会发现并加载此文件的。</p>
+
+<h2>使用</h2>
+
+<p>Puppet3.x自带了Hiera，默认的hiera配置路径是<code>/etc/puppet/hiera.yaml</code>，所以只需要新建此文件，即启用了Hiera。
+```yaml</p>
+
+<pre><code># hiera.yaml的例子
+---
+:backends: # 搜索yaml和json格式的文件
+  - yaml
+  - json
+:yaml:  # hiera数据文件的目录
+  :datadir: /etc/puppet/hieradata
+:json:
+  :datadir: /etc/puppet/hieradata
+:hierarchy:  # 在指定目录搜索以下名称的文件
+  - "%{::clientcert}"
+  - "%{::custom_location}"
+  - common
+</code></pre>
+
+<p><code>``
+Hiera能实现动态加载的主要点就在</code>:hierarchy<code>的配置，此配置项指定Hiera需要读取的数据文件名称，</code>%{::clientcert}`表示使用以节点的certname来查找。</p>
+
+<p>比如<code>certname=node1</code>的节点在运行<code>puppet agent --test</code>时，puppetmaster就会去读取<code>node1.yaml</code>和<code>node1.json</code>两个文件。具体可用的变量可以<a href="http://docs.puppetlabs.com/hiera/1/variables.html">在此</a>查看。</p>
+
+<h2>Hiera数据</h2>
+
+<p>具体的Hiera数据可以使用yaml、json、puppet三种格式，puppet格式的目前没有详细文档说明。</p>
+
+<p>这里以yaml格式的为例说明，json格式也差不多，就是会多很多""。
+```yaml</p>
+
+<pre><code># node1.yaml
+---
+string: str
+array:
+  - 1
+  - 2
+  - 3
+hash:
+   key: value
+</code></pre>
+
+<p><code>
+你可以自己写一个module，其中的init.pp可以这样写：
+</code></p>
+
+<pre><code># init.pp
+class my_mod(
+  $string = hiera("string"),
+  $array = hiera_array("array"),
+  $hash = hiera_hash("hash")
+) {
+}
+</code></pre>
+
+<p><code>``
+然后在</code>site.pp<code>中给node1加上这个class，node1在获取catalog时就会自动的从</code>node1.yaml<code>中加载数据并赋值给</code>$string, $array, $hash<code>三个变量。</code>hiera(), hiera_array(), hiera_hash()`是Hiera专门用来搜索数据的函数。</p>
+
+<p>Hiera也支持<strong>自动赋值</strong>，如果你的node1.yaml文件是这样的：
+```yaml</p>
+
+<pre><code># node1.yaml
+---
+my_mod::string: str
+my_mod::array:
+  - 1
+  - 2
+  - 3
+my_mod::hash:
+   key: value
+</code></pre>
+
+<p>```
+那在my_mod的参数中就不需要再使用函数查找，Hiera会自动关联赋值。</p>
+
+<h2>在Hiera中指定Classes</h2>
+
+<p>如果想完全抛弃<code>site.pp</code>怎么办？用Hiera也可以办到。</p>
+
+<p>只需要在<code>site.pp</code>中加上一句<code>hiera_include("classes")</code>，</p>
+
+<p>在node1.yaml中再添加上classes。
+```yaml</p>
+
+<pre><code># node1.yaml
+---
+classes:
+  - my_mod
+my_mod::string: str
+my_mod::array:
+  - 1
+  - 2
+  - 3
+my_mod::hash:
+   key: value
+</code></pre>
+
+<p>```
+那么以后节点的classes定义就可以完全通过</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: CloudComputing | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/cloudcomputing/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2014-01-03T11:36:31+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[主要PaaS平台支持语言清单]]></title>
+    <link href="http://txworking.github.io/blog/2013/03/15/list-of-paas/"/>
+    <updated>2013-03-15T21:36:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/03/15/list-of-paas</id>
+    <content type="html"><![CDATA[<table style="width:100%;" border="1" bordercolor="#000000" cellpadding="2" cellspacing="0" class="table table-bordered table-striped table-condensed">
+<tbody>
+<tr>
+<td>
+<br />
+</td>
+<td>
+<span></span>AWS<span></span> Elastic Beanstalk<br />
+</td>
+<td>
+GAE<br />
+</td>
+<td>
+Windows Azure<br />
+</td>
+<td>
+CloudFoundry<br />
+</td>
+<td>
+Heroku<br />
+</td>
+<td>
+OpenShift<br />
+</td>
+<td>
+SAE<br />
+</td>
+<td>
+BAE<br />
+</td>
+<td>
+tsuru(基于Juju）<br />
+</td>
+</tr>
+<tr>
+<td>
+Java<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+Ruby<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; <br />
+</td>
+<td>
+&nbsp;<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+PHP<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x <br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*<br />
+</td>
+<td>
+&nbsp;&nbsp; <br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+Python<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*&nbsp; <br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+.NET<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*<br />
+</td>
+<td>
+&nbsp;<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp; <br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+Node.js<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x <br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+Perl<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+Standalone<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+DIY<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<br />
+
+
+<ul>
+<li>Cloud Foundry对这些语言的支持是社区提供的。
+Cloud Foundry.com支持Java、Ruby和Node，而ActiveState添加了对Python的支持，Tier 3添加了对.NET的支持，AppFog添加了对PHP的支持。</li>
+</ul>
+
+
+<p> 免费的AWS Elastic Beanstalk其实还包含了一种IaaS（Infrastructure-as-a-Service）产品。开发人员和管理员可以直接访问应用程序后 面的AWS基础设施，这意味着他们可以修改服务器配置或访问服务端的日志文件。用户负责各种基础设施相关的任务，包括选择（及更新）服务器的操作系统和应 用程序栈。AWS Elastic Beanstalk确实也自动化了很多管理任务，包括通过一条命令重新启动所有的web服务器、通过中心位置访问所有的服务器日志文件以及监控所有节点的性能。</p>
+
+<p>OpenShift也提供对IaaS基础设施的直接访问，这样就可以让用户添加所有想要的语言和框架。其后台使用的是 Red Hat Enterprise Linux 6.2 running on x64 systems.</p>
+
+<p>表格部分内容来自 <a href="http://www.infoq.com/cn/news/2012/11/aws-elastic-beanstalk-ruby">InfoQ</a> ，争取能定时更新此表格</p>
+]]></content>
+  </entry>
+  
+</feed>
