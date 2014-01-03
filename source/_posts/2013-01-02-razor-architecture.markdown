@@ -186,6 +186,7 @@ Razor的主要程序结构如下图所示：
 ## Razor中Policy的绑定过程
 
 先解释一下概念
+
 * Node：能够被Razor管理到的一台服务器就是一个Node，可以是虚拟化或物理机
 * Model：Razor中将一种OS类型的安装方式抽象为一个model，比如针对Ubuntu Precise的安装就会有一个precise的model存在，其中详细定义了OS的安装配置、安装过程、安装中的状态变化、安装中Node和Razor的交互、安装后的处理等等。model是和OS类型紧密相关的。
 * Policy：Razor根据Policy将Node和Model联系在一起。Policy与Model为1对1，与Node为1对N关系。Policy的匹配规则类似防火墙的过滤规则，具有先后优先级。优先级高的Policy会先生效，并将Model和Node绑定。

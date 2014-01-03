@@ -11,7 +11,11 @@ module HighlightCode
     lang = 'objc' if lang == 'm'
     lang = 'perl' if lang == 'pl'
     lang = 'yaml' if lang == 'yml'
+    begin
     str = pygments(str, lang).match(/<pre>(.+)<\/pre>/m)[1].to_s.gsub(/ *$/, '') #strip out divs <div class="highlight">
+    rescue Exception => e
+      puts str.encoding
+    end
     tableize_code(str, lang)
   end
 
@@ -31,7 +35,7 @@ module HighlightCode
     else
       highlighted_code = Pygments.highlight(code, :lexer => lang, :formatter => 'html', :options => {:encoding => 'utf-8', :startinline => true})
     end
-    highlighted_code
+    highlighted_code.force_encoding("utf-8").encode("utf-8")
   end
   def tableize_code (str, lang = '')
     table = '<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers">'
