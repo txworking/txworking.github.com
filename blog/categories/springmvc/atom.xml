@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: springmvc | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/springmvc/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2014-01-03T11:42:36+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[AngularJS+SpringMVC构建应用]]></title>
+    <link href="http://txworking.github.io/blog/2014/01/02/angular-plus-springmvc/"/>
+    <updated>2014-01-02T13:33:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2014/01/02/angular-plus-springmvc</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+</feed>

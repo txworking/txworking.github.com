@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: DevOps | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/devops/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2014-01-03T11:42:36+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Facter在Windows上的一个小问题]]></title>
+    <link href="http://txworking.github.io/blog/2013/07/08/a-bug-of-facter/"/>
+    <updated>2013-07-08T23:37:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/07/08/a-bug-of-facter</id>
+    <content type="html"><![CDATA[<p>最近在Windows上使用Puppet，总是遇到一个诡异的问题：在某些机器上无法获得ipaddress这个fact，直接使用facter命令行也不行，而且显得完全没有规律。</p>
+
+<p>具体情况是：</p>
+
+<ul>
+<li>facter 在所有机器上可以获得ipaddress</li>
+<li>facter --puppet 在部分机器上出现 <strong>invalid address</strong> 错误</li>
+</ul>
+
+
+<p><strong>ipaddress</strong>这个fact是在facter/lib/facter/ipaddress.rb添加进来的。关键代码是:
+```ruby</p>
+
+<pre><code>Facter.add(:ipaddress) do
+  confine :kernel =&gt; %w{windows}
+  setcode do
+    require 'socket'
+    IPSocket.getaddress(Socket.gethostname)
+  end
+end
+</code></pre>
+
+<p><code>
+发现是**IPSocket.getaddress**函数不起作用，于是又把问题定位在Puppet自带的Ruby环境中的**ipaddr.rb**中，发现以下代码在某些机器上无法获得IP。
+</code>ruby
+alias getaddress_orig getaddress
+def getaddress s   
+  if valid? s
+    s   
+  else
+    getaddress_orig s   
+  end 
+end
+```</p>
+
+<p>一开始没发现哪有问题，后来仔细看了下<strong>valid</strong>中的正则表达式，发现不允许<strong>hostname</strong>中出现<strong>下划线</strong>。</p>
+
+<p>之前一直没注意过这问题，所以测试主机的hostname都是随意命名的，所以才会出现部分主机可以通过验证，部分不行的情况。</p>
+
+<p>不过也是现在才知道原来主机名规范有一条是不能带下划线。</p>
+
+<p>Windows命名的时候完全没这个限制，但是在Ubuntu里使用<strong>hostname</strong>命令修改时，如果带下划线会直接提示错误。</p>
+
+<p>很奇怪自己以前在Ubuntu上怎么没遇到过这个错误，难道就鬼使神差的从没使用过带下划线的主机名？</p>
+
+<p>但是现在问题又来了，为什么facter都可以，facter --puppet就不行呢？</p>
+
+<p>于是又研究了一遍facter的加载机制，在facter取值的部分折腾好久，最后发现和这部分没关系。是因为执行facter时没有加载<strong>facter/lib/facter/ipaddr.rb</strong>，ipaddr.rb中对<strong>IPSocket#getaddress</strong>的重写未生效，直接使用了Puppet自带Ruby中的socket.so中定义的<strong>IPSocket#getaddress</strong>，这个函数定义里面就没有对主机名的正则验证。</p>
+
+<p>想来Puppet也是为了做多平台支持，所以加了一个MonkeyPatch，对主机名做了验证。</p>
+
+<p>现在又绕回来了，--puppet 到底干了啥？
+```ruby</p>
+
+<pre><code> def self.load_puppet
+      require 'puppet'
+      Puppet.parse_config
+
+      # If you've set 'vardir' but not 'libdir' in your
+      # puppet.conf, then the hook to add libdir to $:
+      # won't get triggered.  This makes sure that it's setup
+      # correctly.
+      unless $LOAD_PATH.include?(Puppet[:libdir])
+        $LOAD_PATH &lt;&lt; Puppet[:libdir]
+      end
+    rescue LoadError =&gt; detail
+      $stderr.puts "Could not load Puppet: #{detail}"
+ end
+</code></pre>
+
+<p>```
+根据代码来看，只是把Puppet的<strong>libdir</strong>加入了<strong>\$LOAD_PATH</strong>。</p>
+
+<p>这个libdir里面都是些自定义的facter、tyep和provider，似乎和ipaddr.rb完全没关系。</p>
+
+<p>又卡在这儿想了半天，才发现思路错了。</p>
+
+<p>ipaddr.rb虽然在lib目录下，但是不会自动加载，需要显式<strong>require</strong>。</p>
+
+<p>于是注释掉
+```ruby</p>
+
+<pre><code>require 'puppet'
+</code></pre>
+
+<p>```
+使用facter --puppet也就和正常一样了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Puppet3.2的迭代器]]></title>
+    <link href="http://txworking.github.io/blog/2013/07/06/lambda-in-puppet-3-dot-2/"/>
+    <updated>2013-07-06T00:29:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/07/06/lambda-in-puppet-3-dot-2</id>
+    <content type="html"><![CDATA[<p>Puppet在最新的3.2版本中实现了lambda风格的迭代器语法，而且支持链式语法。当然要使用的话，需要在puppet.conf中启用parser=future</p>
+
+<p>目前已经实现的有：</p>
+
+<ul>
+<li>each/foreach</li>
+<li>slice</li>
+<li>select</li>
+<li>collect</li>
+<li>reject</li>
+<li>reduce</li>
+</ul>
+
+
+<p>含义和作用域与Ruby中的基本一致，基本用法也一致。
+```ruby</p>
+
+<pre><code>$a = [1,2,3]
+each($a) |$value| { notice $value } # 迭代数组
+
+[1,20,3].select |$value| {$value &lt; 10 }.each |$value| { notice $value } # 链式语法
+</code></pre>
+
+<p><code>
+根据[说明](http://docs.puppetlabs.com/puppet/3/reference/lang_experimental_3_2.html#available-functions)，也可以使用多种风格的语法
+</code>ruby</p>
+
+<pre><code>each($x)  |$value| { … }
+$x.each   |$value| { … }
+$x.each() |$value| { … }
+
+slice($x, 2) |$value| { … }
+$x.slice(2)  |$value| { … }
+</code></pre>
+
+<p><code>
+或者
+</code>ruby</p>
+
+<pre><code># Alternative 0 (as shown): Parameters are outside the lambda block.
+[1,2,3].each |$value| { notice $value }
+
+# Alternative 1: Parameters are inside the lambda block.
+[1,2,3].each { |$value| notice $value }
+
+# Alternative 2: A fat arrow is placed after the parameters.
+[1,2,3].each |$value| =&gt; { notice $value }
+</code></pre>
+
+<p><code>
+但是我自己实验，只有
+</code>ruby</p>
+
+<pre><code>[1,2,3].each { |$value| notice $value }
+</code></pre>
+
+<p>```
+的方式成功了。</p>
+
+<p>其实这些函数都是通过添加Puppet自定义函数的形式实现的，lambda表达式作为一个参数进行处理，调一个call就执行了。</p>
+
+<p>比如迭代哈希的关键代码就是这样：
+```ruby</p>
+
+<pre><code>  receiver = args[0]
+  pblock = args[1]
+  foreach_Hash(receiver, self, pblock)
+  def foreach_Hash(o, scope, pblock)    
+    return nil unless pblock    
+    serving_size = pblock.parameter_count    
+
+    enumerator = o.each_pair    
+
+    if serving_size == 1      
+      (o.size).times do        
+        pblock.call(scope, enumerator.next)      
+      end    
+    else      
+      (o.size).times do   
+        pblock.call(scope, *enumerator.next)      
+      end    
+    end    
+    o  
+  end
+</code></pre>
+
+<p>```
+其实还是使用了Ruby中的each_pair这个迭代器。在Puppet中写的lambda表达式还是循环调用，并把each_pair作为每一次的参数传进去用。</p>
+
+<p>感觉Puppet在解释lambda表达式时应该还做了些工作，今天就不研究了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在Puppet中使用Hiera]]></title>
+    <link href="http://txworking.github.io/blog/2013/07/04/use-hiera-in-puppet/"/>
+    <updated>2013-07-04T23:38:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/07/04/use-hiera-in-puppet</id>
+    <content type="html"><![CDATA[<p>Puppet3.x开始Hiera成为了必需的组件，实现类似ENC的功能，正好现在试试效果。</p>
+
+<p>使用Hiera可以用更格式化的组织节点的定义，而且支持动态的查找加载。</p>
+
+<p>以前在puppetmaster运行过程中加入pp文件，puppet是不会发现并加载此文件的。</p>
+
+<h2>使用</h2>
+
+<p>Puppet3.x自带了Hiera，默认的hiera配置路径是<code>/etc/puppet/hiera.yaml</code>，所以只需要新建此文件，即启用了Hiera。
+```yaml</p>
+
+<pre><code># hiera.yaml的例子
+---
+:backends: # 搜索yaml和json格式的文件
+  - yaml
+  - json
+:yaml:  # hiera数据文件的目录
+  :datadir: /etc/puppet/hieradata
+:json:
+  :datadir: /etc/puppet/hieradata
+:hierarchy:  # 在指定目录搜索以下名称的文件
+  - "%{::clientcert}"
+  - "%{::custom_location}"
+  - common
+</code></pre>
+
+<p><code>``
+Hiera能实现动态加载的主要点就在</code>:hierarchy<code>的配置，此配置项指定Hiera需要读取的数据文件名称，</code>%{::clientcert}`表示使用以节点的certname来查找。</p>
+
+<p>比如<code>certname=node1</code>的节点在运行<code>puppet agent --test</code>时，puppetmaster就会去读取<code>node1.yaml</code>和<code>node1.json</code>两个文件。具体可用的变量可以<a href="http://docs.puppetlabs.com/hiera/1/variables.html">在此</a>查看。</p>
+
+<h2>Hiera数据</h2>
+
+<p>具体的Hiera数据可以使用yaml、json、puppet三种格式，puppet格式的目前没有详细文档说明。</p>
+
+<p>这里以yaml格式的为例说明，json格式也差不多，就是会多很多""。
+```yaml</p>
+
+<pre><code># node1.yaml
+---
+string: str
+array:
+  - 1
+  - 2
+  - 3
+hash:
+   key: value
+</code></pre>
+
+<p><code>
+你可以自己写一个module，其中的init.pp可以这样写：
+</code></p>
+
+<pre><code># init.pp
+class my_mod(
+  $string = hiera("string"),
+  $array = hiera_array("array"),
+  $hash = hiera_hash("hash")
+) {
+}
+</code></pre>
+
+<p><code>``
+然后在</code>site.pp<code>中给node1加上这个class，node1在获取catalog时就会自动的从</code>node1.yaml<code>中加载数据并赋值给</code>$string, $array, $hash<code>三个变量。</code>hiera(), hiera_array(), hiera_hash()`是Hiera专门用来搜索数据的函数。</p>
+
+<p>Hiera也支持<strong>自动赋值</strong>，如果你的node1.yaml文件是这样的：
+```yaml</p>
+
+<pre><code># node1.yaml
+---
+my_mod::string: str
+my_mod::array:
+  - 1
+  - 2
+  - 3
+my_mod::hash:
+   key: value
+</code></pre>
+
+<p>```
+那在my_mod的参数中就不需要再使用函数查找，Hiera会自动关联赋值。</p>
+
+<h2>在Hiera中指定Classes</h2>
+
+<p>如果想完全抛弃<code>site.pp</code>怎么办？用Hiera也可以办到。</p>
+
+<p>只需要在<code>site.pp</code>中加上一句<code>hiera_include("classes")</code>，</p>
+
+<p>在node1.yaml中再添加上classes。
+```yaml</p>
+
+<pre><code># node1.yaml
+---
+classes:
+  - my_mod
+my_mod::string: str
+my_mod::array:
+  - 1
+  - 2
+  - 3
+my_mod::hash:
+   key: value
+</code></pre>
+
+<p>```
+那么以后节点的classes定义就可以完全通过</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[BOSH初步研究]]></title>
+    <link href="http://txworking.github.io/blog/2013/01/29/research-of-bosh/"/>
+    <updated>2013-01-29T23:24:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/01/29/research-of-bosh</id>
+    <content type="html"><![CDATA[<h1>BOSH的组件结构</h1>
+
+<h2>BOSH总体架构</h2>
+
+<h2>Director</h2>
+
+<h2>Worker</h2>
+
+<h2>Agent</h2>
+
+<h2>Message Bus</h2>
+
+<h2>Health Monitor</h2>
+
+<h1>BOSH执行部署的主要流程</h1>
+
+<h1>BOSH release的组成</h1>
+
+<h1>BOSH stemcell的组成</h1>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Juju-Gui 安装笔记]]></title>
+    <link href="http://txworking.github.io/blog/2012/12/11/juju-gui-install/"/>
+    <updated>2012-12-11T11:01:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2012/12/11/juju-gui-install</id>
+    <content type="html"><![CDATA[<p>在Ubuntu12.04 AMD64上安装成功，基本按照项目中的README照做就行了。</p>
+
+<h4>juju-gui使用了<code>Node.js</code>和<code>sphinx</code>，所以需要先安装Node环境，<code>jshint</code>是可选的。</h4>
+
+<p>```sh</p>
+
+<pre><code>sudo add-apt-repository ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install nodejs npm
+sudo npm install -g jshint
+sudo apt-get install python-sphinx
+</code></pre>
+
+<p>```</p>
+
+<h4>从<code>Lanunchpad</code>下载代码</h4>
+
+<p>```sh</p>
+
+<pre><code>sudo apt-get install bzr
+bzr launchpad-login yourid
+bzr branch lp:juju-gui 
+cd juju-gui
+make server
+</code></pre>
+
+<p><code>``
+这就可以访问localhost:8888看到界面了。要能操作还需要一个Juju环境，根据文档说Juju默认版本里面没有api-server这功能，最好是使用</code>lp:~hazmat/juju/rapi-delta`这个分支。</p>
+
+<h4>安装Juju</h4>
+
+<p>```sh</p>
+
+<pre><code>cd ~
+sudo bzr branch lp:~hazmat/juju/rapi-delta
+cd rapi-delta
+python setup.py install
+</code></pre>
+
+<p><code>``
+然后修改用户目录下的</code>.juju/environments.yaml<code>，在最后添加</code> api-port: 8081 `，特别要注意缩进，不然启动都出错。</p>
+
+<p>再到bin目录下启动Juju
+```sh</p>
+
+<pre><code>cd bin
+sudo ./juju bootstrap
+</code></pre>
+
+<p>```
+看到 Starting api server 就说明配置成功了</p>
+
+<p>这时用netstat查看会发现8081端口并没有开始监听，需要先手动部署一个服务。
+```sh</p>
+
+<pre><code>sudo ./juju deploy mysql
+</code></pre>
+
+<p><code>``
+Juju默认是会到官方的</code>Charm Store`查找到mysql进行部署。</p>
+
+<p>8081端口也会看到是listen状态了。</p>
+
+<h4>连接Gui和Juju</h4>
+
+<p>默认连接Juju的方式是在页面使用<code>Websocket</code>去连接<code>http://localhost:8081/ws</code>，所以需要修改配置把localhost改了，不然只能在本地访问。</p>
+
+<p>修改Juju-gui里的config.js和app/config.js，把里面的localhost都改成服务器ip或者能解析的域名，重启一下服务，再访问就能看到已经有一个mysql部署好了，其他的charm也随你意安装了。</p>
+]]></content>
+  </entry>
+  
+</feed>
