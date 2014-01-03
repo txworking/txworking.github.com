@@ -6,7 +6,7 @@ comments: true
 categories: [Razor]
 ---
 
-![Alt text](data:image,local://razor_mk.png)
+![Alt text](data:image,local://images/my/razor_mk.png)
 
 ## Razor对iPXE的使用
 
@@ -43,7 +43,7 @@ label boot-else
 
 可以看到，使用razor-boot方式会下载tftp服务器上的ipxe.lkrn和razor.ipxe脚本文件进行启动，如下图所示
 
-![Alt text](data:image,local://ipxe__.png)
+![Alt text](data:image,local://images/my/ipxe.png)
 
 服务器会根据razor.ipxe脚本文件向Razor Server发起http请求，从这里就开始进入Razor的控制流程。
 
@@ -93,11 +93,11 @@ end
 
 下图是Razor Server的日志，可以看到hw_id为043a的节点在通过iPXE发起boot请求后，Server返回了Razor-Microkernl的地址。
 
-![Alt text](data:image,local://____.png)
+![Alt text](data:image,local://images/my/boot.png)
 
 对于服务器，在收到http应答后会执行脚本到指定地址下载Razor-Microkernel并启动，下图为服务器控制台输出
 
-![Alt text](data:image,local://mk__.png)
+![Alt text](data:image,local://images/my/mk.png)
 
 ### OS安装过程中
 
@@ -118,7 +118,7 @@ boot
 
 如下图所示，iPXE会到指定路径下载Ubuntu安装镜像进行启动
 
-![Alt text](data:image,local://os__.png)
+![Alt text](data:image,local://images/my/os.png)
 
 ## OS安装过程详解
 
@@ -175,7 +175,7 @@ end
 
 Razor的主要程序结构如下图所示：
 
-![Alt text](data:image,local://node_______.png)
+![Alt text](data:image,local://images/my/node_boot.png)
 
 典型流程：
 
@@ -191,8 +191,8 @@ Razor的主要程序结构如下图所示：
 * Policy：Razor根据Policy将Node和Model联系在一起。Policy与Model为1对1，与Node为1对N关系。Policy的匹配规则类似防火墙的过滤规则，具有先后优先级。优先级高的Policy会先生效，并将Model和Node绑定。
 * Active_model：Active_model是一个Policy对象，可以理解为生效的Policy。Razor发现某个Node符合一条Policy规则，则生成一个Policy对象，将状态设定为active，指明绑定的Node。之后OS的安装过程，Node都是根据这个Active_model定义的流程和规则在进行操作。
 
-![Alt text](data:image,local://node_____.png)
+![Alt text](data:image,local://images/my/node_binding.png)
 
 current_state与返回命令的映射表如下图： 
 
-![Alt text](data:image,local://___.png)
+![Alt text](data:image,local://images/my/state.png)
