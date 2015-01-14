@@ -4,7 +4,7 @@
   <title><![CDATA[Category: springmvc | Darcy Tang's Blog]]></title>
   <link href="http://txworking.github.io/blog/categories/springmvc/atom.xml" rel="self"/>
   <link href="http://txworking.github.io/"/>
-  <updated>2015-01-14T17:31:55+08:00</updated>
+  <updated>2015-01-14T18:06:49+08:00</updated>
   <id>http://txworking.github.io/</id>
   <author>
     <name><![CDATA[Darcy Tang]]></name>
@@ -26,31 +26,26 @@
 
 <p>最基本的使用代码如下所示：</p>
 
-<p>```
-@Controller
-@RequestMapping(value = &ldquo;/hello&rdquo;)
-public class MyController {</p>
+<pre><code>@Controller
+@RequestMapping(value = "/hello")
+public class MyController {
 
-<p>  @RequestMapping(method=RequestMethod.GET)
+  @RequestMapping(method=RequestMethod.GET)
   @ResponseBody
-  public String getRoot(){</p>
+  public String getRoot(){
 
-<pre><code>return "Hello World";
-</code></pre>
+    return "Hello World";
 
-<p>  }</p>
+  }
 
-<p>  @RequestMapping(value=&ldquo;/{path}&rdquo;, method=RequestMethod.GET)
+  @RequestMapping(value="/{path}", method=RequestMethod.GET)
   @ResponseBody
-  public String getValue(@PathVariable String path){</p>
+  public String getValue(@PathVariable String path){
+    return "Path is " + path;
+  }
 
-<pre><code>return "Path is " + path;
+}
 </code></pre>
-
-<p>  }</p>
-
-<p>}
-```</p>
 
 <p>使用<code>@Controller</code>注解指定当前类为SpringMVC的一个controller，使用<code>@RequestMapping</code>表明此controller会处理所有以<code>/hello</code>开头的URL。</p>
 
@@ -106,84 +101,67 @@ public class MyController {</p>
 
 <h4>template</h4>
 
-<p>```
-&lt;!doctype html>
-<html lang="en" ng-app="myApp">
-<body>
-  <div ng-view></div>
-</body>
-</html></p>
-
-<p>```</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html lang="en" ng-app="myApp"&gt;
+&lt;body&gt;
+  &lt;div ng-view&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
 
 <h4>app</h4>
 
-<p>```
-&lsquo;use strict&rsquo;;</p>
+<pre><code>'use strict';
 
-<p>// 新建myApp，并声明会使用ngRoute、myApp.services、myApp.controllers三个module
+// 新建myApp，并声明会使用ngRoute、myApp.services、myApp.controllers三个module
 // AngularJS会实现module的自动注入
-angular.module(&lsquo;myApp&rsquo;, [
-  &lsquo;ngRoute&rsquo;,
-  &lsquo;myApp.services&rsquo;,
-  &lsquo;myApp.controllers&rsquo;
+angular.module('myApp', [
+  'ngRoute',
+  'myApp.services',
+  'myApp.controllers'
 ]).
-config([&lsquo;$routeProvider&rsquo;, function($routeProvider) { // 配置app对应的URL路由，请求此URL时返回的view template和template对应的controller
-  $routeProvider.when(&lsquo;/hello&rsquo;, {templateUrl: &lsquo;partials/list.html&rsquo;, controller: &lsquo;ListCtrl&rsquo;});
-  $routeProvider.when(&lsquo;/hello/:path&rsquo;, {templateUrl: &lsquo;partials/detail.html&rsquo;, controller: &lsquo;DetailCtrl&rsquo;});
-  $routeProvider.otherwise({redirectTo: &lsquo;/hello&rsquo;});
-}]);</p>
-
-<p>```</p>
+config(['$routeProvider', function($routeProvider) { // 配置app对应的URL路由，请求此URL时返回的view template和template对应的controller
+  $routeProvider.when('/hello', {templateUrl: 'partials/list.html', controller: 'ListCtrl'});
+  $routeProvider.when('/hello/:path', {templateUrl: 'partials/detail.html', controller: 'DetailCtrl'});
+  $routeProvider.otherwise({redirectTo: '/hello'});
+}]);
+</code></pre>
 
 <h4>service</h4>
 
-<p>```
-&lsquo;use strict&rsquo;;</p>
+<pre><code>'use strict';
 
-<p>// 新建myService，并声明会使用ngResource这个module
-var myService = angular.module(&lsquo;myApp.services&rsquo;, [&lsquo;ngResource&rsquo;]).
-  value(&lsquo;version&rsquo;, &lsquo;0.1&rsquo;);
+// 新建myService，并声明会使用ngResource这个module
+var myService = angular.module('myApp.services', ['ngResource']).
+  value('version', '0.1');
 // 新建Hello这个资源，并指定资源的访问路径和访问方法
-myService.factory(&lsquo;Hello&rsquo;, [&lsquo;$resource&rsquo;,
-  function($resource){</p>
-
-<pre><code>return $resource('api/hello/:path', {}, {
-  list: {method:'GET', isArray:true}
-});
+myService.factory('Hello', ['$resource',
+  function($resource){
+    return $resource('api/hello/:path', {}, {
+      list: {method:'GET', isArray:true}
+    });
+  }]);
 </code></pre>
-
-<p>  }]);</p>
-
-<p>```</p>
 
 <h4>controller</h4>
 
-<p>```
-&lsquo;use strict&rsquo;;</p>
+<pre><code>'use strict';
 
-<p>// 新建ListCtrl和DetailCtrl两个controller
-angular.module(&lsquo;myApp.controllers&rsquo;, []).
-  controller(&lsquo;ListCtrl&rsquo;, [&lsquo;$scope&rsquo;, &lsquo;Hello&rsquo;, // 声明要使用Hello
-   function($scope, Hello) {</p>
-
-<pre><code>$scope.hello = Hello.list();             // 调用Hello服务的list方法，赋值给模板中的hello元素
+// 新建ListCtrl和DetailCtrl两个controller
+angular.module('myApp.controllers', []).
+  controller('ListCtrl', ['$scope', 'Hello', // 声明要使用Hello
+   function($scope, Hello) {
+    $scope.hello = Hello.list();             // 调用Hello服务的list方法，赋值给模板中的hello元素
+  }])
+  .controller('DetailCtrl', ['$scope', '$routeParams', 'Hello',
+   function($scope, $routeParams, Hello) {
+    $scope.hello = Hello.get({path:$routeParams.path}, function(hello){
+      $scope.detail = hello.detail;
+    });
+  }]);
 </code></pre>
 
-<p>  }])
-  .controller(&lsquo;DetailCtrl&rsquo;, [&lsquo;$scope&rsquo;, &lsquo;$routeParams&rsquo;, &lsquo;Hello&rsquo;,
-   function($scope, $routeParams, Hello) {</p>
-
-<pre><code>$scope.hello = Hello.get({path:$routeParams.path}, function(hello){
-  $scope.detail = hello.detail;
-});
-</code></pre>
-
-<p>  }]);</p>
-
-<p>```</p>
-
-<p>```</p>
+<p>&#8220;`</p>
 
 <div class="container-fluid">
   <div class="row-fluid">
@@ -195,7 +173,7 @@ angular.module(&lsquo;myApp.controllers&rsquo;, []).
 </div>
 
 
-<p>```</p>
+<p>&#8220;`</p>
 ]]></content>
   </entry>
   

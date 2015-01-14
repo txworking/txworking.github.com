@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Razor | Darcy Tang's Blog]]></title>
+  <title><![CDATA[Category: razor | Darcy Tang's Blog]]></title>
   <link href="http://txworking.github.io/blog/categories/razor/atom.xml" rel="self"/>
   <link href="http://txworking.github.io/"/>
-  <updated>2015-01-14T17:31:55+08:00</updated>
+  <updated>2015-01-14T18:06:49+08:00</updated>
   <id>http://txworking.github.io/</id>
   <author>
     <name><![CDATA[Darcy Tang]]></name>
@@ -37,24 +37,38 @@ iPXE是开源的网络启动固件，提供了全部的PXE功能，而且加入�
 
 <p>搭建iPXE服务需要DHCP服务和ftp服务，具体过程就不详述了。
 服务器在进行网络启动时，iPXE会根据配置提供两种boot方式。下面的代码清单是iPXE的默认配置。
-```
-default menu.c32
-prompt 0
-menu title Razor Boot Menu</p>
-
-<p>timeout 50
-f1 help.txt
-f2 version.txt</p>
-
-<p>label razor-boot
-  menu label Automatic Razor Node Boot
-  kernel ipxe.lkrn
-  append initrd=razor.ipxe</p>
-
-<p>label boot-else
-  menu label Bypass Razor
-  localboot 1
-```</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>default menu.c32
+</span><span class='line'>prompt 0
+</span><span class='line'>menu title Razor Boot Menu&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;timeout 50
+</span><span class='line'>f1 help.txt
+</span><span class='line'>f2 version.txt&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;label razor-boot
+</span><span class='line'>  menu label Automatic Razor Node Boot
+</span><span class='line'>  kernel ipxe.lkrn
+</span><span class='line'>  append initrd=razor.ipxe&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;label boot-else
+</span><span class='line'>  menu label Bypass Razor
+</span><span class='line'>  localboot 1</span></code></pre></td></tr></table></div></figure></p>
 
 <p>可以看到，使用razor-boot方式会下载tftp服务器上的ipxe.lkrn和razor.ipxe脚本文件进行启动，如下图所示</p>
 
@@ -62,53 +76,47 @@ f2 version.txt</p>
 
 <p>服务器会根据razor.ipxe脚本文件向Razor Server发起http请求，从这里就开始进入Razor的控制流程。</p>
 
-<p>```</p>
+<pre><code>#!ipxe
 
-<h1>!ipxe</h1>
-
-<p>isset ${net0/mac} &amp;&amp; dhcp net0 ||
+isset ${net0/mac} &amp;&amp; dhcp net0 ||
 isset ${net1/mac} &amp;&amp; dhcp net1 ||
 isset ${net2/mac} &amp;&amp; dhcp net2 ||
 isset ${net3/mac} &amp;&amp; dhcp net3 ||
 isset ${net4/mac} &amp;&amp; dhcp net4 ||
 isset ${net5/mac} &amp;&amp; dhcp net5 ||
 isset ${net6/mac} &amp;&amp; dhcp net6 ||
-isset ${net7/mac} &amp;&amp; dhcp net7 ||</p>
+isset ${net7/mac} &amp;&amp; dhcp net7 ||
 
-<p>chain <a href="http://168.1.43.39:8026/razor/api/boot?hw_id=$">http://168.1.43.39:8026/razor/api/boot?hw_id=$</a>{net0/mac}<em>${net1/mac}</em>${net2/mac}<em>${net3/mac}</em>$
-{net4/mac}<em>${net5/mac}</em>${net6/mac}_${net7/mac} || goto error</p>
+chain http://168.1.43.39:8026/razor/api/boot?hw_id=${net0/mac}_${net1/mac}_${net2/mac}_${net3/mac}_$
+{net4/mac}_${net5/mac}_${net6/mac}_${net7/mac} || goto error
 
-<p>:error
+:error
 sleep 15
 reboot
-```</p>
+</code></pre>
 
 <p>Razor最终会返回http应答，其中包含可执行iPXE脚本，告诉服务器按何种方式启动。
 比如，服务器是首次启动，则会告诉服务器下载Razor-Microkernel并启动。
 下面的代码清单说明Razor返回的执行脚本内容，其中指明了kernel和initrd的下载路径</p>
 
-<p>```ruby
-def get_boot_script(default_mk)</p>
-
-<pre><code>    image_svc_uri = "http://#{@config.image_svc_host}:#{@config.image_svc_port}/razor/image/mk/#{default_mk.uuid}"
-    rz_mk_boot_debug_level = @config.rz_mk_boot_debug_level
-    # only allow values of 'quiet' or 'debug' for this parameter; if it's anything else set it
-    # to an empty string
-    rz_mk_boot_debug_level = '' unless ['quiet','debug'].include? rz_mk_boot_debug_level
-    boot_script = ""
-    boot_script &lt;&lt; "#!ipxe\n"
-    boot_script &lt;&lt; "kernel #{image_svc_uri}/#{default_mk.kernel} maxcpus=1"
-    boot_script &lt;&lt; " #{rz_mk_boot_debug_level}" if rz_mk_boot_debug_level &amp;&amp; !rz_mk_boot_debug_level.empty?
-    boot_script &lt;&lt; " || goto error\n"
-    boot_script &lt;&lt; "initrd #{image_svc_uri}/#{default_mk.initrd} || goto error\n"
-    boot_script &lt;&lt; "boot || goto error\n"
-    boot_script &lt;&lt; "\n\n\n"
-    boot_script &lt;&lt; ":error\necho ERROR, will reboot in #{@config.mk_checkin_interval}\nsleep #{@config.mk_checkin_interval}\nreboot\n"
-    boot_script
+<pre><code class="ruby">def get_boot_script(default_mk)
+        image_svc_uri = "http://#{@config.image_svc_host}:#{@config.image_svc_port}/razor/image/mk/#{default_mk.uuid}"
+        rz_mk_boot_debug_level = @config.rz_mk_boot_debug_level
+        # only allow values of 'quiet' or 'debug' for this parameter; if it's anything else set it
+        # to an empty string
+        rz_mk_boot_debug_level = '' unless ['quiet','debug'].include? rz_mk_boot_debug_level
+        boot_script = ""
+        boot_script &lt;&lt; "#!ipxe\n"
+        boot_script &lt;&lt; "kernel #{image_svc_uri}/#{default_mk.kernel} maxcpus=1"
+        boot_script &lt;&lt; " #{rz_mk_boot_debug_level}" if rz_mk_boot_debug_level &amp;&amp; !rz_mk_boot_debug_level.empty?
+        boot_script &lt;&lt; " || goto error\n"
+        boot_script &lt;&lt; "initrd #{image_svc_uri}/#{default_mk.initrd} || goto error\n"
+        boot_script &lt;&lt; "boot || goto error\n"
+        boot_script &lt;&lt; "\n\n\n"
+        boot_script &lt;&lt; ":error\necho ERROR, will reboot in #{@config.mk_checkin_interval}\nsleep #{@config.mk_checkin_interval}\nreboot\n"
+        boot_script
+end
 </code></pre>
-
-<p>end
-```</p>
 
 <p>下图是Razor Server的日志，可以看到hw_id为043a的节点在通过iPXE发起boot请求后，Server返回了Razor-Microkernl的地址。</p>
 
@@ -122,20 +130,30 @@ def get_boot_script(default_mk)</p>
 
 <p>在iPXE发起boot的http请求时，如果Razor Server发现node已经和policy进行了绑定，则返回http应答中包含的执行脚本会指明OS镜像的路径。
 例如，安装Ubuntu时，返回的iPXE脚本如下代码清单所示，此代码清单为Ubuntu ModelTemplate的一部分
-```</p>
-
-<h1>!ipxe</h1>
-
-<p>echo Razor &lt;%= @label %> model boot_call
-echo Installation node UUID : &lt;%= node.uuid %>
-echo Installation image UUID: &lt;%= @image_uuid %>
-echo Active Model node state: &lt;%= @current_state %></p>
-
-<p>sleep 3
-kernel &lt;%= &ldquo;#{image_svc_uri}/#{@image_uuid}/#{kernel_path} #{kernel_args(policy_uuid)}&rdquo; %> || goto error
-initrd &lt;%= &ldquo;#{image_svc_uri}/#{@image_uuid}/#{initrd_path}&rdquo; %> || goto error
-boot
-```</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='</p>'><span class='line'>
+</span><span class='line'><h1>!ipxe</h1>
+</span><span class='line'>
+</span><span class='line'><p>echo Razor &lt;%= @label %> model boot_call
+</span><span class='line'>echo Installation node UUID : &lt;%= node.uuid %>
+</span><span class='line'>echo Installation image UUID: &lt;%= @image_uuid %>
+</span><span class='line'>echo Active Model node state: &lt;%= @current_state %></p>
+</span><span class='line'>
+</span><span class='line'><p>sleep 3
+</span><span class='line'>kernel &lt;%= &ldquo;#{image_svc_uri}/#{@image_uuid}/#{kernel_path} #{kernel_args(policy_uuid)}&rdquo; %> || goto error
+</span><span class='line'>initrd &lt;%= &ldquo;#{image_svc_uri}/#{@image_uuid}/#{initrd_path}&rdquo; %> || goto error
+</span><span class='line'>boot</span></code></pre></td></tr></table></div></figure></p>
 
 <p>如下图所示，iPXE会到指定路径下载Ubuntu安装镜像进行启动</p>
 
@@ -154,58 +172,86 @@ boot
 
 
 <p>具体代码如下
-```
-def discover_rz_server_ip</p>
-
-<pre><code>  discover_by_pxe or discover_by_dns or discover_by_dhcp
-</code></pre>
-
-<p>end
-def discover_by_pxe</p>
-
-<pre><code>  begin
-    contents = File.open("/proc/cmdline", 'r') { |f| f.read }
-    server_ip = contents.split.map { |x| $1 if x.match(/razor.ip=(.*)/)}.compact
-    if server_ip.size == 1
-      return server_ip.join
-    else
-      return false
-    end
-  rescue
-    return false
-  end
-</code></pre>
-
-<p>end</p>
-
-<p> def discover_by_dns</p>
-
-<pre><code>  begin
-    contents = File.open("/proc/cmdline", 'r') { |f| f.read }
-    server_name = contents.split.map { |x| $1 if x.match(/razor.server=(.*)/)}.compact
-    server_name = server_name.size == 1 ? server_name.join : 'razor'
-
-    require 'socket'
-    return TCPSocket.gethostbyname(server_name)[3..-1].first || false
-  rescue
-    return false
-  end
-</code></pre>
-
-<p>end
-def discover_by_dhcp</p>
-
-<pre><code>  udhcp_file = "/tmp/nextServerIP.addr"
-  begin
-    contents = File.open(udhcp_file, 'r') { |f| f.read }
-    return contents.strip
-  rescue
-    return false
-  end
-</code></pre>
-
-<p>end
-```</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='</p>'><span class='line'>def discover_rz_server_ip
+</span><span class='line'>      discover_by_pxe or discover_by_dns or discover_by_dhcp
+</span><span class='line'>end
+</span><span class='line'>def discover_by_pxe
+</span><span class='line'>      begin
+</span><span class='line'>        contents = File.open(&ldquo;/proc/cmdline&rdquo;, &lsquo;r&rsquo;) { |f| f.read }
+</span><span class='line'>        server_ip = contents.split.map { |x| $1 if x.match(/razor.ip=(.*)/)}.compact
+</span><span class='line'>        if server_ip.size == 1
+</span><span class='line'>          return server_ip.join
+</span><span class='line'>        else
+</span><span class='line'>          return false
+</span><span class='line'>        end
+</span><span class='line'>      rescue
+</span><span class='line'>        return false
+</span><span class='line'>      end
+</span><span class='line'>end</p>
+</span><span class='line'>
+</span><span class='line'><p> def discover_by_dns
+</span><span class='line'>      begin
+</span><span class='line'>        contents = File.open(&ldquo;/proc/cmdline&rdquo;, &lsquo;r&rsquo;) { |f| f.read }
+</span><span class='line'>        server_name = contents.split.map { |x| $1 if x.match(/razor.server=(.*)/)}.compact
+</span><span class='line'>        server_name = server_name.size == 1 ? server_name.join : &lsquo;razor&rsquo;</p>
+</span><span class='line'>
+</span><span class='line'><pre><code>    require 'socket'
+</span><span class='line'>    return TCPSocket.gethostbyname(server_name)[3..-1].first || false
+</span><span class='line'>  rescue
+</span><span class='line'>    return false
+</span><span class='line'>  end
+</span><span class='line'></code></pre>
+</span><span class='line'>
+</span><span class='line'><p>end
+</span><span class='line'>def discover_by_dhcp
+</span><span class='line'>      udhcp_file = &ldquo;/tmp/nextServerIP.addr&rdquo;
+</span><span class='line'>      begin
+</span><span class='line'>        contents = File.open(udhcp_file, &lsquo;r&rsquo;) { |f| f.read }
+</span><span class='line'>        return contents.strip
+</span><span class='line'>      rescue
+</span><span class='line'>        return false
+</span><span class='line'>      end
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure></p>
 
 <h2>Razor的程序结构</h2>
 

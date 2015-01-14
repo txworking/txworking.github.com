@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Monitor | Darcy Tang's Blog]]></title>
+  <title><![CDATA[Category: monitor | Darcy Tang's Blog]]></title>
   <link href="http://txworking.github.io/blog/categories/monitor/atom.xml" rel="self"/>
   <link href="http://txworking.github.io/"/>
-  <updated>2015-01-14T17:31:55+08:00</updated>
+  <updated>2015-01-14T18:06:49+08:00</updated>
   <id>http://txworking.github.io/</id>
   <author>
     <name><![CDATA[Darcy Tang]]></name>
@@ -100,7 +100,7 @@ $MACROS = {
 <p>具体的使用可以参考此文章<a href="http://wlx.westgis.ac.cn/879/">incron的使用</a></p>
 
 <p>这样利用incron监控puppet的日志文件，当文件有改变时执行check_logfiles检查，就会发送日志信息到服务器。
-注意&mdash;rununique选项，如果不加此选项，文件改变可能会触发多次检查，check_logfiles就会发送重复的信息。</p>
+注意&ndash;rununique选项，如果不加此选项，文件改变可能会触发多次检查，check_logfiles就会发送重复的信息。</p>
 
 <h3>只使用check_logfiles</h3>
 

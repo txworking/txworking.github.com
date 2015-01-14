@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Darcy Tang's Blog</title>
+  <title>Darcy Tang&#8217;s Blog</title>
   <meta name="author" content="Darcy Tang">
 
   
@@ -25,7 +25,7 @@
   <link href="/atom.xml" rel="alternate" title="Darcy Tang's Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -37,7 +37,7 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">Darcy Tang's Blog</a></h1>
+  <h1><a href="/">Darcy Tang&#8217;s Blog</a></h1>
   
     <h2>记录一点编程心得</h2>
   
@@ -51,7 +51,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:txworking.github.io" />
+    <input type="hidden" name="sitesearch" value="txworking.github.io">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -82,14 +82,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2015-01-14T17:22:00+08:00" pubdate data-updated="true">Jan 14<span>th</span>, 2015</time>
+<time class='entry-date' datetime='2015-01-14T17:22:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:22 pm</span></time>
         
       </p>
     
@@ -242,14 +235,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2014-01-02T13:33:00+08:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2014</time>
+<time class='entry-date' datetime='2014-01-02T13:33:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>1:33 pm</span></time>
         
       </p>
     
@@ -510,14 +496,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-12-02T11:31:00+08:00" pubdate data-updated="true">Dec 2<span>nd</span>, 2013</time>
+<time class='entry-date' datetime='2013-12-02T11:31:00+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>11:31 am</span></time>
         
       </p>
     
@@ -531,7 +510,7 @@
 <ul>
 <li><a href="http://rkh.im/ruby-2.1">Ruby2.1</a></li>
 <li><a href="http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil?utm_source=rubyweekly&amp;utm_medium=email">Ruby 2.0 by example</a></li>
-<li><a href="http://crypt.codemancers.com/posts/2013-04-16-profile-ruby-apps-dtrace-part1/?utm_source=rubyweekly&amp;utm_medium=email">Profile Ruby 2.0 apps using DTrace &ndash; Part 1</a></li>
+<li><a href="http://crypt.codemancers.com/posts/2013-04-16-profile-ruby-apps-dtrace-part1/?utm_source=rubyweekly&amp;utm_medium=email">Profile Ruby 2.0 apps using DTrace - Part 1</a></li>
 <li><a href="https://speakerdeck.com/shyouhei/whats-new-in-ruby-2-dot-0?utm_source=rubyweekly&amp;utm_medium=email">What&rsquo;s new in Ruby 2.0</a></li>
 <li><a href="http://globaldev.co.uk/2013/03/ruby-2-0-0-in-detail/">Ruby 2.0 in details</a></li>
 <li><a href="http://whitequark.org/blog/2013/04/14/unmentioned-features-of-ruby-2-dot-0/?utm_source=rubyweekly&amp;utm_medium=email">Unmentioned Features of Ruby 2.0</a></li>
@@ -571,14 +550,7 @@
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-08-17T17:30:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2013</time>
+<time class='entry-date' datetime='2013-08-17T17:30:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>5:30 pm</span></time>
         
       </p>
     
@@ -667,7 +639,7 @@ $MACROS = {
 <p>具体的使用可以参考此文章<a href="http://wlx.westgis.ac.cn/879/">incron的使用</a></p>
 
 <p>这样利用incron监控puppet的日志文件，当文件有改变时执行check_logfiles检查，就会发送日志信息到服务器。
-注意&mdash;rununique选项，如果不加此选项，文件改变可能会触发多次检查，check_logfiles就会发送重复的信息。</p>
+注意&ndash;rununique选项，如果不加此选项，文件改变可能会触发多次检查，check_logfiles就会发送重复的信息。</p>
 
 <h3>只使用check_logfiles</h3>
 
@@ -700,14 +672,7 @@ $MACROS = {
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-07-08T23:37:00+08:00" pubdate data-updated="true">Jul 8<span>th</span>, 2013</time>
+<time class='entry-date' datetime='2013-07-08T23:37:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>11:37 pm</span></time>
         
       </p>
     
@@ -720,7 +685,7 @@ $MACROS = {
 
 <ul>
 <li>facter 在所有机器上可以获得ipaddress</li>
-<li>facter &mdash;puppet 在部分机器上出现 <strong>invalid address</strong> 错误</li>
+<li>facter &ndash;puppet 在部分机器上出现 <strong>invalid address</strong> 错误</li>
 </ul>
 
 
@@ -774,13 +739,13 @@ $MACROS = {
 
 <p>很奇怪自己以前在Ubuntu上怎么没遇到过这个错误，难道就鬼使神差的从没使用过带下划线的主机名？</p>
 
-<p>但是现在问题又来了，为什么facter都可以，facter &mdash;puppet就不行呢？</p>
+<p>但是现在问题又来了，为什么facter都可以，facter &ndash;puppet就不行呢？</p>
 
 <p>于是又研究了一遍facter的加载机制，在facter取值的部分折腾好久，最后发现和这部分没关系。是因为执行facter时没有加载<strong>facter/lib/facter/ipaddr.rb</strong>，ipaddr.rb中对<strong>IPSocket#getaddress</strong>的重写未生效，直接使用了Puppet自带Ruby中的socket.so中定义的<strong>IPSocket#getaddress</strong>，这个函数定义里面就没有对主机名的正则验证。</p>
 
 <p>想来Puppet也是为了做多平台支持，所以加了一个MonkeyPatch，对主机名做了验证。</p>
 
-<p>现在又绕回来了，&mdash;puppet 到底干了啥？</p>
+<p>现在又绕回来了，&ndash;puppet 到底干了啥？</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -828,7 +793,7 @@ $MACROS = {
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>使用facter &mdash;puppet也就和正常一样了。</p>
+<p>使用facter &ndash;puppet也就和正常一样了。</p>
 </div>
   
   
@@ -850,14 +815,7 @@ $MACROS = {
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-07-06T00:29:00+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2013</time>
+<time class='entry-date' datetime='2013-07-06T00:29:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>12:29 am</span></time>
         
       </p>
     
@@ -1009,14 +967,7 @@ $MACROS = {
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-07-04T23:38:00+08:00" pubdate data-updated="true">Jul 4<span>th</span>, 2013</time>
+<time class='entry-date' datetime='2013-07-04T23:38:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>11:38 pm</span></time>
         
       </p>
     
@@ -1194,14 +1145,7 @@ $MACROS = {
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-06-08T17:12:00+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
+<time class='entry-date' datetime='2013-06-08T17:12:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>5:12 pm</span></time>
         
       </p>
     
@@ -1325,14 +1269,7 @@ gitdir: ../.git/modules/dea
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-05-11T18:46:00+08:00" pubdate data-updated="true">May 11<span>th</span>, 2013</time>
+<time class='entry-date' datetime='2013-05-11T18:46:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>6:46 pm</span></time>
         
       </p>
     
@@ -1429,14 +1366,7 @@ SUBSEP       数组下标分隔符(默认值是\034)。
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-04-09T11:26:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2013</time>
+<time class='entry-date' datetime='2013-04-09T11:26:00+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>11:26 am</span></time>
         
       </p>
     
@@ -1488,7 +1418,7 @@ SUBSEP       数组下标分隔符(默认值是\034)。
   
   <div class="pagination">
     
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+      <a class="prev" href="/posts/2">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     

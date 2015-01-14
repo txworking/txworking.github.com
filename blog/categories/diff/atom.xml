@@ -4,7 +4,7 @@
   <title><![CDATA[Category: diff | Darcy Tang's Blog]]></title>
   <link href="http://txworking.github.io/blog/categories/diff/atom.xml" rel="self"/>
   <link href="http://txworking.github.io/"/>
-  <updated>2015-01-14T17:31:55+08:00</updated>
+  <updated>2015-01-14T18:06:49+08:00</updated>
   <id>http://txworking.github.io/</id>
   <author>
     <name><![CDATA[Darcy Tang]]></name>
@@ -22,13 +22,10 @@
 
 <h3>方案1：</h3>
 
-<p>```sh</p>
-
-<pre><code>cat a | grep -vFf b
+<pre><code class="sh">    cat a | grep -vFf b
 </code></pre>
 
-<p>```
-如果想要不区分大小写，加-i参数即可</p>
+<p>如果想要不区分大小写，加-i参数即可</p>
 
 <h3>方案2：</h3>
 
@@ -44,14 +41,13 @@ qq            d
 123           cd</p>
 
 <p>列出b文件中完全不包含a文件的行
-``` awk</p>
+&#8220;` awk
+    awk &lsquo;ARGIND==1 {arr[$0]} ARGIND>1&amp;&amp;!($0 in arr) {print $0}&rsquo; a b</p>
 
-<pre><code>awk 'ARGIND==1 {arr[$0]} ARGIND&gt;1&amp;&amp;!($0 in arr) {print $0}' a b
-
-awk 'NR==FNR {arr[$0]} NR&gt;FNR&amp;&amp;!($0 in arr) {print $0}' a b
+<pre><code>awk 'NR==FNR {arr[$0]} NR&gt;FNR&amp;&amp;!($0 in arr) {print $0}' a b
 </code></pre>
 
-<p>```
+<p>&#8220;`
 解释：</p>
 
 <p>首先awk会按顺序先处理a文件，在处理b文件；</p>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: DevOps | Darcy Tang's Blog]]></title>
+  <title><![CDATA[Category: devops | Darcy Tang's Blog]]></title>
   <link href="http://txworking.github.io/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://txworking.github.io/"/>
-  <updated>2015-01-14T17:31:55+08:00</updated>
+  <updated>2015-01-14T18:06:49+08:00</updated>
   <id>http://txworking.github.io/</id>
   <author>
     <name><![CDATA[Darcy Tang]]></name>
@@ -24,25 +24,22 @@
 
 <ul>
 <li>facter 在所有机器上可以获得ipaddress</li>
-<li>facter &mdash;puppet 在部分机器上出现 <strong>invalid address</strong> 错误</li>
+<li>facter &ndash;puppet 在部分机器上出现 <strong>invalid address</strong> 错误</li>
 </ul>
 
 
 <p><strong>ipaddress</strong>这个fact是在facter/lib/facter/ipaddress.rb添加进来的。关键代码是:
-```ruby</p>
-
-<pre><code>Facter.add(:ipaddress) do
-  confine :kernel =&gt; %w{windows}
-  setcode do
-    require 'socket'
-    IPSocket.getaddress(Socket.gethostname)
-  end
-end
-</code></pre>
-
-<p><code>
-发现是**IPSocket.getaddress**函数不起作用，于是又把问题定位在Puppet自带的Ruby环境中的**ipaddr.rb**中，发现以下代码在某些机器上无法获得IP。
-</code>ruby
+<code>ruby
+    Facter.add(:ipaddress) do
+      confine :kernel =&gt; %w{windows}
+      setcode do
+        require 'socket'
+        IPSocket.getaddress(Socket.gethostname)
+      end
+    end
+</code>
+发现是<strong>IPSocket.getaddress</strong>函数不起作用，于是又把问题定位在Puppet自带的Ruby环境中的<strong>ipaddr.rb</strong>中，发现以下代码在某些机器上无法获得IP。
+<code>ruby
 alias getaddress_orig getaddress
 def getaddress s   
   if valid? s
@@ -51,7 +48,7 @@ def getaddress s   
     getaddress_orig s   
   end 
 end
-```</p>
+</code></p>
 
 <p>一开始没发现哪有问题，后来仔细看了下<strong>valid</strong>中的正则表达式，发现不允许<strong>hostname</strong>中出现<strong>下划线</strong>。</p>
 
@@ -63,82 +60,132 @@ end
 
 <p>很奇怪自己以前在Ubuntu上怎么没遇到过这个错误，难道就鬼使神差的从没使用过带下划线的主机名？</p>
 
-<p>但是现在问题又来了，为什么facter都可以，facter &mdash;puppet就不行呢？</p>
+<p>但是现在问题又来了，为什么facter都可以，facter &ndash;puppet就不行呢？</p>
 
 <p>于是又研究了一遍facter的加载机制，在facter取值的部分折腾好久，最后发现和这部分没关系。是因为执行facter时没有加载<strong>facter/lib/facter/ipaddr.rb</strong>，ipaddr.rb中对<strong>IPSocket#getaddress</strong>的重写未生效，直接使用了Puppet自带Ruby中的socket.so中定义的<strong>IPSocket#getaddress</strong>，这个函数定义里面就没有对主机名的正则验证。</p>
 
 <p>想来Puppet也是为了做多平台支持，所以加了一个MonkeyPatch，对主机名做了验证。</p>
 
-<p>现在又绕回来了，&mdash;puppet 到底干了啥？
-```ruby</p>
+<p>现在又绕回来了，&ndash;puppet 到底干了啥？
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err"> </span><span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">load_puppet</span>
+</span><span class='line'><span class="err">      </span><span class="nb">require</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">puppet</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'><span class="err">      </span><span class="no">Puppet</span><span class="o">.</span><span class="n">parse_config</span><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;      # If you&#39;ve set &#39;vardir&#39; but not &#39;libdir&#39; in your</span>
+</span><span class='line'><span class="sr">      # puppet.conf, then the hook to add libdir to $:</span>
+</span><span class='line'><span class="sr">      # won&#39;t get triggered.  This makes sure that it&#39;s setup</span>
+</span><span class='line'><span class="sr">      # correctly.</span>
+</span><span class='line'><span class="sr">      unless $LOAD_PATH.include?(Puppet[:libdir])</span>
+</span><span class='line'><span class="sr">        $LOAD_PATH &amp;lt;&amp;lt; Puppet[:libdir]</span>
+</span><span class='line'><span class="sr">      end</span>
+</span><span class='line'><span class="sr">    rescue LoadError =&amp;gt; detail</span>
+</span><span class='line'><span class="sr">      $stderr.puts &quot;Could not load Puppet: </span><span class="si">#{</span><span class="n">detail</span><span class="si">}</span><span class="sr">&quot;</span>
+</span><span class='line'><span class="sr"> end</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;根据代码来看，只是把Puppet的**libdir**加入了**\$LOAD\_PATH**。</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">这个libdir里面都是些自定义的facter、tyep和provider，似乎和ipaddr.rb完全没关系。</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">又卡在这儿想了半天，才发现思路错了。</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">ipaddr.rb虽然在lib目录下，但是不会自动加载，需要显式**require**。</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">于是注释掉</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;pre&gt;&lt;code&gt;require &#39;puppet&#39;</span>
+</span><span class='line'><span class="sr">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;</span><span class="sr">/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;p&gt;```</span>
+</span><span class='line'><span class="sr">使用facter &amp;ndash;puppet也就和正常一样了。&lt;/</span><span class="nb">p</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">]]&gt;&lt;</span><span class="sr">/content&gt;</span>
+</span><span class='line'><span class="sr">  &lt;/en</span><span class="n">try</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">entry</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">title</span> <span class="n">type</span><span class="o">=</span><span class="s2">&quot;html&quot;</span><span class="o">&gt;&lt;![</span><span class="no">CDATA</span><span class="o">[</span><span class="no">Puppet3</span><span class="o">.</span><span class="mi">2</span><span class="err">的迭代器</span><span class="o">]]&gt;&lt;</span><span class="sr">/title&gt;</span>
+</span><span class='line'><span class="sr">&lt;link href=&quot;http:/</span><span class="o">/</span><span class="n">txworking</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">blog</span><span class="o">/</span><span class="mi">2013</span><span class="o">/</span><span class="mo">07</span><span class="o">/</span><span class="mo">06</span><span class="o">/</span><span class="nb">lambda</span><span class="o">-</span><span class="k">in</span><span class="o">-</span><span class="n">puppet</span><span class="o">-</span><span class="mi">3</span><span class="o">-</span><span class="n">dot</span><span class="o">-</span><span class="mi">2</span><span class="o">/</span><span class="s2">&quot;/&gt;</span>
+</span><span class='line'><span class="s2">&lt;updated&gt;2013-07-06T00:29:00+08:00&lt;/updated&gt;</span>
+</span><span class='line'><span class="s2">&lt;id&gt;http://txworking.github.io/blog/2013/07/06/lambda-in-puppet-3-dot-2&lt;/id&gt;</span>
+</span><span class='line'><span class="s2">&lt;content type=&quot;</span><span class="n">html</span><span class="s2">&quot;&gt;&lt;![CDATA[&lt;p&gt;Puppet在最新的3.2版本中实现了lambda风格的迭代器语法，而且支持链式语法。当然要使用的话，需要在puppet.conf中启用parser=future&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;目前已经实现的有：&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;ul&gt;</span>
+</span><span class='line'><span class="s2">&lt;li&gt;each/foreach&lt;/li&gt;</span>
+</span><span class='line'><span class="s2">&lt;li&gt;slice&lt;/li&gt;</span>
+</span><span class='line'><span class="s2">&lt;li&gt;select&lt;/li&gt;</span>
+</span><span class='line'><span class="s2">&lt;li&gt;collect&lt;/li&gt;</span>
+</span><span class='line'><span class="s2">&lt;li&gt;reject&lt;/li&gt;</span>
+</span><span class='line'><span class="s2">&lt;li&gt;reduce&lt;/li&gt;</span>
+</span><span class='line'><span class="s2">&lt;/ul&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;含义和作用域与Ruby中的基本一致，基本用法也一致。</span>
+</span></code></pre></td></tr></table></div></figure>ruby
+    $a = [1,2,3]
+    each($a) |$value| { notice $value } # 迭代数组</p>
 
-<pre><code> def self.load_puppet
-      require 'puppet'
-      Puppet.parse_config
-
-      # If you've set 'vardir' but not 'libdir' in your
-      # puppet.conf, then the hook to add libdir to $:
-      # won't get triggered.  This makes sure that it's setup
-      # correctly.
-      unless $LOAD_PATH.include?(Puppet[:libdir])
-        $LOAD_PATH &lt;&lt; Puppet[:libdir]
-      end
-    rescue LoadError =&gt; detail
-      $stderr.puts "Could not load Puppet: #{detail}"
- end
+<pre><code>[1,20,3].select |$value| {$value &lt; 10 }.each |$value| { notice $value } # 链式语法
 </code></pre>
 
-<p>```
-根据代码来看，只是把Puppet的<strong>libdir</strong>加入了<strong>\$LOAD_PATH</strong>。</p>
-
-<p>这个libdir里面都是些自定义的facter、tyep和provider，似乎和ipaddr.rb完全没关系。</p>
-
-<p>又卡在这儿想了半天，才发现思路错了。</p>
-
-<p>ipaddr.rb虽然在lib目录下，但是不会自动加载，需要显式<strong>require</strong>。</p>
-
-<p>于是注释掉
-```ruby</p>
-
-<pre><code>require 'puppet'
+<pre><code>根据[说明](http://docs.puppetlabs.com/puppet/3/reference/lang_experimental_3_2.html#available-functions)，也可以使用多种风格的语法
 </code></pre>
-
-<p>```
-使用facter &mdash;puppet也就和正常一样了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Puppet3.2的迭代器]]></title>
-    <link href="http://txworking.github.io/blog/2013/07/06/lambda-in-puppet-3-dot-2/"/>
-    <updated>2013-07-06T00:29:00+08:00</updated>
-    <id>http://txworking.github.io/blog/2013/07/06/lambda-in-puppet-3-dot-2</id>
-    <content type="html"><![CDATA[<p>Puppet在最新的3.2版本中实现了lambda风格的迭代器语法，而且支持链式语法。当然要使用的话，需要在puppet.conf中启用parser=future</p>
-
-<p>目前已经实现的有：</p>
-
-<ul>
-<li>each/foreach</li>
-<li>slice</li>
-<li>select</li>
-<li>collect</li>
-<li>reject</li>
-<li>reduce</li>
-</ul>
-
-
-<p>含义和作用域与Ruby中的基本一致，基本用法也一致。
-```ruby</p>
-
-<pre><code>$a = [1,2,3]
-each($a) |$value| { notice $value } # 迭代数组
-
-[1,20,3].select |$value| {$value &lt; 10 }.each |$value| { notice $value } # 链式语法
-</code></pre>
-
-<p><code>
-根据[说明](http://docs.puppetlabs.com/puppet/3/reference/lang_experimental_3_2.html#available-functions)，也可以使用多种风格的语法
-</code>ruby</p>
 
 <pre><code>each($x)  |$value| { … }
 $x.each   |$value| { … }
@@ -148,9 +195,8 @@ slice($x, 2) |$value| { … }
 $x.slice(2)  |$value| { … }
 </code></pre>
 
-<p><code>
-或者
-</code>ruby</p>
+<pre><code>或者
+</code></pre>
 
 <pre><code># Alternative 0 (as shown): Parameters are outside the lambda block.
 [1,2,3].each |$value| { notice $value }
@@ -162,20 +208,18 @@ $x.slice(2)  |$value| { … }
 [1,2,3].each |$value| =&gt; { notice $value }
 </code></pre>
 
-<p><code>
-但是我自己实验，只有
-</code>ruby</p>
+<pre><code>但是我自己实验，只有
+</code></pre>
 
 <pre><code>[1,2,3].each { |$value| notice $value }
 </code></pre>
 
-<p>```
-的方式成功了。</p>
+<pre><code>的方式成功了。
 
-<p>其实这些函数都是通过添加Puppet自定义函数的形式实现的，lambda表达式作为一个参数进行处理，调一个call就执行了。</p>
+其实这些函数都是通过添加Puppet自定义函数的形式实现的，lambda表达式作为一个参数进行处理，调一个call就执行了。
 
-<p>比如迭代哈希的关键代码就是这样：
-```ruby</p>
+比如迭代哈希的关键代码就是这样：
+</code></pre>
 
 <pre><code>  receiver = args[0]
   pblock = args[1]
@@ -199,7 +243,7 @@ $x.slice(2)  |$value| { … }
   end
 </code></pre>
 
-<p>```
+<p>&#8220;`
 其实还是使用了Ruby中的each_pair这个迭代器。在Puppet中写的lambda表达式还是循环调用，并把each_pair作为每一次的参数传进去用。</p>
 
 <p>感觉Puppet在解释lambda表达式时应该还做了些工作，今天就不研究了。</p>
@@ -220,25 +264,22 @@ $x.slice(2)  |$value| { … }
 <h2>使用</h2>
 
 <p>Puppet3.x自带了Hiera，默认的hiera配置路径是<code>/etc/puppet/hiera.yaml</code>，所以只需要新建此文件，即启用了Hiera。
-```yaml</p>
-
-<pre><code># hiera.yaml的例子
----
-:backends: # 搜索yaml和json格式的文件
-  - yaml
-  - json
-:yaml:  # hiera数据文件的目录
-  :datadir: /etc/puppet/hieradata
-:json:
-  :datadir: /etc/puppet/hieradata
-:hierarchy:  # 在指定目录搜索以下名称的文件
-  - "%{::clientcert}"
-  - "%{::custom_location}"
-  - common
-</code></pre>
-
-<p><code>``
-Hiera能实现动态加载的主要点就在</code>:hierarchy<code>的配置，此配置项指定Hiera需要读取的数据文件名称，</code>%{::clientcert}`表示使用以节点的certname来查找。</p>
+<code>yaml
+    # hiera.yaml的例子
+    ---
+    :backends: # 搜索yaml和json格式的文件
+      - yaml
+      - json
+    :yaml:  # hiera数据文件的目录
+      :datadir: /etc/puppet/hieradata
+    :json:
+      :datadir: /etc/puppet/hieradata
+    :hierarchy:  # 在指定目录搜索以下名称的文件
+      - "%{::clientcert}"
+      - "%{::custom_location}"
+      - common
+</code>
+Hiera能实现动态加载的主要点就在<code>:hierarchy</code>的配置，此配置项指定Hiera需要读取的数据文件名称，<code>%{::clientcert}</code>表示使用以节点的certname来查找。</p>
 
 <p>比如<code>certname=node1</code>的节点在运行<code>puppet agent --test</code>时，puppetmaster就会去读取<code>node1.yaml</code>和<code>node1.json</code>两个文件。具体可用的变量可以<a href="http://docs.puppetlabs.com/hiera/1/variables.html">在此</a>查看。</p>
 
@@ -246,51 +287,42 @@ Hiera能实现动态加载的主要点就在</code>:hierarchy<code>的配置，�
 
 <p>具体的Hiera数据可以使用yaml、json、puppet三种格式，puppet格式的目前没有详细文档说明。</p>
 
-<p>这里以yaml格式的为例说明，json格式也差不多，就是会多很多"&ldquo;。
-```yaml</p>
-
-<pre><code># node1.yaml
----
-string: str
-array:
-  - 1
-  - 2
-  - 3
-hash:
-   key: value
-</code></pre>
-
-<p><code>
+<p>这里以yaml格式的为例说明，json格式也差不多，就是会多很多&#8221;&ldquo;。
+<code>yaml
+    # node1.yaml
+    ---
+    string: str
+    array:
+      - 1
+      - 2
+      - 3
+    hash:
+       key: value
+</code>
 你可以自己写一个module，其中的init.pp可以这样写：
-</code></p>
-
-<pre><code># init.pp
-class my_mod(
-  $string = hiera("string"),
-  $array = hiera_array("array"),
-  $hash = hiera_hash("hash")
-) {
-}
-</code></pre>
-
-<p><code>``
-然后在</code>site.pp<code>中给node1加上这个class，node1在获取catalog时就会自动的从</code>node1.yaml<code>中加载数据并赋值给</code>$string, $array, $hash<code>三个变量。</code>hiera(), hiera_array(), hiera_hash()`是Hiera专门用来搜索数据的函数。</p>
+<code>
+    # init.pp
+    class my_mod(
+      $string = hiera("string"),
+      $array = hiera_array("array"),
+      $hash = hiera_hash("hash")
+    ) {
+    }
+</code>
+然后在<code>site.pp</code>中给node1加上这个class，node1在获取catalog时就会自动的从<code>node1.yaml</code>中加载数据并赋值给<code>$string, $array, $hash</code>三个变量。<code>hiera(), hiera_array(), hiera_hash()</code>是Hiera专门用来搜索数据的函数。</p>
 
 <p>Hiera也支持<strong>自动赋值</strong>，如果你的node1.yaml文件是这样的：
-```yaml</p>
-
-<pre><code># node1.yaml
----
-my_mod::string: str
-my_mod::array:
-  - 1
-  - 2
-  - 3
-my_mod::hash:
-   key: value
-</code></pre>
-
-<p>```
+<code>yaml
+    # node1.yaml
+    ---
+    my_mod::string: str
+    my_mod::array:
+      - 1
+      - 2
+      - 3
+    my_mod::hash:
+       key: value
+</code>
 那在my_mod的参数中就不需要再使用函数查找，Hiera会自动关联赋值。</p>
 
 <h2>在Hiera中指定Classes</h2>
@@ -300,22 +332,19 @@ my_mod::hash:
 <p>只需要在<code>site.pp</code>中加上一句<code>hiera_include("classes")</code>，</p>
 
 <p>在node1.yaml中再添加上classes。
-```yaml</p>
-
-<pre><code># node1.yaml
----
-classes:
-  - my_mod
-my_mod::string: str
-my_mod::array:
-  - 1
-  - 2
-  - 3
-my_mod::hash:
-   key: value
-</code></pre>
-
-<p>```
+<code>yaml
+    # node1.yaml
+    ---
+    classes:
+      - my_mod
+    my_mod::string: str
+    my_mod::array:
+      - 1
+      - 2
+      - 3
+    my_mod::hash:
+       key: value
+</code>
 那么以后节点的classes定义就可以完全通过</p>
 ]]></content>
   </entry>
@@ -356,62 +385,46 @@ my_mod::hash:
 
 <h4>juju-gui使用了<code>Node.js</code>和<code>sphinx</code>，所以需要先安装Node环境，<code>jshint</code>是可选的。</h4>
 
-<p>```sh</p>
-
-<pre><code>sudo add-apt-repository ppa:chris-lea/node.js
-sudo apt-get update
-sudo apt-get install nodejs npm
-sudo npm install -g jshint
-sudo apt-get install python-sphinx
+<pre><code class="sh   ">    sudo add-apt-repository ppa:chris-lea/node.js
+    sudo apt-get update
+    sudo apt-get install nodejs npm
+    sudo npm install -g jshint
+    sudo apt-get install python-sphinx
 </code></pre>
-
-<p>```</p>
 
 <h4>从<code>Lanunchpad</code>下载代码</h4>
 
-<p>```sh</p>
-
-<pre><code>sudo apt-get install bzr
-bzr launchpad-login yourid
-bzr branch lp:juju-gui 
-cd juju-gui
-make server
+<pre><code class="sh   ">    sudo apt-get install bzr
+    bzr launchpad-login yourid
+    bzr branch lp:juju-gui 
+    cd juju-gui
+    make server
 </code></pre>
 
-<p><code>``
-这就可以访问localhost:8888看到界面了。要能操作还需要一个Juju环境，根据文档说Juju默认版本里面没有api-server这功能，最好是使用</code>lp:~hazmat/juju/rapi-delta`这个分支。</p>
+<p>这就可以访问localhost:8888看到界面了。要能操作还需要一个Juju环境，根据文档说Juju默认版本里面没有api-server这功能，最好是使用<code>lp:~hazmat/juju/rapi-delta</code>这个分支。</p>
 
 <h4>安装Juju</h4>
 
-<p>```sh</p>
-
-<pre><code>cd ~
-sudo bzr branch lp:~hazmat/juju/rapi-delta
-cd rapi-delta
-python setup.py install
+<pre><code class="sh   ">    cd ~
+    sudo bzr branch lp:~hazmat/juju/rapi-delta
+    cd rapi-delta
+    python setup.py install
 </code></pre>
 
-<p><code>``
-然后修改用户目录下的</code>.juju/environments.yaml<code>，在最后添加</code> api-port: 8081 `，特别要注意缩进，不然启动都出错。</p>
+<p>然后修改用户目录下的<code>.juju/environments.yaml</code>，在最后添加<code>api-port: 8081</code>，特别要注意缩进，不然启动都出错。</p>
 
 <p>再到bin目录下启动Juju
-```sh</p>
-
-<pre><code>cd bin
-sudo ./juju bootstrap
-</code></pre>
-
-<p>```
+<code>sh   
+    cd bin
+    sudo ./juju bootstrap
+</code>
 看到 Starting api server 就说明配置成功了</p>
 
 <p>这时用netstat查看会发现8081端口并没有开始监听，需要先手动部署一个服务。
-```sh</p>
-
-<pre><code>sudo ./juju deploy mysql
-</code></pre>
-
-<p><code>``
-Juju默认是会到官方的</code>Charm Store`查找到mysql进行部署。</p>
+<code>sh   
+    sudo ./juju deploy mysql
+</code>
+Juju默认是会到官方的<code>Charm Store</code>查找到mysql进行部署。</p>
 
 <p>8081端口也会看到是listen状态了。</p>
 

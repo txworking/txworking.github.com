@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: WinMerge | Darcy Tang's Blog]]></title>
+  <title><![CDATA[Category: winmerge | Darcy Tang's Blog]]></title>
   <link href="http://txworking.github.io/blog/categories/winmerge/atom.xml" rel="self"/>
   <link href="http://txworking.github.io/"/>
-  <updated>2015-01-14T17:31:55+08:00</updated>
+  <updated>2015-01-14T18:06:49+08:00</updated>
   <id>http://txworking.github.io/</id>
   <author>
     <name><![CDATA[Darcy Tang]]></name>
@@ -24,15 +24,12 @@
 
 <h4>添加配置</h4>
 
-<p>```sh</p>
-
-<pre><code>git config --global diff.tool winmerge
-git config --global difftool.winmerge.cmd "C:/git-difftool.bat \"$LOCAL\" \"$REMOTE\""
-git config --global difftool.prompt false
+<pre><code class="sh   ">    git config --global diff.tool winmerge
+    git config --global difftool.winmerge.cmd "C:/git-difftool.bat \"$LOCAL\" \"$REMOTE\""
+    git config --global difftool.prompt false
 </code></pre>
 
-<p>```
-也可以手动在.gitconfig文件中添加如下配置</p>
+<p>也可以手动在.gitconfig文件中添加如下配置</p>
 
 <pre><code>[diff]
     tool = winmerge
@@ -55,15 +52,12 @@ git config --global difftool.prompt false
 
 <h4>添加配置</h4>
 
-<p>```sh</p>
-
-<pre><code>git config --global diff.tool winmerge
-git config --global difftool.winmerge.cmd "/C/git-difftool.bat \"\$LOCAL\" \"\$REMOTE\" "
-git config --global difftool.prompt false
+<pre><code class="sh   ">    git config --global diff.tool winmerge
+    git config --global difftool.winmerge.cmd "/C/git-difftool.bat \"\$LOCAL\" \"\$REMOTE\" "
+    git config --global difftool.prompt false
 </code></pre>
 
-<p>```
-也可以手动在.gitconfig文件中添加如下配置</p>
+<p>也可以手动在.gitconfig文件中添加如下配置</p>
 
 <pre><code>[diff]
     tool = winmerge

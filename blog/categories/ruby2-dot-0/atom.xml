@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Ruby2.0 | Darcy Tang's Blog]]></title>
+  <title><![CDATA[Category: ruby2.0 | Darcy Tang's Blog]]></title>
   <link href="http://txworking.github.io/blog/categories/ruby2-dot-0/atom.xml" rel="self"/>
   <link href="http://txworking.github.io/"/>
-  <updated>2015-01-14T17:31:55+08:00</updated>
+  <updated>2015-01-14T18:06:49+08:00</updated>
   <id>http://txworking.github.io/</id>
   <author>
     <name><![CDATA[Darcy Tang]]></name>
@@ -25,7 +25,7 @@
 <ul>
 <li><a href="http://rkh.im/ruby-2.1">Ruby2.1</a></li>
 <li><a href="http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil?utm_source=rubyweekly&amp;utm_medium=email">Ruby 2.0 by example</a></li>
-<li><a href="http://crypt.codemancers.com/posts/2013-04-16-profile-ruby-apps-dtrace-part1/?utm_source=rubyweekly&amp;utm_medium=email">Profile Ruby 2.0 apps using DTrace &ndash; Part 1</a></li>
+<li><a href="http://crypt.codemancers.com/posts/2013-04-16-profile-ruby-apps-dtrace-part1/?utm_source=rubyweekly&amp;utm_medium=email">Profile Ruby 2.0 apps using DTrace - Part 1</a></li>
 <li><a href="https://speakerdeck.com/shyouhei/whats-new-in-ruby-2-dot-0?utm_source=rubyweekly&amp;utm_medium=email">What&rsquo;s new in Ruby 2.0</a></li>
 <li><a href="http://globaldev.co.uk/2013/03/ruby-2-0-0-in-detail/">Ruby 2.0 in details</a></li>
 <li><a href="http://whitequark.org/blog/2013/04/14/unmentioned-features-of-ruby-2-dot-0/?utm_source=rubyweekly&amp;utm_medium=email">Unmentioned Features of Ruby 2.0</a></li>

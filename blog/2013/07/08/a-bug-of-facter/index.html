@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Facter在Windows上的一个小问题 - Darcy Tang's Blog</title>
+  <title>Facter在Windows上的一个小问题 - Darcy Tang&#8217;s Blog</title>
   <meta name="author" content="Darcy Tang">
 
   
   <meta name="description" content="最近在Windows上使用Puppet，总是遇到一个诡异的问题：在某些机器上无法获得ipaddress这个fact，直接使用facter命令行也不行，而且显得完全没有规律。 具体情况是： facter 在所有机器上可以获得ipaddress
-facter &mdash;puppet &hellip;">
+facter &ndash;puppet &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -25,7 +25,7 @@ facter &mdash;puppet &hellip;">
   <link href="/atom.xml" rel="alternate" title="Darcy Tang's Blog" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -37,7 +37,7 @@ facter &mdash;puppet &hellip;">
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">Darcy Tang's Blog</a></h1>
+  <h1><a href="/">Darcy Tang&#8217;s Blog</a></h1>
   
     <h2>记录一点编程心得</h2>
   
@@ -51,7 +51,7 @@ facter &mdash;puppet &hellip;">
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:txworking.github.io" />
+    <input type="hidden" name="sitesearch" value="txworking.github.io">
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -79,14 +79,7 @@ facter &mdash;puppet &hellip;">
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-07-08T23:37:00+08:00" pubdate data-updated="true">Jul 8<span>th</span>, 2013</time>
+<time class='entry-date' datetime='2013-07-08T23:37:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>11:37 pm</span></time>
         
       </p>
     
@@ -99,7 +92,7 @@ facter &mdash;puppet &hellip;">
 
 <ul>
 <li>facter 在所有机器上可以获得ipaddress</li>
-<li>facter &mdash;puppet 在部分机器上出现 <strong>invalid address</strong> 错误</li>
+<li>facter &ndash;puppet 在部分机器上出现 <strong>invalid address</strong> 错误</li>
 </ul>
 
 
@@ -153,13 +146,13 @@ facter &mdash;puppet &hellip;">
 
 <p>很奇怪自己以前在Ubuntu上怎么没遇到过这个错误，难道就鬼使神差的从没使用过带下划线的主机名？</p>
 
-<p>但是现在问题又来了，为什么facter都可以，facter &mdash;puppet就不行呢？</p>
+<p>但是现在问题又来了，为什么facter都可以，facter &ndash;puppet就不行呢？</p>
 
 <p>于是又研究了一遍facter的加载机制，在facter取值的部分折腾好久，最后发现和这部分没关系。是因为执行facter时没有加载<strong>facter/lib/facter/ipaddr.rb</strong>，ipaddr.rb中对<strong>IPSocket#getaddress</strong>的重写未生效，直接使用了Puppet自带Ruby中的socket.so中定义的<strong>IPSocket#getaddress</strong>，这个函数定义里面就没有对主机名的正则验证。</p>
 
 <p>想来Puppet也是为了做多平台支持，所以加了一个MonkeyPatch，对主机名做了验证。</p>
 
-<p>现在又绕回来了，&mdash;puppet 到底干了啥？</p>
+<p>现在又绕回来了，&ndash;puppet 到底干了啥？</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -207,7 +200,7 @@ facter &mdash;puppet &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>使用facter &mdash;puppet也就和正常一样了。</p>
+<p>使用facter &ndash;puppet也就和正常一样了。</p>
 </div>
 
 
@@ -223,19 +216,12 @@ facter &mdash;puppet &hellip;">
 
 
 
-
-
-
-
-  
-
-
-<time datetime="2013-07-08T23:37:00+08:00" pubdate data-updated="true">Jul 8<span>th</span>, 2013</time>
+<time class='entry-date' datetime='2013-07-08T23:37:00+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>11:37 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/devops/'>DevOps</a>, <a class='category' href='/blog/categories/facter/'>Facter</a>, <a class='category' href='/blog/categories/puppet/'>Puppet</a>
+    <a class='category' href='/blog/categories/devops/'>devops</a>, <a class='category' href='/blog/categories/facter/'>facter</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a>
   
 </span>
 
