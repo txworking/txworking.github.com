@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: elasticsearch | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/elasticsearch/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2015-01-14T17:31:55+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[使用Spark对ElasticSearch进行读取]]></title>
+    <link href="http://txworking.github.io/blog/2015/01/14/use-spark-with-elasticsearch/"/>
+    <updated>2015-01-14T17:22:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2015/01/14/use-spark-with-elasticsearch</id>
+    <content type="html"><![CDATA[<p>ElasticSearch for Apache Hadoop是ES提供的工具库，让Hadoop、Pig、Hive等可以比较原生的方式去和ES交互。
+目前提供了mapreduce、hive、pig、cascading、spark、storm的集成。</p>
+
+<p>下面以Spark为例，演示如何利用这个工具库去读取ES记录</p>
+
+<p><a href="http://www.elasticsearch.org/guide/en/elasticsearch/hadoop/current/spark.html">官方指南</a></p>
+
+<h2>安装</h2>
+
+<p>我使用的是spark-shell交互式环境进行的测试，所以需要手动下载elasticsearch-hadoop的jar包。
+在maven项目中可以通过添加
+```xml
+<dependency></p>
+
+<pre><code>&lt;groupId&gt;org.elasticsearch&lt;/groupId&gt;
+&lt;artifactId&gt;elasticsearch-hadoop&lt;/artifactId&gt;
+&lt;version&gt;2.1.0.Beta3&lt;/version&gt;
+</code></pre>
+
+<p></dependency>
+```</p>
+
+<p>这是包含了所有支持的jar包，也可以下载单独的spark支持包。</p>
+
+<p>对于Spark，还需要下载Kryo，来替代Spark自带的序列化包。</p>
+
+<p>最后elasticsearch-hadoop只支持Java 1.7以上版本，所以需要看看Java环境是否匹配。</p>
+
+<p>启动spark-shell时，使用以下命令加载特定jar包</p>
+
+<p><code>
+./bin/spark-shell -jars ./elasticsearch-hadoop-2.1.0.Beta3.jar;./kryo-3.0.0/jar
+</code></p>
+
+<p>指定序列化工具
+```
+import com.esotericsoftware.kryo.KryoSerializable
+import org.apache.spark.SparkConf</p>
+
+<p>val conf = new SparkConf()
+conf.set(&ldquo;spark.serializer&rdquo;, classOf[KryoSerializer].getName)
+```</p>
+
+<h2>读取</h2>
+
+<p>```
+import org.apache.hadoop.conf.Configuration
+import org.elasticsearch.hadoop.mr.EsInputFormat
+import org.apache.hadoop.io.Text
+import org.apache.hadoop.io.MapWritable</p>
+
+<p>val conf = new Configuration()                        <br/>
+conf.set(&ldquo;es.resource&rdquo;, &ldquo;highrisk/blacklist&rdquo;) //指定读取的索引名称         <br/>
+conf.set(&ldquo;es.nodes&rdquo;, &ldquo;127.0.0.1&rdquo;)
+conf.set(&ldquo;es.query&rdquo;, &ldquo;?q=me*&rdquo;)  //使用query字符串对结果进行过滤                      <br/>
+val esRDD = sc.newHadoopRDD(conf, classOf[EsInputFormat[Text, MapWritable]],</p>
+
+<pre><code>                              classOf[Text], classOf[MapWritable]))
+</code></pre>
+
+<p>val docCount = esRDD.count();
+```
+读取出来的记录为key-value形式，key为Text类型，value为MapWritable类型。
+接下来就可以利用Spark对esRDD进行各种map、flatmap、reduceByKey的操作了。</p>
+
+<h2>写入</h2>
+
+<p>参考<a href="http://chenlinux.com/2014/09/04/spark-to-elasticsearch/">用Spark处理数据导入ElasticSearch</a>
+```
+import org.apache.spark.SparkConf
+import org.elasticsearch.spark._</p>
+
+<p>val conf = new SparkConf()
+conf.set(&ldquo;es.index.auto.create&rdquo;, &ldquo;true&rdquo;)
+conf.set(&ldquo;es.nodes&rdquo;, &ldquo;127.0.0.1&rdquo;)</p>
+
+<p>val numbers = Map(&ldquo;one&rdquo; &ndash;> 1, &ldquo;two&rdquo; &ndash;> 2, &ldquo;three&rdquo; &ndash;> 3)
+val airports = Map(&ldquo;OTP&rdquo; &ndash;> &ldquo;Otopeni&rdquo;, &ldquo;SFO&rdquo; &ndash;> &ldquo;San Fran&rdquo;)
+sc.makeRDD(Seq(numbers, airports)).saveToEs(&ldquo;spark/docs&rdquo;)</p>
+
+<p>```</p>
+
+<p>目前elasticsearch-hadoop对Spark的支持还比较简单，想要对记录进行过滤就只有通过query字符串或者全部读取后在Spark中过滤，对规模比较大的索引或者复杂的过滤查询不友好。</p>
+
+<h2>配置</h2>
+
+<p>主要的配置
+* es.resource
+* es.resource.read    默认与es.resource相同
+* es.resource.write   默认与es.resource相同
+* es.nodes 默认为localhost
+* es.port  默认为9200
+* es.query 默认为none</p>
+
+<p>完整的请查看<a href="http://www.elasticsearch.org/guide/en/elasticsearch/hadoop/current/configuration.html">Configuration</a></p>
+]]></content>
+  </entry>
+  
+</feed>

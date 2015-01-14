@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>AngularJS+SpringMVC构建应用 - Darcy Tang's Blog</title>
+  <meta name="author" content="Darcy Tang">
+
+  
+  <meta name="description" content="利用AngularJS和SpringMVC搭建一个简单的应用，AngularJS负责前端，SpringMVC作为后端提供REST API。 SpringMVC的使用 SpringMVC中可以很方便的使用@RequestMapping注解提供REST API。 最基本的使用代码如下所示： 1
+2
+3 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://txworking.github.io/blog/2014/01/02/angular-plus-springmvc">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Darcy Tang's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Darcy Tang's Blog</a></h1>
+  
+    <h2>记录一点编程心得</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:txworking.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">AngularJS+SpringMVC构建应用</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-02T13:33:00+08:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>利用AngularJS和SpringMVC搭建一个简单的应用，AngularJS负责前端，SpringMVC作为后端提供REST API。</p>
+
+<h2>SpringMVC的使用</h2>
+
+<p>SpringMVC中可以很方便的使用<code>@RequestMapping</code>注解提供REST API。</p>
+
+<p>最基本的使用代码如下所示：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>@Controller
+</span><span class='line'>@RequestMapping(value = "/hello")
+</span><span class='line'>public class MyController {
+</span><span class='line'>
+</span><span class='line'>  @RequestMapping(method=RequestMethod.GET)
+</span><span class='line'>  @ResponseBody
+</span><span class='line'>  public String getRoot(){
+</span><span class='line'>
+</span><span class='line'>    return "Hello World";
+</span><span class='line'>
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>  @RequestMapping(value="/{path}", method=RequestMethod.GET)
+</span><span class='line'>  @ResponseBody
+</span><span class='line'>  public String getValue(@PathVariable String path){
+</span><span class='line'>    return "Path is " + path;
+</span><span class='line'>  }
+</span><span class='line'>
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使用<code>@Controller</code>注解指定当前类为SpringMVC的一个controller，使用<code>@RequestMapping</code>表明此controller会处理所有以<code>/hello</code>开头的URL。</p>
+
+<p><code>@RequestMapping</code>最常用的两个参数就是<code>value</code>和<code>method</code>，分别指定了拦截的URL和请求方法。</p>
+
+<p>MyController类中的两个方法还可以分别再使用<code>@RequestMapping(value)</code>再继续指定处理以hello为前缀的URL。例如<code>@RequestMapping(value="/{path}")</code>，可处理类似<code>/hello/path</code>的URL，并结合<code>@PathVariable</code>将path作为URL参数获取。</p>
+
+<p>这个小Demo只是将SpringMVC作为后台REST API的提供方，也就是说只使用了MVC中的Controller和Model，View就交给AngularJS，所以使用<code>@ResponseBody</code>直接将方法返回值作为响应，不经过View的渲染啥的。</p>
+
+<h2>简单的AngularJS应用</h2>
+
+<p><a href="http://angularjs.org">AngularJS</a>是Google推出的前端MVC框架，也有完整的Controller、View、Model等概念，而且上手非常简单，熟悉几个html标签就能开始使用了。</p>
+
+<p>建立AngularJS项目可以从GitHub上clone <a href="https://github.com/angular/angular-seed">angular-seed</a>。</p>
+
+<p>核心的代码都在app目录中，其典型结构如下：</p>
+
+<ul>
+<li><code>css</code> 存放css文件</li>
+<li><code>img</code> 存放图片</li>
+<li><code>js</code> 存放js代码，我们自己的代码基本都在这儿，一般按照功能和层次划分为这样几个文件：app.js, controller.js, services.js, filters.js, directives.js, animations.js。从名字就可以看出分别是在对这些概念进行定义和使用</li>
+<li><code>lib</code> 存放js库</li>
+<li><code>partials</code> 存放html模板，angularjs发送到客户端的就是这些html模板</li>
+</ul>
+
+
+<h3>基本概念</h3>
+
+<p>demo中涉及的几个概念：</p>
+
+<ul>
+<li>app</li>
+<li>controller</li>
+<li>service</li>
+<li>router</li>
+<li>resource</li>
+<li>view</li>
+<li>scope</li>
+</ul>
+
+
+<p>demo的基本功能就是在html模板中新建一个app和两个controller，然后自定义一个service使用REST API和SpringMVC后端交互操作hello这个resource，在controller中调用此service，html模板间的跳转通过router定义。</p>
+
+<p><img src="http://docs.angularjs.org/img/guide/concepts-module-service.png" alt="Alt text" /></p>
+
+<p>借用AngularJS官方的一张图来说明下关系：</p>
+
+<p>在template中声明app，app包含controller，controller调用service，service操作resource。</p>
+
+<p>层次和调用关系还是很清晰的，和Spring也差不多。</p>
+
+<p>template、app、service、controller的具体代码如下</p>
+
+<h4>template</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!doctype html&gt;
+</span><span class='line'>&lt;html lang="en" ng-app="myApp"&gt;
+</span><span class='line'>&lt;body&gt;
+</span><span class='line'>  &lt;div ng-view&gt;&lt;/div&gt;
+</span><span class='line'>&lt;/body&gt;
+</span><span class='line'>&lt;/html&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>app</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>'use strict';
+</span><span class='line'>
+</span><span class='line'>// 新建myApp，并声明会使用ngRoute、myApp.services、myApp.controllers三个module
+</span><span class='line'>// AngularJS会实现module的自动注入
+</span><span class='line'>angular.module('myApp', [
+</span><span class='line'>  'ngRoute',
+</span><span class='line'>  'myApp.services',
+</span><span class='line'>  'myApp.controllers'
+</span><span class='line'>]).
+</span><span class='line'>config(['$routeProvider', function($routeProvider) { // 配置app对应的URL路由，请求此URL时返回的view template和template对应的controller
+</span><span class='line'>  $routeProvider.when('/hello', {templateUrl: 'partials/list.html', controller: 'ListCtrl'});
+</span><span class='line'>  $routeProvider.when('/hello/:path', {templateUrl: 'partials/detail.html', controller: 'DetailCtrl'});
+</span><span class='line'>  $routeProvider.otherwise({redirectTo: '/hello'});
+</span><span class='line'>}]);
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>service</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>'use strict';
+</span><span class='line'>
+</span><span class='line'>// 新建myService，并声明会使用ngResource这个module
+</span><span class='line'>var myService = angular.module('myApp.services', ['ngResource']).
+</span><span class='line'>  value('version', '0.1');
+</span><span class='line'>// 新建Hello这个资源，并指定资源的访问路径和访问方法
+</span><span class='line'>myService.factory('Hello', ['$resource',
+</span><span class='line'>  function($resource){
+</span><span class='line'>    return $resource('api/hello/:path', {}, {
+</span><span class='line'>      list: {method:'GET', isArray:true}
+</span><span class='line'>    });
+</span><span class='line'>  }]);
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>controller</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>'use strict';
+</span><span class='line'>
+</span><span class='line'>// 新建ListCtrl和DetailCtrl两个controller
+</span><span class='line'>angular.module('myApp.controllers', []).
+</span><span class='line'>  controller('ListCtrl', ['$scope', 'Hello', // 声明要使用Hello
+</span><span class='line'>   function($scope, Hello) {
+</span><span class='line'>    $scope.hello = Hello.list();             // 调用Hello服务的list方法，赋值给模板中的hello元素
+</span><span class='line'>  }])
+</span><span class='line'>  .controller('DetailCtrl', ['$scope', '$routeParams', 'Hello',
+</span><span class='line'>   function($scope, $routeParams, Hello) {
+</span><span class='line'>    $scope.hello = Hello.get({path:$routeParams.path}, function(hello){
+</span><span class='line'>      $scope.detail = hello.detail;
+</span><span class='line'>    });
+</span><span class='line'>  }]);
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;div class="container-fluid"&gt;
+</span><span class='line'>  &lt;div class="row-fluid"&gt;
+</span><span class='line'>    &lt;div class="span10"&gt;
+</span><span class='line'>      &lt;!--Body content--&gt;
+</span><span class='line'>          &lt;p&gt;&lt;/p&gt;
+</span><span class='line'>    &lt;/div&gt;
+</span><span class='line'>  &lt;/div&gt;
+</span><span class='line'>&lt;/div&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Darcy Tang</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-02T13:33:00+08:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/angular/'>angular</a>, <a class='category' href='/blog/categories/springmvc/'>springmvc</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://txworking.github.io/blog/2014/01/02/angular-plus-springmvc/" data-via="" data-counturl="http://txworking.github.io/blog/2014/01/02/angular-plus-springmvc/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/12/02/ruby2-dot-0/" title="Previous Post: Ruby和Ruby2.0相关文章汇总">&laquo; Ruby和Ruby2.0相关文章汇总</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/01/14/use-spark-with-elasticsearch/" title="Next Post: 使用Spark对ElasticSearch进行读取">使用Spark对ElasticSearch进行读取 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/01/14/use-spark-with-elasticsearch/">使用Spark对ElasticSearch进行读取</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/02/angular-plus-springmvc/">AngularJS+SpringMVC构建应用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/02/ruby2-dot-0/">Ruby和Ruby2.0相关文章汇总</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/17/check-logfiles/">在Nagios中实时监控日志</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/08/a-bug-of-facter/">Facter在Windows上的一个小问题</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Darcy Tang -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'darcytang';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://txworking.github.io/blog/2014/01/02/angular-plus-springmvc/';
+        var disqus_url = 'http://txworking.github.io/blog/2014/01/02/angular-plus-springmvc/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

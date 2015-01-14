@@ -1,0 +1,544 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Razor的架构研究 - Darcy Tang's Blog</title>
+  <meta name="author" content="Darcy Tang">
+
+  
+  <meta name="description" content="Razor对iPXE的使用 iPXE是Razor主要依赖的技术，配合iPXE就能实现服务器节点固件和Razor的交互。
+iPXE是开源的网络启动固件，提供了全部的PXE功能，而且加入更多的高级特性，
+比如：支持从HTTP服务器、iSCSI SAN、FC SAN、AoE SAN、无线网络、广域网、 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://txworking.github.io/blog/2013/01/02/razor-architecture">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Darcy Tang's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Darcy Tang's Blog</a></h1>
+  
+    <h2>记录一点编程心得</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:txworking.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Razor的架构研究</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-02T14:05:00+08:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/my/razor_mk.png"></p>
+
+<h2>Razor对iPXE的使用</h2>
+
+<p>iPXE是Razor主要依赖的技术，配合iPXE就能实现服务器节点固件和Razor的交互。
+iPXE是开源的网络启动固件，提供了全部的PXE功能，而且加入更多的高级特性，
+比如：支持从HTTP服务器、iSCSI SAN、FC SAN、AoE SAN、无线网络、广域网、Infiniband网络启动；通过脚本控制boot流程。</p>
+
+<p>Razor主要利用HTTP服务器启动和脚本控制两个特性。</p>
+
+<ul>
+<li>部分网卡需要特殊配置以支持通过iPXE安装Razor-Microkernel</li>
+</ul>
+
+
+<h3>服务器启动时</h3>
+
+<p>搭建iPXE服务需要DHCP服务和ftp服务，具体过程就不详述了。
+服务器在进行网络启动时，iPXE会根据配置提供两种boot方式。下面的代码清单是iPXE的默认配置。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>default menu.c32
+</span><span class='line'>prompt 0
+</span><span class='line'>menu title Razor Boot Menu
+</span><span class='line'>
+</span><span class='line'>timeout 50
+</span><span class='line'>f1 help.txt
+</span><span class='line'>f2 version.txt
+</span><span class='line'>
+</span><span class='line'>label razor-boot
+</span><span class='line'>  menu label Automatic Razor Node Boot
+</span><span class='line'>  kernel ipxe.lkrn
+</span><span class='line'>  append initrd=razor.ipxe
+</span><span class='line'>
+</span><span class='line'>label boot-else
+</span><span class='line'>  menu label Bypass Razor
+</span><span class='line'>  localboot 1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可以看到，使用razor-boot方式会下载tftp服务器上的ipxe.lkrn和razor.ipxe脚本文件进行启动，如下图所示</p>
+
+<p><img src="/images/my/ipxe.png"></p>
+
+<p>服务器会根据razor.ipxe脚本文件向Razor Server发起http请求，从这里就开始进入Razor的控制流程。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!ipxe
+</span><span class='line'>
+</span><span class='line'>isset ${net0/mac} && dhcp net0 ||
+</span><span class='line'>isset ${net1/mac} && dhcp net1 ||
+</span><span class='line'>isset ${net2/mac} && dhcp net2 ||
+</span><span class='line'>isset ${net3/mac} && dhcp net3 ||
+</span><span class='line'>isset ${net4/mac} && dhcp net4 ||
+</span><span class='line'>isset ${net5/mac} && dhcp net5 ||
+</span><span class='line'>isset ${net6/mac} && dhcp net6 ||
+</span><span class='line'>isset ${net7/mac} && dhcp net7 ||
+</span><span class='line'>
+</span><span class='line'>chain http://168.1.43.39:8026/razor/api/boot?hw_id=${net0/mac}_${net1/mac}_${net2/mac}_${net3/mac}_$
+</span><span class='line'>{net4/mac}_${net5/mac}_${net6/mac}_${net7/mac} || goto error
+</span><span class='line'>
+</span><span class='line'>:error
+</span><span class='line'>sleep 15
+</span><span class='line'>reboot</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Razor最终会返回http应答，其中包含可执行iPXE脚本，告诉服务器按何种方式启动。
+比如，服务器是首次启动，则会告诉服务器下载Razor-Microkernel并启动。
+下面的代码清单说明Razor返回的执行脚本内容，其中指明了kernel和initrd的下载路径</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">get_boot_script</span><span class="p">(</span><span class="n">default_mk</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">image_svc_uri</span> <span class="o">=</span> <span class="s2">&quot;http://</span><span class="si">#{</span><span class="vi">@config</span><span class="o">.</span><span class="n">image_svc_host</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="vi">@config</span><span class="o">.</span><span class="n">image_svc_port</span><span class="si">}</span><span class="s2">/razor/image/mk/</span><span class="si">#{</span><span class="n">default_mk</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">rz_mk_boot_debug_level</span> <span class="o">=</span> <span class="vi">@config</span><span class="o">.</span><span class="n">rz_mk_boot_debug_level</span>
+</span><span class='line'>        <span class="c1"># only allow values of &#39;quiet&#39; or &#39;debug&#39; for this parameter; if it&#39;s anything else set it</span>
+</span><span class='line'>        <span class="c1"># to an empty string</span>
+</span><span class='line'>        <span class="n">rz_mk_boot_debug_level</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">unless</span> <span class="o">[</span><span class="s1">&#39;quiet&#39;</span><span class="p">,</span><span class="s1">&#39;debug&#39;</span><span class="o">].</span><span class="n">include?</span> <span class="n">rz_mk_boot_debug_level</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;#!ipxe</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;kernel </span><span class="si">#{</span><span class="n">image_svc_uri</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">default_mk</span><span class="o">.</span><span class="n">kernel</span><span class="si">}</span><span class="s2"> maxcpus=1&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot; </span><span class="si">#{</span><span class="n">rz_mk_boot_debug_level</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">rz_mk_boot_debug_level</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">rz_mk_boot_debug_level</span><span class="o">.</span><span class="n">empty?</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot; || goto error</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;initrd </span><span class="si">#{</span><span class="n">image_svc_uri</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">default_mk</span><span class="o">.</span><span class="n">initrd</span><span class="si">}</span><span class="s2"> || goto error</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;boot || goto error</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="se">\n\n\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;:error</span><span class="se">\n</span><span class="s2">echo ERROR, will reboot in </span><span class="si">#{</span><span class="vi">@config</span><span class="o">.</span><span class="n">mk_checkin_interval</span><span class="si">}</span><span class="se">\n</span><span class="s2">sleep </span><span class="si">#{</span><span class="vi">@config</span><span class="o">.</span><span class="n">mk_checkin_interval</span><span class="si">}</span><span class="se">\n</span><span class="s2">reboot</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下图是Razor Server的日志，可以看到hw_id为043a的节点在通过iPXE发起boot请求后，Server返回了Razor-Microkernl的地址。</p>
+
+<p><img src="/images/my/boot.png"></p>
+
+<p>对于服务器，在收到http应答后会执行脚本到指定地址下载Razor-Microkernel并启动，下图为服务器控制台输出</p>
+
+<p><img src="/images/my/mk.png"></p>
+
+<h3>OS安装过程中</h3>
+
+<p>在iPXE发起boot的http请求时，如果Razor Server发现node已经和policy进行了绑定，则返回http应答中包含的执行脚本会指明OS镜像的路径。
+例如，安装Ubuntu时，返回的iPXE脚本如下代码清单所示，此代码清单为Ubuntu ModelTemplate的一部分</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!ipxe</span>
+</span><span class='line'><span class="n">echo</span> <span class="no">Razor</span> <span class="o">&lt;</span><span class="sx">%= @label %&gt; model boot_call</span>
+</span><span class='line'><span class="sx">echo Installation node UUID : &lt;%=</span> <span class="n">node</span><span class="o">.</span><span class="n">uuid</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">echo Installation image UUID: &lt;%= @image_uuid %&gt;</span>
+</span><span class='line'><span class="n">echo</span> <span class="no">Active</span> <span class="no">Model</span> <span class="n">node</span> <span class="ss">state</span><span class="p">:</span> <span class="o">&lt;</span><span class="sx">%= @current_state %&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">sleep 3</span>
+</span><span class='line'><span class="sx">kernel &lt;%=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">image_svc_uri</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="vi">@image_uuid</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">kernel_path</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">kernel_args</span><span class="p">(</span><span class="n">policy_uuid</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="sx">%&gt; || goto error</span>
+</span><span class='line'><span class="sx">initrd &lt;%= &quot;</span><span class="si">#{</span><span class="n">image_svc_uri</span><span class="si">}</span><span class="sx">/</span><span class="si">#{</span><span class="vi">@image_uuid</span><span class="si">}</span><span class="sx">/</span><span class="si">#{</span><span class="n">initrd_path</span><span class="si">}</span><span class="sx">&quot; %&gt;</span> <span class="o">||</span> <span class="n">goto</span> <span class="n">error</span>
+</span><span class='line'><span class="n">boot</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如下图所示，iPXE会到指定路径下载Ubuntu安装镜像进行启动</p>
+
+<p><img src="/images/my/os.png"></p>
+
+<h2>OS安装过程详解</h2>
+
+<h3>Razor-Microkernel发现Server方法</h3>
+
+<p>MK在启动时会检测Server的IP地址并主动进行checkin操作，检测方式有两种：</p>
+
+<ol>
+<li>在/proc/cmdline 文件中查找razor.ip或razor.server值作为Server的IP地址</li>
+<li>使用/etc/resolv.conf中的DNS服务器IP地址作为Server的IP地址</li>
+</ol>
+
+
+<p>具体代码如下</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">discover_rz_server_ip</span>
+</span><span class='line'>      <span class="n">discover_by_pxe</span> <span class="ow">or</span> <span class="n">discover_by_dns</span> <span class="ow">or</span> <span class="n">discover_by_dhcp</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">discover_by_pxe</span>
+</span><span class='line'>      <span class="k">begin</span>
+</span><span class='line'>        <span class="n">contents</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;/proc/cmdline&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span> <span class="p">}</span>
+</span><span class='line'>        <span class="n">server_ip</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="vg">$1</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sr">/razor.ip=(.*)/</span><span class="p">)}</span><span class="o">.</span><span class="n">compact</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">server_ip</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span>
+</span><span class='line'>          <span class="k">return</span> <span class="n">server_ip</span><span class="o">.</span><span class="n">join</span>
+</span><span class='line'>        <span class="k">else</span>
+</span><span class='line'>          <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>      <span class="k">rescue</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'> <span class="k">def</span> <span class="nf">discover_by_dns</span>
+</span><span class='line'>      <span class="k">begin</span>
+</span><span class='line'>        <span class="n">contents</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;/proc/cmdline&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span> <span class="p">}</span>
+</span><span class='line'>        <span class="n">server_name</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="vg">$1</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sr">/razor.server=(.*)/</span><span class="p">)}</span><span class="o">.</span><span class="n">compact</span>
+</span><span class='line'>        <span class="n">server_name</span> <span class="o">=</span> <span class="n">server_name</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">?</span> <span class="n">server_name</span><span class="o">.</span><span class="n">join</span> <span class="p">:</span> <span class="s1">&#39;razor&#39;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nb">require</span> <span class="s1">&#39;socket&#39;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="no">TCPSocket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="n">server_name</span><span class="p">)</span><span class="o">[</span><span class="mi">3</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">].</span><span class="n">first</span> <span class="o">||</span> <span class="kp">false</span>
+</span><span class='line'>      <span class="k">rescue</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">discover_by_dhcp</span>
+</span><span class='line'>      <span class="n">udhcp_file</span> <span class="o">=</span> <span class="s2">&quot;/tmp/nextServerIP.addr&quot;</span>
+</span><span class='line'>      <span class="k">begin</span>
+</span><span class='line'>        <span class="n">contents</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">udhcp_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span> <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">contents</span><span class="o">.</span><span class="n">strip</span>
+</span><span class='line'>      <span class="k">rescue</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Razor的程序结构</h2>
+
+<p>Razor的主要程序结构如下图所示：</p>
+
+<p><img src="/images/my/node_boot.png"></p>
+
+<p>典型流程：</p>
+
+<ul>
+<li>node通过REST调用<a href="http://serverIP:8026/razor/api/node/checkin?json_hash=">http://serverIP:8026/razor/api/node/checkin?json_hash=</a>&lsquo;{hw_id=xxxxx,last_state=xxxx}</li>
+<li>Node.js服务器解析REST请求，并执行shell命令：razor -w node checkin &lsquo;{hw_id=xxxxx,last_state=xxxx}</li>
+<li>slice负责解析此shell命令，并调用相应方法返回应答</li>
+</ul>
+
+
+<h2>Razor中Policy的绑定过程</h2>
+
+<p>先解释一下概念</p>
+
+<ul>
+<li>Node：能够被Razor管理到的一台服务器就是一个Node，可以是虚拟化或物理机</li>
+<li>Model：Razor中将一种OS类型的安装方式抽象为一个model，比如针对Ubuntu Precise的安装就会有一个precise的model存在，其中详细定义了OS的安装配置、安装过程、安装中的状态变化、安装中Node和Razor的交互、安装后的处理等等。model是和OS类型紧密相关的。</li>
+<li>Policy：Razor根据Policy将Node和Model联系在一起。Policy与Model为1对1，与Node为1对N关系。Policy的匹配规则类似防火墙的过滤规则，具有先后优先级。优先级高的Policy会先生效，并将Model和Node绑定。</li>
+<li>Active_model：Active_model是一个Policy对象，可以理解为生效的Policy。Razor发现某个Node符合一条Policy规则，则生成一个Policy对象，将状态设定为active，指明绑定的Node。之后OS的安装过程，Node都是根据这个Active_model定义的流程和规则在进行操作。</li>
+</ul>
+
+
+<p><img src="/images/my/node_binding.png"></p>
+
+<p>current_state与返回命令的映射表如下图：</p>
+
+<p><img src="/images/my/state.png"></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Darcy Tang</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-02T14:05:00+08:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/razor/'>Razor</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://txworking.github.io/blog/2013/01/02/razor-architecture/" data-via="" data-counturl="http://txworking.github.io/blog/2013/01/02/razor-architecture/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/11/using-winmerge-with-git/" title="Previous Post: 在Windows7的Git环境中使用WinMerge作为difftool">&laquo; 在Windows7的Git环境中使用WinMerge作为difftool</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/07/staring-an-open-source-project/" title="Next Post: Staring An Open-Source Project">Staring An Open-Source Project &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/01/14/use-spark-with-elasticsearch/">使用Spark对ElasticSearch进行读取</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/02/angular-plus-springmvc/">AngularJS+SpringMVC构建应用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/02/ruby2-dot-0/">Ruby和Ruby2.0相关文章汇总</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/17/check-logfiles/">在Nagios中实时监控日志</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/08/a-bug-of-facter/">Facter在Windows上的一个小问题</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Darcy Tang -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'darcytang';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://txworking.github.io/blog/2013/01/02/razor-architecture/';
+        var disqus_url = 'http://txworking.github.io/blog/2013/01/02/razor-architecture/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

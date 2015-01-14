@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Nagios | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/nagios/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2015-01-14T17:31:55+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在Nagios中实时监控日志]]></title>
+    <link href="http://txworking.github.io/blog/2013/08/17/check-logfiles/"/>
+    <updated>2013-08-17T17:30:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/08/17/check-logfiles</id>
+    <content type="html"><![CDATA[<p>最近需要利用Nagios对Linux和Windows上的某个日志文件进行实时的监控，虽然这个活由Nagios来做不太合适，但最后
+还是记录一下找到的解决方案。</p>
+
+<h2>Windows</h2>
+
+<p>在Windows系统上使用NSClient++自带了对系统日志和日志文件的实时监控功能，只需要简单的配置下就可以使用了。当然还需要在服务器
+上运行NSCA服务才能接收客户端主动推送的数据。</p>
+
+<p>以下为开启对Windows系统日志监控的客户端配置，更详细配置可以参考<a href="http://blog.medin.name/blog/2012/03/20/real-time-event-log-monitoring-with-nsclient/">Real time event-log monitoring with NSClient++</a>和NSClient++的<a href="http://www.nsclient.org">文档</a></p>
+
+<pre><code>[/modules]
+CheckLogFile = enabled
+CheckEventLog = enabled
+
+[/settings/NSCA/client]
+hostname=&lt;nagios_hostname&gt; # 需要和服务器端设定的nagios host一致
+
+[/settings/NSCA/client/targets/default]
+address=168.1.194.1  
+password=nagios   # password和encryption配置需要和服务器端的nsca配置一致
+encryption=1
+
+[/settings/eventlog/real-time]
+enabled = true
+
+[/settings/eventlog/real-time/filters/run_log]  # run_log为nagios service名称
+filter=type in ( 'warning', 'error') AND source = 'Puppet' 
+target=NSCA
+severity=OK
+syntax=%type%: %strings%
+</code></pre>
+
+<h2>Linux</h2>
+
+<h3>配合incron</h3>
+
+<p>在nagios exchange里找到了<a href="labs.consol.de/nagios/check_logfiles/">check_logfiles</a>这个插件，配合<a href="http://inotify.aiken.cz/?section=incron&amp;page=about&amp;lang=en">incron</a>就可以实现实时的日志监控了。</p>
+
+<p>incron是类似cron的工具，cron是基于时间，incron则是基于文件事件，底层使用了inotify系统调用。</p>
+
+<p>以下是check_logfiles的配置文件，主要功能就在<code>supersmartscript</code>，意思就是在每找到一行新的日志信息时执行script指定的perl脚本。
+类似的配置有<code>supersmartpostscript</code>，在一次检查完后执行perl脚本。
+在脚本中也支持部分变量的调用，在$MACROS中定义即可在script中使用。
+在这段配置里script部分调用系统命令，执行<code>send_nsca</code>发送监控信息到服务器。</p>
+
+<pre><code>$scriptpath = '/usr/bin/nagios/libexec:/usr/local/nagios/bin';
+$MACROS = {
+    CL_NAGIOS_HOST_ADDRESS =&gt; '%server_ip%',
+    CL_NSCA_HOSTNAME =&gt; '%node_name%',
+    CL_NSCA_PORT =&gt; 5667,
+    CL_NSCA_CONFIG_FILE =&gt; '%send_nsca.cfg%'
+};
+@searches = (
+  {
+    options =&gt; 'supersmartscript,noprotocol',
+    tag =&gt; 'puppet',
+    logfile =&gt; '%puppet_run_log%',
+    criticalpatterns =&gt; [
+      'Tongtech',
+      'err'
+    ],
+    script =&gt; sub {
+      (my $line = "$ENV{CHECK_LOGFILES_NSCA_HOSTNAME}\t$ENV{CHECK_LOGFILES_SERVICEDESC}\t$ENV{CHECK_LOGFILES_SERVICESTATEID}\t$ENV{CHECK_LOGFILES_SERVICEOUTPUT}");
+      #system("echo '$line'");
+      system("echo '$line'|%send_nsca% -H $ENV{CHECK_LOGFILES_NAGIOS_HOST_ADDRESS} -c $ENV{CHECK_LOGFILES_NSCA_CONFIG_FILE} " );
+    }
+  },
+);
+</code></pre>
+
+<p>按照常规的<code>./configure &amp;&amp; make &amp;&amp; make install</code>安装好incron，使用incrontab -e 命令编辑，基本的格式为</p>
+
+<pre><code>&lt;path-to-puppet_log&gt; MODIFY &lt;path-to-check_logfiles&gt; -f &lt;配置文件路径&gt; --rununique
+# &lt;path&gt; &lt;mask&gt; &lt;command&gt;
+# path - 监控的文件
+# mask - 监控的文件事件，MODIFY表示文件有改变
+# command - 监控到指定文件的指定事件后执行的命令
+</code></pre>
+
+<p>具体的使用可以参考此文章<a href="http://wlx.westgis.ac.cn/879/">incron的使用</a></p>
+
+<p>这样利用incron监控puppet的日志文件，当文件有改变时执行check_logfiles检查，就会发送日志信息到服务器。
+注意&mdash;rununique选项，如果不加此选项，文件改变可能会触发多次检查，check_logfiles就会发送重复的信息。</p>
+
+<h3>只使用check_logfiles</h3>
+
+<p>check_logfiles支持以daemon方式运行，所以可以指定较短的检查周期，实现实时发送。</p>
+
+<p>之前的check_logfiles配置不变，只是不使用incron执行命令，直接在shell中执行</p>
+
+<pre><code>&lt;path-to-check_logfiles&gt; -f &lt;配置文件路径&gt; --rununique --daemon 1
+</code></pre>
+
+<p>check_logfiles就会变成守护进程，每隔一秒检查一次日志文件，如果有新的日志写入，就发送到服务器。</p>
+]]></content>
+  </entry>
+  
+</feed>

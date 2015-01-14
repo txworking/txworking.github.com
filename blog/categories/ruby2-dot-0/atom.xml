@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ruby2.0 | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/ruby2-dot-0/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2015-01-14T17:31:55+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby和Ruby2.0相关文章汇总]]></title>
+    <link href="http://txworking.github.io/blog/2013/12/02/ruby2-dot-0/"/>
+    <updated>2013-12-02T11:31:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/12/02/ruby2-dot-0</id>
+    <content type="html"><![CDATA[<p>记录一些Ruby和Ruby2.0的文章</p>
+
+<h2>Ruby2.0相关</h2>
+
+<ul>
+<li><a href="http://rkh.im/ruby-2.1">Ruby2.1</a></li>
+<li><a href="http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil?utm_source=rubyweekly&amp;utm_medium=email">Ruby 2.0 by example</a></li>
+<li><a href="http://crypt.codemancers.com/posts/2013-04-16-profile-ruby-apps-dtrace-part1/?utm_source=rubyweekly&amp;utm_medium=email">Profile Ruby 2.0 apps using DTrace &ndash; Part 1</a></li>
+<li><a href="https://speakerdeck.com/shyouhei/whats-new-in-ruby-2-dot-0?utm_source=rubyweekly&amp;utm_medium=email">What&rsquo;s new in Ruby 2.0</a></li>
+<li><a href="http://globaldev.co.uk/2013/03/ruby-2-0-0-in-detail/">Ruby 2.0 in details</a></li>
+<li><a href="http://whitequark.org/blog/2013/04/14/unmentioned-features-of-ruby-2-dot-0/?utm_source=rubyweekly&amp;utm_medium=email">Unmentioned Features of Ruby 2.0</a></li>
+<li><a href="http://tech.pro/tutorial/1149/understanding-method-lookup-in-ruby-20">Understand method lookup in Ruby 2.0</a> <a href="http://www.oschina.net/translate/understanding-method-lookup-in-ruby-20">译文</a></li>
+<li><a href="http://www.confreaks.com/videos/1272-rubyconf2012-implementation-details-of-ruby-2-0-vm">Implementation Details of Ruby2.0 VM</a></li>
+</ul>
+
+
+<h2>Ruby相关</h2>
+
+<ul>
+<li><a href="http://www.jstorimer.com/blogs/workingwithcode/8085491-nobody-understands-the-gil?utm_source=rubyweekly&amp;utm_medium=email">Nobody understands the GIL</a></li>
+<li><a href="http://www.sitepoint.com/series/comparing-ruby-background-processing-libraries/">Comparing Ruby Background Processing Libraries/</a></li>
+<li><a href="http://www.ibm.com/developerworks/cn/opensource/os-cn-rubysbl/">理解Ruby Symbol</a></li>
+<li><a href="http://patshaughnessy.net/2012/6/29/how-ruby-executes-your-code">How Ruby Executy Your Code</a></li>
+<li><a href="http://globaldev.co.uk/2013/09/ruby-tips-part-1/">Ruby Tips Part 1</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

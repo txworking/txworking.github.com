@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: angular | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/angular/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2015-01-14T17:31:55+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[AngularJS+SpringMVC构建应用]]></title>
+    <link href="http://txworking.github.io/blog/2014/01/02/angular-plus-springmvc/"/>
+    <updated>2014-01-02T13:33:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2014/01/02/angular-plus-springmvc</id>
+    <content type="html"><![CDATA[<p>利用AngularJS和SpringMVC搭建一个简单的应用，AngularJS负责前端，SpringMVC作为后端提供REST API。</p>
+
+<h2>SpringMVC的使用</h2>
+
+<p>SpringMVC中可以很方便的使用<code>@RequestMapping</code>注解提供REST API。</p>
+
+<p>最基本的使用代码如下所示：</p>
+
+<p>```
+@Controller
+@RequestMapping(value = &ldquo;/hello&rdquo;)
+public class MyController {</p>
+
+<p>  @RequestMapping(method=RequestMethod.GET)
+  @ResponseBody
+  public String getRoot(){</p>
+
+<pre><code>return "Hello World";
+</code></pre>
+
+<p>  }</p>
+
+<p>  @RequestMapping(value=&ldquo;/{path}&rdquo;, method=RequestMethod.GET)
+  @ResponseBody
+  public String getValue(@PathVariable String path){</p>
+
+<pre><code>return "Path is " + path;
+</code></pre>
+
+<p>  }</p>
+
+<p>}
+```</p>
+
+<p>使用<code>@Controller</code>注解指定当前类为SpringMVC的一个controller，使用<code>@RequestMapping</code>表明此controller会处理所有以<code>/hello</code>开头的URL。</p>
+
+<p><code>@RequestMapping</code>最常用的两个参数就是<code>value</code>和<code>method</code>，分别指定了拦截的URL和请求方法。</p>
+
+<p>MyController类中的两个方法还可以分别再使用<code>@RequestMapping(value)</code>再继续指定处理以hello为前缀的URL。例如<code>@RequestMapping(value="/{path}")</code>，可处理类似<code>/hello/path</code>的URL，并结合<code>@PathVariable</code>将path作为URL参数获取。</p>
+
+<p>这个小Demo只是将SpringMVC作为后台REST API的提供方，也就是说只使用了MVC中的Controller和Model，View就交给AngularJS，所以使用<code>@ResponseBody</code>直接将方法返回值作为响应，不经过View的渲染啥的。</p>
+
+<h2>简单的AngularJS应用</h2>
+
+<p><a href="http://angularjs.org">AngularJS</a>是Google推出的前端MVC框架，也有完整的Controller、View、Model等概念，而且上手非常简单，熟悉几个html标签就能开始使用了。</p>
+
+<p>建立AngularJS项目可以从GitHub上clone <a href="https://github.com/angular/angular-seed">angular-seed</a>。</p>
+
+<p>核心的代码都在app目录中，其典型结构如下：</p>
+
+<ul>
+<li><code>css</code> 存放css文件</li>
+<li><code>img</code> 存放图片</li>
+<li><code>js</code> 存放js代码，我们自己的代码基本都在这儿，一般按照功能和层次划分为这样几个文件：app.js, controller.js, services.js, filters.js, directives.js, animations.js。从名字就可以看出分别是在对这些概念进行定义和使用</li>
+<li><code>lib</code> 存放js库</li>
+<li><code>partials</code> 存放html模板，angularjs发送到客户端的就是这些html模板</li>
+</ul>
+
+
+<h3>基本概念</h3>
+
+<p>demo中涉及的几个概念：</p>
+
+<ul>
+<li>app</li>
+<li>controller</li>
+<li>service</li>
+<li>router</li>
+<li>resource</li>
+<li>view</li>
+<li>scope</li>
+</ul>
+
+
+<p>demo的基本功能就是在html模板中新建一个app和两个controller，然后自定义一个service使用REST API和SpringMVC后端交互操作hello这个resource，在controller中调用此service，html模板间的跳转通过router定义。</p>
+
+<p><img src="http://docs.angularjs.org/img/guide/concepts-module-service.png" alt="Alt text" /></p>
+
+<p>借用AngularJS官方的一张图来说明下关系：</p>
+
+<p>在template中声明app，app包含controller，controller调用service，service操作resource。</p>
+
+<p>层次和调用关系还是很清晰的，和Spring也差不多。</p>
+
+<p>template、app、service、controller的具体代码如下</p>
+
+<h4>template</h4>
+
+<p>```
+&lt;!doctype html>
+<html lang="en" ng-app="myApp">
+<body>
+  <div ng-view></div>
+</body>
+</html></p>
+
+<p>```</p>
+
+<h4>app</h4>
+
+<p>```
+&lsquo;use strict&rsquo;;</p>
+
+<p>// 新建myApp，并声明会使用ngRoute、myApp.services、myApp.controllers三个module
+// AngularJS会实现module的自动注入
+angular.module(&lsquo;myApp&rsquo;, [
+  &lsquo;ngRoute&rsquo;,
+  &lsquo;myApp.services&rsquo;,
+  &lsquo;myApp.controllers&rsquo;
+]).
+config([&lsquo;$routeProvider&rsquo;, function($routeProvider) { // 配置app对应的URL路由，请求此URL时返回的view template和template对应的controller
+  $routeProvider.when(&lsquo;/hello&rsquo;, {templateUrl: &lsquo;partials/list.html&rsquo;, controller: &lsquo;ListCtrl&rsquo;});
+  $routeProvider.when(&lsquo;/hello/:path&rsquo;, {templateUrl: &lsquo;partials/detail.html&rsquo;, controller: &lsquo;DetailCtrl&rsquo;});
+  $routeProvider.otherwise({redirectTo: &lsquo;/hello&rsquo;});
+}]);</p>
+
+<p>```</p>
+
+<h4>service</h4>
+
+<p>```
+&lsquo;use strict&rsquo;;</p>
+
+<p>// 新建myService，并声明会使用ngResource这个module
+var myService = angular.module(&lsquo;myApp.services&rsquo;, [&lsquo;ngResource&rsquo;]).
+  value(&lsquo;version&rsquo;, &lsquo;0.1&rsquo;);
+// 新建Hello这个资源，并指定资源的访问路径和访问方法
+myService.factory(&lsquo;Hello&rsquo;, [&lsquo;$resource&rsquo;,
+  function($resource){</p>
+
+<pre><code>return $resource('api/hello/:path', {}, {
+  list: {method:'GET', isArray:true}
+});
+</code></pre>
+
+<p>  }]);</p>
+
+<p>```</p>
+
+<h4>controller</h4>
+
+<p>```
+&lsquo;use strict&rsquo;;</p>
+
+<p>// 新建ListCtrl和DetailCtrl两个controller
+angular.module(&lsquo;myApp.controllers&rsquo;, []).
+  controller(&lsquo;ListCtrl&rsquo;, [&lsquo;$scope&rsquo;, &lsquo;Hello&rsquo;, // 声明要使用Hello
+   function($scope, Hello) {</p>
+
+<pre><code>$scope.hello = Hello.list();             // 调用Hello服务的list方法，赋值给模板中的hello元素
+</code></pre>
+
+<p>  }])
+  .controller(&lsquo;DetailCtrl&rsquo;, [&lsquo;$scope&rsquo;, &lsquo;$routeParams&rsquo;, &lsquo;Hello&rsquo;,
+   function($scope, $routeParams, Hello) {</p>
+
+<pre><code>$scope.hello = Hello.get({path:$routeParams.path}, function(hello){
+  $scope.detail = hello.detail;
+});
+</code></pre>
+
+<p>  }]);</p>
+
+<p>```</p>
+
+<p>```</p>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span10">
+      <!--Body content-->
+          <p></p>
+    </div>
+  </div>
+</div>
+
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+</feed>

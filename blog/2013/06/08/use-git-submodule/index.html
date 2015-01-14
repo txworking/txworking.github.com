@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>使用Git Submodule - Darcy Tang's Blog</title>
+  <meta name="author" content="Darcy Tang">
+
+  
+  <meta name="description" content="最近clone的项目里面发现使用了Git的Submodule功能，所以在这儿记录一下基本的使用方法 添加submodule 1
+git submodule add git@github.com:xxx/submoule.git src/submodule 在项目中就会自动生成一个. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://txworking.github.io/blog/2013/06/08/use-git-submodule">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Darcy Tang's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Darcy Tang's Blog</a></h1>
+  
+    <h2>记录一点编程心得</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:txworking.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">使用Git Submodule</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-08T17:12:00+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近clone的项目里面发现使用了Git的Submodule功能，所以在这儿记录一下基本的使用方法</p>
+
+<h3>添加submodule</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git submodule add git@github.com:xxx/submoule.git src/submodule
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在项目中就会自动生成一个.gitmodules文件来保存submodule的关系，再提交到远程库就ok了</p>
+
+<h3>clone项目</h3>
+
+<p>在clone带有submodule的项目，直接使用<code>--recursive</code>就可以递归地将所有submodule，包括submodule中的submodule都一次性clone到本地</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone --recursive git@github.com:xxx/xxx.git
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>不然就得使用如下的命令组合来完成初次clone，这样还不能clone到submodule中的submodule</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git clone git@github.com:xxx/xxx.git
+</span><span class='line'>git submodule init    <span class="c"># 将.gitmodules中的内容注册到.git/config中</span>
+</span><span class='line'>git submodule update  <span class="c"># clone submodule并且checkout指定commit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>更新项目</h3>
+
+<p>如果你不会到submodule中进行开发，那么每次submodule有了更新只需要再update一次就行了</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git pull origin master
+</span><span class='line'>git submodule update --recursive <span class="c"># 必须在项目顶层目录执行此命令，也可以添加--init保证init执行</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>更新submodule</h3>
+
+<p>submodule其实也就是一个单独的Git repo，只是会在项目顶层目录的.gitmodules目录中记录下路径和submodule源的映射关系</p>
+
+<pre><code># .gitmodules的内容
+[submodule "src/cloud_controller_ng"]
+    path = src/cloud_controller_ng
+    url = https://github.com/cloudfoundry/cloud_controller_ng.git
+</code></pre>
+
+<p>但是这个文件中并没有指定submodule的commit id，git怎么知道该用submodule的哪个commit呢？</p>
+
+<p>在顶层项目的<code>.git/modules</code>里会保存submodule的git配置，同时也就知道了使用的是submodule的哪个commit
+而submodule的.git则只是记录了一下路径</p>
+
+<pre><code># submodule目录中的.git的内容
+gitdir: ../.git/modules/dea
+</code></pre>
+
+<p>所以在submodule中进行commit或者push就和普通repo完全一样，只是最后需要在外层repo中更新一下</p>
+
+<p>现在假设已经在submodule目录或者单独的submodule项目目录中完成了<code>add</code>、<code>commit</code>和<code>push</code>操作，或者执行了<code>git pull</code>获取了新的源码
+这时需要回到外层项目，再次更新一遍</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git status  <span class="c"># 会提示submodule有new commit</span>
+</span><span class='line'>git add .   <span class="c"># 添加更改</span>
+</span><span class='line'>git commit -m <span class="s2">&quot;update submoule&quot;</span>
+</span><span class='line'>git push
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在另一个项目repo中执行以下命令，就可以将submodule的commit同步了</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git pull
+</span><span class='line'>git submodule update --recursive  <span class="c"># 可以加上--init</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>其他</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git submoule foreach <span class="s1">&#39;echo $path `git rev-parse HEAD`&#39;</span>  <span class="c"># foreach 可以对每个submodule执行shell命令</span>
+</span><span class='line'>
+</span><span class='line'>git <span class="nb">help </span>submodule   <span class="c"># git帮助文档</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Darcy Tang</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-08T17:12:00+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>Git</a>, <a class='category' href='/blog/categories/tips/'>Tips</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://txworking.github.io/blog/2013/06/08/use-git-submodule/" data-via="" data-counturl="http://txworking.github.io/blog/2013/06/08/use-git-submodule/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/05/11/use-awk-to-diff-file/" title="Previous Post: 使用awk比较文件">&laquo; 使用awk比较文件</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/07/04/use-hiera-in-puppet/" title="Next Post: 在Puppet中使用Hiera">在Puppet中使用Hiera &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/01/14/use-spark-with-elasticsearch/">使用Spark对ElasticSearch进行读取</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/02/angular-plus-springmvc/">AngularJS+SpringMVC构建应用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/02/ruby2-dot-0/">Ruby和Ruby2.0相关文章汇总</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/17/check-logfiles/">在Nagios中实时监控日志</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/08/a-bug-of-facter/">Facter在Windows上的一个小问题</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Darcy Tang -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'darcytang';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://txworking.github.io/blog/2013/06/08/use-git-submodule/';
+        var disqus_url = 'http://txworking.github.io/blog/2013/06/08/use-git-submodule/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

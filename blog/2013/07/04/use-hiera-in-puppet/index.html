@@ -1,0 +1,390 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>在Puppet中使用Hiera - Darcy Tang's Blog</title>
+  <meta name="author" content="Darcy Tang">
+
+  
+  <meta name="description" content="Puppet3.x开始Hiera成为了必需的组件，实现类似ENC的功能，正好现在试试效果。 使用Hiera可以用更格式化的组织节点的定义，而且支持动态的查找加载。 以前在puppetmaster运行过程中加入pp文件，puppet是不会发现并加载此文件的。 使用 Puppet3.x自带了Hiera &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://txworking.github.io/blog/2013/07/04/use-hiera-in-puppet">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Darcy Tang's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Darcy Tang's Blog</a></h1>
+  
+    <h2>记录一点编程心得</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:txworking.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">在Puppet中使用Hiera</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-04T23:38:00+08:00" pubdate data-updated="true">Jul 4<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Puppet3.x开始Hiera成为了必需的组件，实现类似ENC的功能，正好现在试试效果。</p>
+
+<p>使用Hiera可以用更格式化的组织节点的定义，而且支持动态的查找加载。</p>
+
+<p>以前在puppetmaster运行过程中加入pp文件，puppet是不会发现并加载此文件的。</p>
+
+<h2>使用</h2>
+
+<p>Puppet3.x自带了Hiera，默认的hiera配置路径是<code>/etc/puppet/hiera.yaml</code>，所以只需要新建此文件，即启用了Hiera。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># hiera.yaml的例子</span>
+</span><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="l-Scalar-Plain">:backends</span><span class="p-Indicator">:</span> <span class="c1"># 搜索yaml和json格式的文件</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">yaml</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">json</span>
+</span><span class='line'><span class="l-Scalar-Plain">:yaml</span><span class="p-Indicator">:</span>  <span class="c1"># hiera数据文件的目录</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">:datadir</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/etc/puppet/hieradata</span>
+</span><span class='line'><span class="l-Scalar-Plain">:json</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">:datadir</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/etc/puppet/hieradata</span>
+</span><span class='line'><span class="l-Scalar-Plain">:hierarchy</span><span class="p-Indicator">:</span>  <span class="c1"># 在指定目录搜索以下名称的文件</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="s">&quot;%{::clientcert}&quot;</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="s">&quot;%{::custom_location}&quot;</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">common</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Hiera能实现动态加载的主要点就在<code>:hierarchy</code>的配置，此配置项指定Hiera需要读取的数据文件名称，<code>%{::clientcert}</code>表示使用以节点的certname来查找。</p>
+
+<p>比如<code>certname=node1</code>的节点在运行<code>puppet agent --test</code>时，puppetmaster就会去读取<code>node1.yaml</code>和<code>node1.json</code>两个文件。具体可用的变量可以<a href="http://docs.puppetlabs.com/hiera/1/variables.html">在此</a>查看。</p>
+
+<h2>Hiera数据</h2>
+
+<p>具体的Hiera数据可以使用yaml、json、puppet三种格式，puppet格式的目前没有详细文档说明。</p>
+
+<p>这里以yaml格式的为例说明，json格式也差不多，就是会多很多&#8221;&ldquo;。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># node1.yaml</span>
+</span><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="l-Scalar-Plain">string</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">str</span>
+</span><span class='line'><span class="l-Scalar-Plain">array</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="l-Scalar-Plain">  - 1</span>
+</span><span class='line'><span class="l-Scalar-Plain">  - 2</span>
+</span><span class='line'><span class="l-Scalar-Plain">  - 3</span>
+</span><span class='line'><span class="l-Scalar-Plain">hash</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="l-Scalar-Plain">   key</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">value</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>你可以自己写一个module，其中的init.pp可以这样写：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># init.pp</span>
+</span><span class='line'><span class="l-Scalar-Plain">class my_mod(</span>
+</span><span class='line'><span class="l-Scalar-Plain">  $string = hiera(&quot;string&quot;),</span>
+</span><span class='line'><span class="l-Scalar-Plain">  $array = hiera_array(&quot;array&quot;),</span>
+</span><span class='line'><span class="l-Scalar-Plain">  $hash = hiera_hash(&quot;hash&quot;)</span>
+</span><span class='line'><span class="l-Scalar-Plain">) {</span>
+</span><span class='line'><span class="l-Scalar-Plain">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后在<code>site.pp</code>中给node1加上这个class，node1在获取catalog时就会自动的从<code>node1.yaml</code>中加载数据并赋值给<code>$string, $array, $hash</code>三个变量。<code>hiera(), hiera_array(), hiera_hash()</code>是Hiera专门用来搜索数据的函数。</p>
+
+<p>Hiera也支持<strong>自动赋值</strong>，如果你的node1.yaml文件是这样的：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># node1.yaml</span>
+</span><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="l-Scalar-Plain">my_mod::string</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">str</span>
+</span><span class='line'><span class="l-Scalar-Plain">my_mod::array</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="l-Scalar-Plain">  - 1</span>
+</span><span class='line'><span class="l-Scalar-Plain">  - 2</span>
+</span><span class='line'><span class="l-Scalar-Plain">  - 3</span>
+</span><span class='line'><span class="l-Scalar-Plain">my_mod::hash</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="l-Scalar-Plain">   key</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">value</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那在my_mod的参数中就不需要再使用函数查找，Hiera会自动关联赋值。</p>
+
+<h2>在Hiera中指定Classes</h2>
+
+<p>如果想完全抛弃<code>site.pp</code>怎么办？用Hiera也可以办到。</p>
+
+<p>只需要在<code>site.pp</code>中加上一句<code>hiera_include("classes")</code>，</p>
+
+<p>在node1.yaml中再添加上classes。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># node1.yaml</span>
+</span><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="l-Scalar-Plain">classes</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">my_mod</span>
+</span><span class='line'><span class="l-Scalar-Plain">my_mod::string</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">str</span>
+</span><span class='line'><span class="l-Scalar-Plain">my_mod::array</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="l-Scalar-Plain">  - 1</span>
+</span><span class='line'><span class="l-Scalar-Plain">  - 2</span>
+</span><span class='line'><span class="l-Scalar-Plain">  - 3</span>
+</span><span class='line'><span class="l-Scalar-Plain">my_mod::hash</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="l-Scalar-Plain">   key</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">value</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么以后节点的classes定义就可以完全通过</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Darcy Tang</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-04T23:38:00+08:00" pubdate data-updated="true">Jul 4<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/devops/'>DevOps</a>, <a class='category' href='/blog/categories/hiera/'>Hiera</a>, <a class='category' href='/blog/categories/puppet/'>Puppet</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://txworking.github.io/blog/2013/07/04/use-hiera-in-puppet/" data-via="" data-counturl="http://txworking.github.io/blog/2013/07/04/use-hiera-in-puppet/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/06/08/use-git-submodule/" title="Previous Post: 使用Git Submodule">&laquo; 使用Git Submodule</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/07/06/lambda-in-puppet-3-dot-2/" title="Next Post: Puppet3.2的迭代器">Puppet3.2的迭代器 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/01/14/use-spark-with-elasticsearch/">使用Spark对ElasticSearch进行读取</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/02/angular-plus-springmvc/">AngularJS+SpringMVC构建应用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/02/ruby2-dot-0/">Ruby和Ruby2.0相关文章汇总</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/17/check-logfiles/">在Nagios中实时监控日志</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/08/a-bug-of-facter/">Facter在Windows上的一个小问题</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Darcy Tang -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'darcytang';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://txworking.github.io/blog/2013/07/04/use-hiera-in-puppet/';
+        var disqus_url = 'http://txworking.github.io/blog/2013/07/04/use-hiera-in-puppet/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

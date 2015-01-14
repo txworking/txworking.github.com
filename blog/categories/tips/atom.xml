@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Tips | Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/blog/categories/tips/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2015-01-14T17:31:55+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[使用Git Submodule]]></title>
+    <link href="http://txworking.github.io/blog/2013/06/08/use-git-submodule/"/>
+    <updated>2013-06-08T17:12:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/06/08/use-git-submodule</id>
+    <content type="html"><![CDATA[<p>最近clone的项目里面发现使用了Git的Submodule功能，所以在这儿记录一下基本的使用方法</p>
+
+<h3>添加submodule</h3>
+
+<p>```sh</p>
+
+<pre><code>git submodule add git@github.com:xxx/submoule.git src/submodule
+</code></pre>
+
+<p>```</p>
+
+<p>在项目中就会自动生成一个.gitmodules文件来保存submodule的关系，再提交到远程库就ok了</p>
+
+<h3>clone项目</h3>
+
+<p>在clone带有submodule的项目，直接使用<code>--recursive</code>就可以递归地将所有submodule，包括submodule中的submodule都一次性clone到本地
+<code>sh
+git clone --recursive git@github.com:xxx/xxx.git
+</code></p>
+
+<p>不然就得使用如下的命令组合来完成初次clone，这样还不能clone到submodule中的submodule
+```sh</p>
+
+<pre><code>git clone git@github.com:xxx/xxx.git
+git submodule init    # 将.gitmodules中的内容注册到.git/config中
+git submodule update  # clone submodule并且checkout指定commit
+</code></pre>
+
+<p>```</p>
+
+<h3>更新项目</h3>
+
+<p>如果你不会到submodule中进行开发，那么每次submodule有了更新只需要再update一次就行了
+```sh</p>
+
+<pre><code>git pull origin master
+git submodule update --recursive # 必须在项目顶层目录执行此命令，也可以添加--init保证init执行
+</code></pre>
+
+<p>```</p>
+
+<h3>更新submodule</h3>
+
+<p>submodule其实也就是一个单独的Git repo，只是会在项目顶层目录的.gitmodules目录中记录下路径和submodule源的映射关系</p>
+
+<pre><code># .gitmodules的内容
+[submodule "src/cloud_controller_ng"]
+    path = src/cloud_controller_ng
+    url = https://github.com/cloudfoundry/cloud_controller_ng.git
+</code></pre>
+
+<p>但是这个文件中并没有指定submodule的commit id，git怎么知道该用submodule的哪个commit呢？</p>
+
+<p>在顶层项目的<code>.git/modules</code>里会保存submodule的git配置，同时也就知道了使用的是submodule的哪个commit
+而submodule的.git则只是记录了一下路径</p>
+
+<pre><code># submodule目录中的.git的内容
+gitdir: ../.git/modules/dea
+</code></pre>
+
+<p>所以在submodule中进行commit或者push就和普通repo完全一样，只是最后需要在外层repo中更新一下</p>
+
+<p>现在假设已经在submodule目录或者单独的submodule项目目录中完成了<code>add</code>、<code>commit</code>和<code>push</code>操作，或者执行了<code>git pull</code>获取了新的源码
+这时需要回到外层项目，再次更新一遍
+```sh</p>
+
+<pre><code>git status  # 会提示submodule有new commit
+git add .   # 添加更改
+git commit -m "update submoule"
+git push
+</code></pre>
+
+<p><code>
+在另一个项目repo中执行以下命令，就可以将submodule的commit同步了
+</code>sh</p>
+
+<pre><code>git pull
+git submodule update --recursive  # 可以加上--init
+</code></pre>
+
+<p>```</p>
+
+<h3>其他</h3>
+
+<p><code>``sh
+git submoule foreach 'echo $path</code>git rev-parse HEAD`&lsquo;  # foreach 可以对每个submodule执行shell命令</p>
+
+<p>git help submodule   # git帮助文档
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

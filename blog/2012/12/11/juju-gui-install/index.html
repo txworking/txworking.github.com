@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Juju-Gui 安装笔记 - Darcy Tang's Blog</title>
+  <meta name="author" content="Darcy Tang">
+
+  
+  <meta name="description" content="在Ubuntu12.04 AMD64上安装成功，基本按照项目中的README照做就行了。 juju-gui使用了Node.js和sphinx，所以需要先安装Node环境，jshint是可选的。 1
+2
+3
+4
+5
+sudo add-apt-repository ppa:chris-lea/node &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://txworking.github.io/blog/2012/12/11/juju-gui-install">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Darcy Tang's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Darcy Tang's Blog</a></h1>
+  
+    <h2>记录一点编程心得</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:txworking.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Juju-Gui 安装笔记</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-11T11:01:00+08:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>在Ubuntu12.04 AMD64上安装成功，基本按照项目中的README照做就行了。</p>
+
+<h4>juju-gui使用了<code>Node.js</code>和<code>sphinx</code>，所以需要先安装Node环境，<code>jshint</code>是可选的。</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo add-apt-repository ppa:chris-lea/node.js
+</span><span class='line'>sudo apt-get update
+</span><span class='line'>sudo apt-get install nodejs npm
+</span><span class='line'>sudo npm install -g jshint
+</span><span class='line'>sudo apt-get install python-sphinx
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>从<code>Lanunchpad</code>下载代码</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo apt-get install bzr
+</span><span class='line'>bzr launchpad-login yourid
+</span><span class='line'>bzr branch lp:juju-gui
+</span><span class='line'><span class="nb">cd </span>juju-gui
+</span><span class='line'>make server
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这就可以访问localhost:8888看到界面了。要能操作还需要一个Juju环境，根据文档说Juju默认版本里面没有api-server这功能，最好是使用<code>lp:~hazmat/juju/rapi-delta</code>这个分支。</p>
+
+<h4>安装Juju</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> ~
+</span><span class='line'>sudo bzr branch lp:~hazmat/juju/rapi-delta
+</span><span class='line'><span class="nb">cd </span>rapi-delta
+</span><span class='line'>python setup.py install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后修改用户目录下的<code>.juju/environments.yaml</code>，在最后添加<code>api-port: 8081</code>，特别要注意缩进，不然启动都出错。</p>
+
+<p>再到bin目录下启动Juju</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd </span>bin
+</span><span class='line'>sudo ./juju bootstrap
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>看到 Starting api server 就说明配置成功了</p>
+
+<p>这时用netstat查看会发现8081端口并没有开始监听，需要先手动部署一个服务。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo ./juju deploy mysql
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Juju默认是会到官方的<code>Charm Store</code>查找到mysql进行部署。</p>
+
+<p>8081端口也会看到是listen状态了。</p>
+
+<h4>连接Gui和Juju</h4>
+
+<p>默认连接Juju的方式是在页面使用<code>Websocket</code>去连接<code>http://localhost:8081/ws</code>，所以需要修改配置把localhost改了，不然只能在本地访问。</p>
+
+<p>修改Juju-gui里的config.js和app/config.js，把里面的localhost都改成服务器ip或者能解析的域名，重启一下服务，再访问就能看到已经有一个mysql部署好了，其他的charm也随你意安装了。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Darcy Tang</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-11T11:01:00+08:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/devops/'>DevOps</a>, <a class='category' href='/blog/categories/juju/'>Juju</a>, <a class='category' href='/blog/categories/juju-gui/'>Juju-GUI</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://txworking.github.io/blog/2012/12/11/juju-gui-install/" data-via="" data-counturl="http://txworking.github.io/blog/2012/12/11/juju-gui-install/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/12/11/using-winmerge-with-git/" title="Next Post: 在Windows7的Git环境中使用WinMerge作为difftool">在Windows7的Git环境中使用WinMerge作为difftool &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/01/14/use-spark-with-elasticsearch/">使用Spark对ElasticSearch进行读取</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/02/angular-plus-springmvc/">AngularJS+SpringMVC构建应用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/02/ruby2-dot-0/">Ruby和Ruby2.0相关文章汇总</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/17/check-logfiles/">在Nagios中实时监控日志</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/08/a-bug-of-facter/">Facter在Windows上的一个小问题</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Darcy Tang -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'darcytang';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://txworking.github.io/blog/2012/12/11/juju-gui-install/';
+        var disqus_url = 'http://txworking.github.io/blog/2012/12/11/juju-gui-install/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

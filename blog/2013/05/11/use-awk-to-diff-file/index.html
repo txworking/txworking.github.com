@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>使用awk比较文件 - Darcy Tang's Blog</title>
+  <meta name="author" content="Darcy Tang">
+
+  
+  <meta name="description" content="平时在CLI环境里面需要经常比较两个小文件的内容，最近专门搜索了下，收集了两个简单的比较方案。 方案1： 1
+cat a | grep -vFf b 如果想要不区分大小写，加-i参数即可 方案2： 如果数据量到达1000w以上，grep很容易占满内存，无法使用 这个时候就需要使用awk了 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://txworking.github.io/blog/2013/05/11/use-awk-to-diff-file">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Darcy Tang's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Darcy Tang's Blog</a></h1>
+  
+    <h2>记录一点编程心得</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:txworking.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">使用awk比较文件</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-11T18:46:00+08:00" pubdate data-updated="true">May 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>平时在CLI环境里面需要经常比较两个小文件的内容，最近专门搜索了下，收集了两个简单的比较方案。</p>
+
+<h3>方案1：</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>cat a | grep -vFf b
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果想要不区分大小写，加-i参数即可</p>
+
+<h3>方案2：</h3>
+
+<p>如果数据量到达1000w以上，grep很容易占满内存，无法使用</p>
+
+<p>这个时候就需要使用awk了</p>
+
+<p>比如要比较a和b两个文件；
+a             b
+1             1
+qw            2
+qq            d
+123           cd</p>
+
+<p>列出b文件中完全不包含a文件的行</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='awk'><span class='line'><span class="nx">awk</span> <span class="s1">&#39;ARGIND==1 {arr[$0]} ARGIND&gt;1&amp;&amp;!($0 in arr) {print $0}&#39;</span> <span class="nx">a</span> <span class="nx">b</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">awk</span> <span class="s1">&#39;NR==FNR {arr[$0]} NR&gt;FNR&amp;&amp;!($0 in arr) {print $0}&#39;</span> <span class="nx">a</span> <span class="nx">b</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>解释：</p>
+
+<p>首先awk会按顺序先处理a文件，在处理b文件；</p>
+
+<p>然后根据awk的环境变量列表：</p>
+
+<pre><code>$n           当前记录的第n个字段，字段间由FS分隔。
+$0           完整的输入记录。
+ARGC         命令行参数的数目。
+ARGIND       命令行中当前文件的位置(从0开始算)。
+ARGV         包含命令行参数的数组。
+CONVFMT      数字转换格式(默认值为%.6g)
+ENVIRON      环境变量关联数组。
+ERRNO        最后一个系统错误的描述。
+FIELDWIDTHS  字段宽度列表(用空格键分隔)。
+FILENAME     当前文件名。FNR同NR，但相对于当前文件。
+FS           字段分隔符(默认是任何空格)。
+IGNORECASE   如果为真，则进行忽略大小写的匹配。
+NF           当前记录中的字段数。
+NR           当前记录数。
+OFMT         数字的输出格式(默认值是%.6g)。
+OFS          输出字段分隔符(默认值是一个空格)。
+ORS          输出记录分隔符(默认值是一个换行符)。
+RLENGTH      由match函数所匹配的字符串的长度。
+RS           记录分隔符(默认是一个换行符)。 
+RSTART       由match函数所匹配的字符串的第一个位置。
+SUBSEP       数组下标分隔符(默认值是\034)。
+</code></pre>
+
+<p>NR==FNR时是在处理a，将当前行放入数组</p>
+
+<p>NR>FNR时是在处理b，如果当前行不在数组中，则打印</p>
+
+<p>相应的ARGIND==1 正在处理a，ARGIND > 1 正在处理文件b</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Darcy Tang</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-11T18:46:00+08:00" pubdate data-updated="true">May 11<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/awk/'>awk</a>, <a class='category' href='/blog/categories/bash/'>bash</a>, <a class='category' href='/blog/categories/diff/'>diff</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/shell/'>shell</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://txworking.github.io/blog/2013/05/11/use-awk-to-diff-file/" data-via="" data-counturl="http://txworking.github.io/blog/2013/05/11/use-awk-to-diff-file/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/04/09/install-ruby2-dot-0/" title="Previous Post: Ruby2.0关键字参数使用小记">&laquo; Ruby2.0关键字参数使用小记</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/06/08/use-git-submodule/" title="Next Post: 使用Git Submodule">使用Git Submodule &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/01/14/use-spark-with-elasticsearch/">使用Spark对ElasticSearch进行读取</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/02/angular-plus-springmvc/">AngularJS+SpringMVC构建应用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/02/ruby2-dot-0/">Ruby和Ruby2.0相关文章汇总</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/17/check-logfiles/">在Nagios中实时监控日志</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/08/a-bug-of-facter/">Facter在Windows上的一个小问题</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Darcy Tang -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'darcytang';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://txworking.github.io/blog/2013/05/11/use-awk-to-diff-file/';
+        var disqus_url = 'http://txworking.github.io/blog/2013/05/11/use-awk-to-diff-file/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

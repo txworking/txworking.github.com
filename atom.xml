@@ -1,102 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <title>Darcy Tang's Blog</title>
-  <meta name="author" content="Darcy Tang">
-
-  
-  <meta name="description" content="ElasticSearch for Apache Hadoop是ES提供的工具库，让Hadoop、Pig、Hive等可以比较原生的方式去和ES交互。
-目前提供了mapreduce、hive、pig、cascading、spark、storm的集成。 下面以Spark为例， &hellip;">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://txworking.github.io">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Darcy Tang's Blog" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
-  
-
-</head>
-
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Darcy Tang's Blog</a></h1>
-  
-    <h2>记录一点编程心得</h2>
-  
-</hgroup>
-
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="http://google.com/search" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="q" value="site:txworking.github.io" />
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="/about-me">About Me</a></li>
-</ul>
-
-</nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
+  <title><![CDATA[Darcy Tang's Blog]]></title>
+  <link href="http://txworking.github.io/atom.xml" rel="self"/>
+  <link href="http://txworking.github.io/"/>
+  <updated>2015-01-14T17:31:55+08:00</updated>
+  <id>http://txworking.github.io/</id>
+  <author>
+    <name><![CDATA[Darcy Tang]]></name>
     
-      <h1 class="entry-title"><a href="/blog/2015/01/14/use-spark-with-elasticsearch/">使用Spark对ElasticSearch进行读取</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
 
   
-
-
-<time datetime="2015-01-14T17:22:00+08:00" pubdate data-updated="true">Jan 14<span>th</span>, 2015</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>ElasticSearch for Apache Hadoop是ES提供的工具库，让Hadoop、Pig、Hive等可以比较原生的方式去和ES交互。
+  <entry>
+    <title type="html"><![CDATA[使用Spark对ElasticSearch进行读取]]></title>
+    <link href="http://txworking.github.io/blog/2015/01/14/use-spark-with-elasticsearch/"/>
+    <updated>2015-01-14T17:22:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2015/01/14/use-spark-with-elasticsearch</id>
+    <content type="html"><![CDATA[<p>ElasticSearch for Apache Hadoop是ES提供的工具库，让Hadoop、Pig、Hive等可以比较原生的方式去和ES交互。
 目前提供了mapreduce、hive、pig、cascading、spark、storm的集成。</p>
 
 <p>下面以Spark为例，演示如何利用这个工具库去读取ES记录</p>
@@ -221,42 +143,15 @@
 * es.query 默认为none</p>
 
 <p>完整的请查看<a href="http://www.elasticsearch.org/guide/en/elasticsearch/hadoop/current/configuration.html">Configuration</a></p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/02/angular-plus-springmvc/">AngularJS+SpringMVC构建应用</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-02T13:33:00+08:00" pubdate data-updated="true">Jan 2<span>nd</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>利用AngularJS和SpringMVC搭建一个简单的应用，AngularJS负责前端，SpringMVC作为后端提供REST API。</p>
+  <entry>
+    <title type="html"><![CDATA[AngularJS+SpringMVC构建应用]]></title>
+    <link href="http://txworking.github.io/blog/2014/01/02/angular-plus-springmvc/"/>
+    <updated>2014-01-02T13:33:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2014/01/02/angular-plus-springmvc</id>
+    <content type="html"><![CDATA[<p>利用AngularJS和SpringMVC搭建一个简单的应用，AngularJS负责前端，SpringMVC作为后端提供REST API。</p>
 
 <h2>SpringMVC的使用</h2>
 
@@ -489,42 +384,15 @@
 
 
 
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/02/ruby2-dot-0/">Ruby和Ruby2.0相关文章汇总</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-02T11:31:00+08:00" pubdate data-updated="true">Dec 2<span>nd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>记录一些Ruby和Ruby2.0的文章</p>
+  <entry>
+    <title type="html"><![CDATA[Ruby和Ruby2.0相关文章汇总]]></title>
+    <link href="http://txworking.github.io/blog/2013/12/02/ruby2-dot-0/"/>
+    <updated>2013-12-02T11:31:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/12/02/ruby2-dot-0</id>
+    <content type="html"><![CDATA[<p>记录一些Ruby和Ruby2.0的文章</p>
 
 <h2>Ruby2.0相关</h2>
 
@@ -550,42 +418,15 @@
 <li><a href="http://globaldev.co.uk/2013/09/ruby-tips-part-1/">Ruby Tips Part 1</a></li>
 </ul>
 
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/17/check-logfiles/">在Nagios中实时监控日志</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-17T17:30:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近需要利用Nagios对Linux和Windows上的某个日志文件进行实时的监控，虽然这个活由Nagios来做不太合适，但最后
+  <entry>
+    <title type="html"><![CDATA[在Nagios中实时监控日志]]></title>
+    <link href="http://txworking.github.io/blog/2013/08/17/check-logfiles/"/>
+    <updated>2013-08-17T17:30:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/08/17/check-logfiles</id>
+    <content type="html"><![CDATA[<p>最近需要利用Nagios对Linux和Windows上的某个日志文件进行实时的监控，虽然这个活由Nagios来做不太合适，但最后
 还是记录一下找到的解决方案。</p>
 
 <h2>Windows</h2>
@@ -679,42 +520,15 @@ $MACROS = {
 </code></pre>
 
 <p>check_logfiles就会变成守护进程，每隔一秒检查一次日志文件，如果有新的日志写入，就发送到服务器。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/08/a-bug-of-facter/">Facter在Windows上的一个小问题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-08T23:37:00+08:00" pubdate data-updated="true">Jul 8<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近在Windows上使用Puppet，总是遇到一个诡异的问题：在某些机器上无法获得ipaddress这个fact，直接使用facter命令行也不行，而且显得完全没有规律。</p>
+  <entry>
+    <title type="html"><![CDATA[Facter在Windows上的一个小问题]]></title>
+    <link href="http://txworking.github.io/blog/2013/07/08/a-bug-of-facter/"/>
+    <updated>2013-07-08T23:37:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/07/08/a-bug-of-facter</id>
+    <content type="html"><![CDATA[<p>最近在Windows上使用Puppet，总是遇到一个诡异的问题：在某些机器上无法获得ipaddress这个fact，直接使用facter命令行也不行，而且显得完全没有规律。</p>
 
 <p>具体情况是：</p>
 
@@ -829,42 +643,15 @@ $MACROS = {
 
 
 <p>使用facter &mdash;puppet也就和正常一样了。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/06/lambda-in-puppet-3-dot-2/">Puppet3.2的迭代器</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-06T00:29:00+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Puppet在最新的3.2版本中实现了lambda风格的迭代器语法，而且支持链式语法。当然要使用的话，需要在puppet.conf中启用parser=future</p>
+  <entry>
+    <title type="html"><![CDATA[Puppet3.2的迭代器]]></title>
+    <link href="http://txworking.github.io/blog/2013/07/06/lambda-in-puppet-3-dot-2/"/>
+    <updated>2013-07-06T00:29:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/07/06/lambda-in-puppet-3-dot-2</id>
+    <content type="html"><![CDATA[<p>Puppet在最新的3.2版本中实现了lambda风格的迭代器语法，而且支持链式语法。当然要使用的话，需要在puppet.conf中启用parser=future</p>
 
 <p>目前已经实现的有：</p>
 
@@ -988,42 +775,15 @@ $MACROS = {
 <p>其实还是使用了Ruby中的each_pair这个迭代器。在Puppet中写的lambda表达式还是循环调用，并把each_pair作为每一次的参数传进去用。</p>
 
 <p>感觉Puppet在解释lambda表达式时应该还做了些工作，今天就不研究了。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/07/04/use-hiera-in-puppet/">在Puppet中使用Hiera</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-07-04T23:38:00+08:00" pubdate data-updated="true">Jul 4<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Puppet3.x开始Hiera成为了必需的组件，实现类似ENC的功能，正好现在试试效果。</p>
+  <entry>
+    <title type="html"><![CDATA[在Puppet中使用Hiera]]></title>
+    <link href="http://txworking.github.io/blog/2013/07/04/use-hiera-in-puppet/"/>
+    <updated>2013-07-04T23:38:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/07/04/use-hiera-in-puppet</id>
+    <content type="html"><![CDATA[<p>Puppet3.x开始Hiera成为了必需的组件，实现类似ENC的功能，正好现在试试效果。</p>
 
 <p>使用Hiera可以用更格式化的组织节点的定义，而且支持动态的查找加载。</p>
 
@@ -1173,42 +933,15 @@ $MACROS = {
 
 
 <p>那么以后节点的classes定义就可以完全通过</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/08/use-git-submodule/">使用Git Submodule</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-08T17:12:00+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近clone的项目里面发现使用了Git的Submodule功能，所以在这儿记录一下基本的使用方法</p>
+  <entry>
+    <title type="html"><![CDATA[使用Git Submodule]]></title>
+    <link href="http://txworking.github.io/blog/2013/06/08/use-git-submodule/"/>
+    <updated>2013-06-08T17:12:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/06/08/use-git-submodule</id>
+    <content type="html"><![CDATA[<p>最近clone的项目里面发现使用了Git的Submodule功能，所以在这儿记录一下基本的使用方法</p>
 
 <h3>添加submodule</h3>
 
@@ -1304,42 +1037,15 @@ gitdir: ../.git/modules/dea
 </span><span class='line'>git <span class="nb">help </span>submodule   <span class="c"># git帮助文档</span>
 </span></code></pre></td></tr></table></div></figure>
 
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/11/use-awk-to-diff-file/">使用awk比较文件</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-11T18:46:00+08:00" pubdate data-updated="true">May 11<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>平时在CLI环境里面需要经常比较两个小文件的内容，最近专门搜索了下，收集了两个简单的比较方案。</p>
+  <entry>
+    <title type="html"><![CDATA[使用awk比较文件]]></title>
+    <link href="http://txworking.github.io/blog/2013/05/11/use-awk-to-diff-file/"/>
+    <updated>2013-05-11T18:46:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/05/11/use-awk-to-diff-file</id>
+    <content type="html"><![CDATA[<p>平时在CLI环境里面需要经常比较两个小文件的内容，最近专门搜索了下，收集了两个简单的比较方案。</p>
 
 <h3>方案1：</h3>
 
@@ -1408,42 +1114,15 @@ SUBSEP       数组下标分隔符(默认值是\034)。
 <p>NR>FNR时是在处理b，如果当前行不在数组中，则打印</p>
 
 <p>相应的ARGIND==1 正在处理a，ARGIND > 1 正在处理文件b</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/04/09/install-ruby2-dot-0/">Ruby2.0关键字参数使用小记</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-09T11:26:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ruby2.0发布了，于是下来试试手。
+  <entry>
+    <title type="html"><![CDATA[Ruby2.0关键字参数使用小记]]></title>
+    <link href="http://txworking.github.io/blog/2013/04/09/install-ruby2-dot-0/"/>
+    <updated>2013-04-09T11:26:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/04/09/install-ruby2-dot-0</id>
+    <content type="html"><![CDATA[<p>Ruby2.0发布了，于是下来试试手。
 下载了源码包，直接<code>./configure &amp;&amp; make &amp;&amp; make install</code>安装，没加特殊的flag。</p>
 
 <p>安装过程中出现了几个问题：</p>
@@ -1479,98 +1158,986 @@ SUBSEP       数组下标分隔符(默认值是\034)。
 
 <p>调用时使用<code>func(4,5,6)</code>会提示<code>wrong number of arguments</code>，
 只能是<code>func(a: 4, b: 5, c: 6)</code>的形式，这个时候顺序可以随意了。</p>
-</div>
+]]></content>
+  </entry>
   
+  <entry>
+    <title type="html"><![CDATA[Autoload in Ruby]]></title>
+    <link href="http://txworking.github.io/blog/2013/03/21/autoload-in-ruby/"/>
+    <updated>2013-03-21T16:56:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/03/21/autoload-in-ruby</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
+  <entry>
+    <title type="html"><![CDATA[主要PaaS平台支持语言清单]]></title>
+    <link href="http://txworking.github.io/blog/2013/03/15/list-of-paas/"/>
+    <updated>2013-03-15T21:36:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/03/15/list-of-paas</id>
+    <content type="html"><![CDATA[<table style="width:100%;" border="1" bordercolor="#000000" cellpadding="2" cellspacing="0" class="table table-bordered table-striped table-condensed">
+<tbody>
+<tr>
+<td>
+<br />
+</td>
+<td>
+<span></span>AWS<span></span> Elastic Beanstalk<br />
+</td>
+<td>
+GAE<br />
+</td>
+<td>
+Windows Azure<br />
+</td>
+<td>
+CloudFoundry<br />
+</td>
+<td>
+Heroku<br />
+</td>
+<td>
+OpenShift<br />
+</td>
+<td>
+SAE<br />
+</td>
+<td>
+BAE<br />
+</td>
+<td>
+tsuru(基于Juju）<br />
+</td>
+</tr>
+<tr>
+<td>
+Java<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+Ruby<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; <br />
+</td>
+<td>
+&nbsp;<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+PHP<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x <br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*<br />
+</td>
+<td>
+&nbsp;&nbsp; <br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+Python<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*&nbsp; <br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+.NET<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x*<br />
+</td>
+<td>
+&nbsp;<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp; <br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+Node.js<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x <br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+Perl<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+Standalone<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+</tr>
+<tr>
+<td>
+DIY<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+<br />
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; x<br />
+</td>
+</tr>
+</tbody>
+</table>
 
 
-    </article>
+<br />
+
+
+<ul>
+<li>Cloud Foundry对这些语言的支持是社区提供的。
+Cloud Foundry.com支持Java、Ruby和Node，而ActiveState添加了对Python的支持，Tier 3添加了对.NET的支持，AppFog添加了对PHP的支持。</li>
+</ul>
+
+
+<p> 免费的AWS Elastic Beanstalk其实还包含了一种IaaS（Infrastructure-as-a-Service）产品。开发人员和管理员可以直接访问应用程序后 面的AWS基础设施，这意味着他们可以修改服务器配置或访问服务端的日志文件。用户负责各种基础设施相关的任务，包括选择（及更新）服务器的操作系统和应 用程序栈。AWS Elastic Beanstalk确实也自动化了很多管理任务，包括通过一条命令重新启动所有的web服务器、通过中心位置访问所有的服务器日志文件以及监控所有节点的性能。</p>
+
+<p>OpenShift也提供对IaaS基础设施的直接访问，这样就可以让用户添加所有想要的语言和框架。其后台使用的是 Red Hat Enterprise Linux 6.2 running on x64 systems.</p>
+
+<p>表格部分内容来自 <a href="http://www.infoq.com/cn/news/2012/11/aws-elastic-beanstalk-ruby">InfoQ</a> ，争取能定时更新此表格</p>
+]]></content>
+  </entry>
   
-  <div class="pagination">
-    
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
+  <entry>
+    <title type="html"><![CDATA[BOSH初步研究]]></title>
+    <link href="http://txworking.github.io/blog/2013/01/29/research-of-bosh/"/>
+    <updated>2013-01-29T23:24:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/01/29/research-of-bosh</id>
+    <content type="html"><![CDATA[<h1>BOSH的组件结构</h1>
+
+<h2>BOSH总体架构</h2>
+
+<h2>Director</h2>
+
+<h2>Worker</h2>
+
+<h2>Agent</h2>
+
+<h2>Message Bus</h2>
+
+<h2>Health Monitor</h2>
+
+<h1>BOSH执行部署的主要流程</h1>
+
+<h1>BOSH release的组成</h1>
+
+<h1>BOSH stemcell的组成</h1>
+]]></content>
+  </entry>
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015/01/14/use-spark-with-elasticsearch/">使用Spark对ElasticSearch进行读取</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/02/angular-plus-springmvc/">AngularJS+SpringMVC构建应用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/02/ruby2-dot-0/">Ruby和Ruby2.0相关文章汇总</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/08/17/check-logfiles/">在Nagios中实时监控日志</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/07/08/a-bug-of-facter/">Facter在Windows上的一个小问题</a>
-      </li>
-    
-  </ul>
-</section>
+  <entry>
+    <title type="html"><![CDATA[Staring an Open-Source Project]]></title>
+    <link href="http://txworking.github.io/blog/2013/01/07/staring-an-open-source-project/"/>
+    <updated>2013-01-07T21:44:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/01/07/staring-an-open-source-project</id>
+    <content type="html"><![CDATA[<p>在开源中国上参与翻译了一篇如何运作开源项目的文章，把自己翻译的部分整理下发出来。
+<a href="http://www.oschina.net/translate/starting-open-source-project">译文</a>
+<a href="http://coding.smashingmagazine.com/2013/01/03/starting-open-source-project/">原文</a></p>
+
+<h3>Tag Versions in Source Control</h3>
+
+<p>When you decide on a new release, use a source-control tag to mark the state of the code for that release. I started doing this for CSS Lint as soon as we started using version numbers. I didn’t think much of it until the first time I forgot to tag a release and a bug was filed by someone looking for that tag. It turns out that developers like to check out particular versions of code.</p>
+
+<p>Tie the tag obviously to the version number by including the version number directly in the tag’s name. With CSS Lint, our tags are in the format of “v0.9.9.” This will make it very easy for anyone looking through tags to figure out what those tags mean — including you, because you’ll be able to better keep track of what changes have been made in each release.</p>
+
+<h3>Change Logs</h3>
+
+<p>Another benefit of versioning is in producing change logs. Change logs are important for communicating version differences to both end users and contributors. The added benefit of tagging versions and source control is that you can automatically generate change logs based on those tags. CSS Lint’s build system automatically creates a change log for each release that includes not just the commit message but also the contributor. In this way, the change log becomes a record not only of code changes, but also of contributions from the community.</p>
+
+<h3>Availability Announcements</h3>
+
+<p>Whenever a new version of the project is available, announce its availability somewhere. Whether you do this on a blog or on the mailing list (or in both places), formally announcing that a new version is available is very important. The announcement should include any major changes made in the code, as well as who has contributed those changes. Contributors tend to contribute more if they get some recognition for their work, so reward the people who have taken the time to contribute to your project by acknowledging their contribution.</p>
+
+<h2>Managing Contributions</h2>
+
+<p>Once you have everything set up, the next step is to figure out how you will accept contributions. Your contribution model can be as informal or formal as you’d like, depending on your goals. For a personal project, you might not have any formal contribution process. The developer guide would lay out what is necessary in order for the code to be merged into the repository and would state that as long as a submission follows that format, then the contribution will be accepted. For a larger project, you might want to have a more formal policy.</p>
+
+<p>The first thing to look into is whether you will require a contributor license agreement (CLA). CLAs are used in many large open-source projects to protect the legal rights of the project. Every person who submits code to the project would need to fill out a CLA certifying that any contributed code is original work and that the copyright for that work is being turned over to the project. CLAs also give the project owner license to use the contribution as part of the project, and it warrants that the contributor isn’t knowingly including code to which someone else has a copyright, patent or other right. jQuery, YUI and Dojo all require CLAs for code submissions. If you are considering requiring a CLA from contributors, then getting legal advice regarding it and your licensing structure would be worthwhile.</p>
+
+<p>Next, you may want to establish a hierarchy of people working on the project. Open-source projects typically have three primary designations:</p>
+
+<ul>
+<li>Contributor</li>
+</ul>
 
 
+<p>Anyone who has had source code merged into the repository is considered a contributor. The contributor cannot access the repository directly but has submitted patches that have been accepted.</p>
+
+<ul>
+<li>Committer</li>
+</ul>
 
 
+<p>People who have direct access to the repository are committers. These people work on features and fix bugs regularly, and they submit code directly to the repository.</p>
+
+<ul>
+<li>Reviewer</li>
+</ul>
+
+
+<p>The highest level of contributor, reviewers are commanders who also have directional impact on the project. Reviewers fulfill their title by reviewing submissions from contributors and committers, approving or denying patches, promoting or demoting committers, and generally running the project.</p>
+
+<p>If you’re going to have a formal hierarchy such as this, you’ll need to draft a document that describes the role of each type of contributor and how one may be promoted through the ranks. YUI has just created a formal “ Contributor Model,” along with excellent documentation on roles and responsibilities.</p>
+
+<p>At the moment, CSS Lint doesn’t require a CLA and doesn’t have a formal contribution model in place, but everyone should consider it as their open-source project grows.</p>
+
+<h2>The Proof</h2>
+
+<p>It probably took us about six months from its initial release to get CSS Lint to the point of being a fully functioning open-source project. Since then, over a dozen contributors have submitted code that is now included in the project. While that number might seem small by the standard of a large open-source project, we take great pride in it. Getting one external contribution is easy; getting contributions over an extended period of time is difficult.</p>
+
+<p>And we know that we’ve been doing something right because of the feedback we receive. Jonathan Klein recently took to the mailing list to ask some questions and ended up submitting a pull request that was accepted into the project. He then emailed me this feedback:</p>
+
+<blockquote><p>I just wanted to say that I think CSS Lint is a model open-source project — great documentation, easy to extend, clean code,
+fast replies on the mailing list and to pull requests, and easily customizable to fit any environment. Starting to do
+development on CSS Lint was as easy as reading a couple of wiki pages, and the fact that you explicitly called out the typical
+workflow of a change made the barrier to entry extremely low. I wish more open-source projects would follow suit and make it
+easy to contribute.</p></blockquote>
+
+<p>Getting emails like this has become commonplace for CSS Lint, and it can become the norm for your project, too, if you take the time to set up a sustainable eco-system. We all want our projects to succeed, and we want people to want to contribute to them. As Jonathan said, make the barrier to entry as low as possible and developers will find ways to help out.</p>
+
+<h3>源码控制中的标记版本</h3>
+
+<p>当你决定要发布一个新版本时，应用源码控制标记来标注此版本的代码状态。当我们开始在CSS Lint中使用版本号，我也就开始这么做了。开始我没考虑那么多，直到有一次我忘了给一个发布版添加标记，但是发现某位开发者提交的bug却是针对那个特定标记的。这说明开发者们更倾向于检出特定版本的代码。</p>
+
+<p>要让标记和版本号的绑定关系更明确，就把版本号直接包含在标记名称中。在CSS Lint中，我们的标记都使用“v0.9.9”这种格式。这样可以让每个人都能够很容易地通过标记名称来识别其含义 — 包括你自己，因为你也将能够更好地跟踪每次版本发布的改动。</p>
+
+<h3>变更日志</h3>
+
+<p>版本管理还有一个好处就是能够生成变更日志。不管是对最终用户和贡献者，变更日志都是沟通版本差异时的重要依据。版本标记和源码控制有一个附加好处，你能基于这些标记自动生成变更日志。CSS Lint的构建系统能够在每次发布是自动生成一个包含提交信息及其贡献者的变更日志。这样变更日志就不仅只是一个代码变更记录，也是社区贡献值的记录。</p>
+
+<h3>可用宣告</h3>
+
+<p>每当项目发布一个新版本时，都应该在某处发布宣告。不论是在你的博客或邮件列表或是在两者上都发布，正式宣告项目新版本已经可用是非常重要的。这份宣告应该包括项目代码的主要改动及其贡献者。对贡献者工作的认同是对他们的最大鼓励，能从贡献代码中获得更多的认同感他们就更有动力做更多的贡献。所以给予那些耗费无数精力在你的项目中的开发者以最大的赞扬吧。</p>
+
+<h2>管理代码贡献</h2>
+
+<p>万事俱备，下一步就是解决如何接受代码贡献。 你的贡献模型是非常规范还是很随意，取决于你的喜好和目标。对于个人项目，可能不需要什么规范的贡献流程。开发者指南应该说明合并代码到仓库的必要条件，一个提交先要满足这些条件才会被接受。对于更大的项目，则应该要有更多规范的策略。</p>
+
+<p>首先要考虑的是是否需要一个贡献者许可协议（CLA）。CLA在很多大型开源项目中使用以保护项目的合法权利。每位提交代码的开发者都需要同意CLA，以承诺任何贡献的代码都是原创的同时将代码的版权移交给项目所有。CLA也赋予项目所有者将贡献的代码作为项目一部分的授权，而且要求贡献者保证不会故意将他人具有版权、专利或其他权利的代码包含在自己的代码中进行提交。jQuery, YUI 和 Dojo 在代码提交时都要求贡献者同意CLA。如果你正在考虑使用CLA，那么寻求一些法律咨询是很值得的。</p>
+
+<p>接下来，你可能想要为项目的工作人员建立一个权限层次。开源项目一般都会设置三个主要的称号：</p>
+
+<ul>
+<li>贡献者</li>
+</ul>
+
+
+<p>任何对项目做过代码贡献的人都可以算作贡献者。贡献者不能直接访问代码仓库，但是提交的补丁可以被接受。</p>
+
+<ul>
+<li>提交者</li>
+</ul>
+
+
+<p>提交者有权限直接访问代码仓库。他们经常对项目做特性添加和bug修正，也能够直接提交代码到代码仓库。</p>
+
+<ul>
+<li>审查者</li>
+</ul>
+
+
+<p>审查者是更高一级的贡献者，是能够对项目产生直接影响的指挥官。他们的职责就是审查贡献者和提交者提交的代码，批准或者否决补丁，任命或者撤销提交者称号，总的来说就是运作这个项目。</p>
+
+<p>如果你打算采用刚才所说的权限层次，那么接下来就需要起草一份文档来描述每种类型的贡献者的角色和贡献者角色如何通过排名来进行提升。YUI最近创建了一个很正式的“贡献者模型”，有很优秀的文档来描述角色和职责。</p>
+
+<p>目前CSS Lint没有CLA，也没有正式的贡献者模型，但是每个人都应该在自己的开源项目成长过程中认真考虑这件事。</p>
+
+<h2>证明</h2>
+
+<p>从CSS Lint第一次发布到形成一个全功能的开源项目大概花了我们差不多6个月时间。从那时开始，超过一打的贡献者提交的代码被接受。尽管这个数字按照一个大型开源项目的标准来说有点少，但我们仍然对此感到骄傲。获得一次外部贡献很容易，在很长一段时间内都能持续获得帮助可不容易。</p>
+
+<p>而且我们明白自己做的所有努力都是正确的，原因就是我们收到很多积极的反馈。乔纳森·克莱因最近到项目的邮件列表里问了几个问题，在最后他也提交了一个pull request并被项目接受了。接着他就给我发了一封反馈邮件：</p>
+
+<blockquote><p>我想说CSS Lint就是开源项目的典范-文档优秀，扩展方便，代码简洁，反馈及时，定制方便。基于CSS Lint做开发就像阅读wiki一样容易，而且事
+实上你提出的特有更改工作流使得项目的进入门槛变得很低。我希望有更多的开源项目能照着做，让开发者为其做共享更容易。</p></blockquote>
+
+<p>对CSS Lint来说收到这样的邮件已经是司空见惯的事了。如果你愿意花点时间为自己的项目建立一个可持续发展的生态系统，这种事在你的项目里也一样会成为常态。每个人都希望自己的项目能成功，都希望有大量的开发者来做贡献。但是就像乔纳森说的一样：尽量降低门槛，开发者们自然会找到方法来帮忙的。</p>
+]]></content>
+  </entry>
   
-</aside>
+  <entry>
+    <title type="html"><![CDATA[Razor的架构研究]]></title>
+    <link href="http://txworking.github.io/blog/2013/01/02/razor-architecture/"/>
+    <updated>2013-01-02T14:05:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2013/01/02/razor-architecture</id>
+    <content type="html"><![CDATA[<p><img src="http://txworking.github.io/images/my/razor_mk.png"></p>
 
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Darcy Tang -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
+<h2>Razor对iPXE的使用</h2>
 
-</footer>
+<p>iPXE是Razor主要依赖的技术，配合iPXE就能实现服务器节点固件和Razor的交互。
+iPXE是开源的网络启动固件，提供了全部的PXE功能，而且加入更多的高级特性，
+比如：支持从HTTP服务器、iSCSI SAN、FC SAN、AoE SAN、无线网络、广域网、Infiniband网络启动；通过脚本控制boot流程。</p>
+
+<p>Razor主要利用HTTP服务器启动和脚本控制两个特性。</p>
+
+<ul>
+<li>部分网卡需要特殊配置以支持通过iPXE安装Razor-Microkernel</li>
+</ul>
+
+
+<h3>服务器启动时</h3>
+
+<p>搭建iPXE服务需要DHCP服务和ftp服务，具体过程就不详述了。
+服务器在进行网络启动时，iPXE会根据配置提供两种boot方式。下面的代码清单是iPXE的默认配置。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>default menu.c32
+</span><span class='line'>prompt 0
+</span><span class='line'>menu title Razor Boot Menu
+</span><span class='line'>
+</span><span class='line'>timeout 50
+</span><span class='line'>f1 help.txt
+</span><span class='line'>f2 version.txt
+</span><span class='line'>
+</span><span class='line'>label razor-boot
+</span><span class='line'>  menu label Automatic Razor Node Boot
+</span><span class='line'>  kernel ipxe.lkrn
+</span><span class='line'>  append initrd=razor.ipxe
+</span><span class='line'>
+</span><span class='line'>label boot-else
+</span><span class='line'>  menu label Bypass Razor
+</span><span class='line'>  localboot 1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>可以看到，使用razor-boot方式会下载tftp服务器上的ipxe.lkrn和razor.ipxe脚本文件进行启动，如下图所示</p>
+
+<p><img src="http://txworking.github.io/images/my/ipxe.png"></p>
+
+<p>服务器会根据razor.ipxe脚本文件向Razor Server发起http请求，从这里就开始进入Razor的控制流程。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!ipxe
+</span><span class='line'>
+</span><span class='line'>isset ${net0/mac} && dhcp net0 ||
+</span><span class='line'>isset ${net1/mac} && dhcp net1 ||
+</span><span class='line'>isset ${net2/mac} && dhcp net2 ||
+</span><span class='line'>isset ${net3/mac} && dhcp net3 ||
+</span><span class='line'>isset ${net4/mac} && dhcp net4 ||
+</span><span class='line'>isset ${net5/mac} && dhcp net5 ||
+</span><span class='line'>isset ${net6/mac} && dhcp net6 ||
+</span><span class='line'>isset ${net7/mac} && dhcp net7 ||
+</span><span class='line'>
+</span><span class='line'>chain http://168.1.43.39:8026/razor/api/boot?hw_id=${net0/mac}_${net1/mac}_${net2/mac}_${net3/mac}_$
+</span><span class='line'>{net4/mac}_${net5/mac}_${net6/mac}_${net7/mac} || goto error
+</span><span class='line'>
+</span><span class='line'>:error
+</span><span class='line'>sleep 15
+</span><span class='line'>reboot</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Razor最终会返回http应答，其中包含可执行iPXE脚本，告诉服务器按何种方式启动。
+比如，服务器是首次启动，则会告诉服务器下载Razor-Microkernel并启动。
+下面的代码清单说明Razor返回的执行脚本内容，其中指明了kernel和initrd的下载路径</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">get_boot_script</span><span class="p">(</span><span class="n">default_mk</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">image_svc_uri</span> <span class="o">=</span> <span class="s2">&quot;http://</span><span class="si">#{</span><span class="vi">@config</span><span class="o">.</span><span class="n">image_svc_host</span><span class="si">}</span><span class="s2">:</span><span class="si">#{</span><span class="vi">@config</span><span class="o">.</span><span class="n">image_svc_port</span><span class="si">}</span><span class="s2">/razor/image/mk/</span><span class="si">#{</span><span class="n">default_mk</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">rz_mk_boot_debug_level</span> <span class="o">=</span> <span class="vi">@config</span><span class="o">.</span><span class="n">rz_mk_boot_debug_level</span>
+</span><span class='line'>        <span class="c1"># only allow values of &#39;quiet&#39; or &#39;debug&#39; for this parameter; if it&#39;s anything else set it</span>
+</span><span class='line'>        <span class="c1"># to an empty string</span>
+</span><span class='line'>        <span class="n">rz_mk_boot_debug_level</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="k">unless</span> <span class="o">[</span><span class="s1">&#39;quiet&#39;</span><span class="p">,</span><span class="s1">&#39;debug&#39;</span><span class="o">].</span><span class="n">include?</span> <span class="n">rz_mk_boot_debug_level</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;#!ipxe</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;kernel </span><span class="si">#{</span><span class="n">image_svc_uri</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">default_mk</span><span class="o">.</span><span class="n">kernel</span><span class="si">}</span><span class="s2"> maxcpus=1&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot; </span><span class="si">#{</span><span class="n">rz_mk_boot_debug_level</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">rz_mk_boot_debug_level</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">rz_mk_boot_debug_level</span><span class="o">.</span><span class="n">empty?</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot; || goto error</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;initrd </span><span class="si">#{</span><span class="n">image_svc_uri</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">default_mk</span><span class="o">.</span><span class="n">initrd</span><span class="si">}</span><span class="s2"> || goto error</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;boot || goto error</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="se">\n\n\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;:error</span><span class="se">\n</span><span class="s2">echo ERROR, will reboot in </span><span class="si">#{</span><span class="vi">@config</span><span class="o">.</span><span class="n">mk_checkin_interval</span><span class="si">}</span><span class="se">\n</span><span class="s2">sleep </span><span class="si">#{</span><span class="vi">@config</span><span class="o">.</span><span class="n">mk_checkin_interval</span><span class="si">}</span><span class="se">\n</span><span class="s2">reboot</span><span class="se">\n</span><span class="s2">&quot;</span>
+</span><span class='line'>        <span class="n">boot_script</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下图是Razor Server的日志，可以看到hw_id为043a的节点在通过iPXE发起boot请求后，Server返回了Razor-Microkernl的地址。</p>
+
+<p><img src="http://txworking.github.io/images/my/boot.png"></p>
+
+<p>对于服务器，在收到http应答后会执行脚本到指定地址下载Razor-Microkernel并启动，下图为服务器控制台输出</p>
+
+<p><img src="http://txworking.github.io/images/my/mk.png"></p>
+
+<h3>OS安装过程中</h3>
+
+<p>在iPXE发起boot的http请求时，如果Razor Server发现node已经和policy进行了绑定，则返回http应答中包含的执行脚本会指明OS镜像的路径。
+例如，安装Ubuntu时，返回的iPXE脚本如下代码清单所示，此代码清单为Ubuntu ModelTemplate的一部分</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">#!ipxe</span>
+</span><span class='line'><span class="n">echo</span> <span class="no">Razor</span> <span class="o">&lt;</span><span class="sx">%= @label %&gt; model boot_call</span>
+</span><span class='line'><span class="sx">echo Installation node UUID : &lt;%=</span> <span class="n">node</span><span class="o">.</span><span class="n">uuid</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">echo Installation image UUID: &lt;%= @image_uuid %&gt;</span>
+</span><span class='line'><span class="n">echo</span> <span class="no">Active</span> <span class="no">Model</span> <span class="n">node</span> <span class="ss">state</span><span class="p">:</span> <span class="o">&lt;</span><span class="sx">%= @current_state %&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sx">sleep 3</span>
+</span><span class='line'><span class="sx">kernel &lt;%=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">image_svc_uri</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="vi">@image_uuid</span><span class="si">}</span><span class="s2">/</span><span class="si">#{</span><span class="n">kernel_path</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">kernel_args</span><span class="p">(</span><span class="n">policy_uuid</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span> <span class="sx">%&gt; || goto error</span>
+</span><span class='line'><span class="sx">initrd &lt;%= &quot;</span><span class="si">#{</span><span class="n">image_svc_uri</span><span class="si">}</span><span class="sx">/</span><span class="si">#{</span><span class="vi">@image_uuid</span><span class="si">}</span><span class="sx">/</span><span class="si">#{</span><span class="n">initrd_path</span><span class="si">}</span><span class="sx">&quot; %&gt;</span> <span class="o">||</span> <span class="n">goto</span> <span class="n">error</span>
+</span><span class='line'><span class="n">boot</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如下图所示，iPXE会到指定路径下载Ubuntu安装镜像进行启动</p>
+
+<p><img src="http://txworking.github.io/images/my/os.png"></p>
+
+<h2>OS安装过程详解</h2>
+
+<h3>Razor-Microkernel发现Server方法</h3>
+
+<p>MK在启动时会检测Server的IP地址并主动进行checkin操作，检测方式有两种：</p>
+
+<ol>
+<li>在/proc/cmdline 文件中查找razor.ip或razor.server值作为Server的IP地址</li>
+<li>使用/etc/resolv.conf中的DNS服务器IP地址作为Server的IP地址</li>
+</ol>
+
+
+<p>具体代码如下</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">discover_rz_server_ip</span>
+</span><span class='line'>      <span class="n">discover_by_pxe</span> <span class="ow">or</span> <span class="n">discover_by_dns</span> <span class="ow">or</span> <span class="n">discover_by_dhcp</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">discover_by_pxe</span>
+</span><span class='line'>      <span class="k">begin</span>
+</span><span class='line'>        <span class="n">contents</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;/proc/cmdline&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span> <span class="p">}</span>
+</span><span class='line'>        <span class="n">server_ip</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="vg">$1</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sr">/razor.ip=(.*)/</span><span class="p">)}</span><span class="o">.</span><span class="n">compact</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">server_ip</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span>
+</span><span class='line'>          <span class="k">return</span> <span class="n">server_ip</span><span class="o">.</span><span class="n">join</span>
+</span><span class='line'>        <span class="k">else</span>
+</span><span class='line'>          <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>      <span class="k">rescue</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'> <span class="k">def</span> <span class="nf">discover_by_dns</span>
+</span><span class='line'>      <span class="k">begin</span>
+</span><span class='line'>        <span class="n">contents</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;/proc/cmdline&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span> <span class="p">}</span>
+</span><span class='line'>        <span class="n">server_name</span> <span class="o">=</span> <span class="n">contents</span><span class="o">.</span><span class="n">split</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="vg">$1</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sr">/razor.server=(.*)/</span><span class="p">)}</span><span class="o">.</span><span class="n">compact</span>
+</span><span class='line'>        <span class="n">server_name</span> <span class="o">=</span> <span class="n">server_name</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">?</span> <span class="n">server_name</span><span class="o">.</span><span class="n">join</span> <span class="p">:</span> <span class="s1">&#39;razor&#39;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nb">require</span> <span class="s1">&#39;socket&#39;</span>
+</span><span class='line'>        <span class="k">return</span> <span class="no">TCPSocket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="n">server_name</span><span class="p">)</span><span class="o">[</span><span class="mi">3</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">].</span><span class="n">first</span> <span class="o">||</span> <span class="kp">false</span>
+</span><span class='line'>      <span class="k">rescue</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">discover_by_dhcp</span>
+</span><span class='line'>      <span class="n">udhcp_file</span> <span class="o">=</span> <span class="s2">&quot;/tmp/nextServerIP.addr&quot;</span>
+</span><span class='line'>      <span class="k">begin</span>
+</span><span class='line'>        <span class="n">contents</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">udhcp_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span> <span class="p">}</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">contents</span><span class="o">.</span><span class="n">strip</span>
+</span><span class='line'>      <span class="k">rescue</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kp">false</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Razor的程序结构</h2>
+
+<p>Razor的主要程序结构如下图所示：</p>
+
+<p><img src="http://txworking.github.io/images/my/node_boot.png"></p>
+
+<p>典型流程：</p>
+
+<ul>
+<li>node通过REST调用<a href="http://serverIP:8026/razor/api/node/checkin?json_hash=">http://serverIP:8026/razor/api/node/checkin?json_hash=</a>&lsquo;{hw_id=xxxxx,last_state=xxxx}</li>
+<li>Node.js服务器解析REST请求，并执行shell命令：razor -w node checkin &lsquo;{hw_id=xxxxx,last_state=xxxx}</li>
+<li>slice负责解析此shell命令，并调用相应方法返回应答</li>
+</ul>
+
+
+<h2>Razor中Policy的绑定过程</h2>
+
+<p>先解释一下概念</p>
+
+<ul>
+<li>Node：能够被Razor管理到的一台服务器就是一个Node，可以是虚拟化或物理机</li>
+<li>Model：Razor中将一种OS类型的安装方式抽象为一个model，比如针对Ubuntu Precise的安装就会有一个precise的model存在，其中详细定义了OS的安装配置、安装过程、安装中的状态变化、安装中Node和Razor的交互、安装后的处理等等。model是和OS类型紧密相关的。</li>
+<li>Policy：Razor根据Policy将Node和Model联系在一起。Policy与Model为1对1，与Node为1对N关系。Policy的匹配规则类似防火墙的过滤规则，具有先后优先级。优先级高的Policy会先生效，并将Model和Node绑定。</li>
+<li>Active_model：Active_model是一个Policy对象，可以理解为生效的Policy。Razor发现某个Node符合一条Policy规则，则生成一个Policy对象，将状态设定为active，指明绑定的Node。之后OS的安装过程，Node都是根据这个Active_model定义的流程和规则在进行操作。</li>
+</ul>
+
+
+<p><img src="http://txworking.github.io/images/my/node_binding.png"></p>
+
+<p>current_state与返回命令的映射表如下图：</p>
+
+<p><img src="http://txworking.github.io/images/my/state.png"></p>
+]]></content>
+  </entry>
   
+  <entry>
+    <title type="html"><![CDATA[在Windows7的Git环境中使用WinMerge作为difftool]]></title>
+    <link href="http://txworking.github.io/blog/2012/12/11/using-winmerge-with-git/"/>
+    <updated>2012-12-11T14:55:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2012/12/11/using-winmerge-with-git</id>
+    <content type="html"><![CDATA[<p>在Git使用WinMerge作为difftool，使用Git的环境不同需要不一样的配置，而且两种配置不通用。</p>
 
-<script type="text/javascript">
-      var disqus_shortname = 'darcytang';
-      
-        
-        var disqus_script = 'count.js';
-      
-    (function () {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    }());
-</script>
+<h3>使用CMD</h3>
 
+<h4>添加配置</h4>
 
-
-
-
-
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git config --global diff.tool winmerge
+</span><span class='line'>git config --global difftool.winmerge.cmd <span class="s2">&quot;C:/git-difftool.bat \&quot;$LOCAL\&quot; \&quot;$REMOTE\&quot;&quot;</span>
+</span><span class='line'>git config --global difftool.prompt <span class="nb">false</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
+<p>也可以手动在.gitconfig文件中添加如下配置</p>
+
+<pre><code>[diff]
+    tool = winmerge
+[difftool "winmerge"]
+    cmd = C:/git-difftool.bat \"$LOCAL\" \"$REMOTE\"
+[difftool]
+    prompt = false
+</code></pre>
+
+<h4>在指定位置创建git-difftool.bat</h4>
+
+<h4>在git-difftool.bat中添加一行</h4>
+
+<pre><code>"C:/Program Files/WinMerge/WinMergeU.exe" -e -ub -dl "Base" -dr "Mine" "$1" "$2"
+</code></pre>
+
+<h3>使用Git Bash</h3>
+
+<p>步骤和之前的一样，只是需要注意<strong>转义符</strong>和<strong>路径</strong>的写法。</p>
+
+<h4>添加配置</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git config --global diff.tool winmerge
+</span><span class='line'>git config --global difftool.winmerge.cmd <span class="s2">&quot;/C/git-difftool.bat \&quot;\$LOCAL\&quot; \&quot;\$REMOTE\&quot; &quot;</span>
+</span><span class='line'>git config --global difftool.prompt <span class="nb">false</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
+<p>也可以手动在.gitconfig文件中添加如下配置</p>
 
-</body>
-</html>
+<pre><code>[diff]
+    tool = winmerge
+[difftool "winmerge"]
+    cmd = /C/git-difftool.bat "$LOCAL" "$REMOTE"
+[difftool]
+    prompt = false
+</code></pre>
+
+<h4>在指定位置创建git-difftool.bat</h4>
+
+<h4>在git-difftool.bat中添加一行</h4>
+
+<pre><code>"/C/Program Files/WinMerge/WinMergeU.exe" -e -ub -dl "Base" -dr "Mine" "$1" "$2"
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Juju-Gui 安装笔记]]></title>
+    <link href="http://txworking.github.io/blog/2012/12/11/juju-gui-install/"/>
+    <updated>2012-12-11T11:01:00+08:00</updated>
+    <id>http://txworking.github.io/blog/2012/12/11/juju-gui-install</id>
+    <content type="html"><![CDATA[<p>在Ubuntu12.04 AMD64上安装成功，基本按照项目中的README照做就行了。</p>
+
+<h4>juju-gui使用了<code>Node.js</code>和<code>sphinx</code>，所以需要先安装Node环境，<code>jshint</code>是可选的。</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo add-apt-repository ppa:chris-lea/node.js
+</span><span class='line'>sudo apt-get update
+</span><span class='line'>sudo apt-get install nodejs npm
+</span><span class='line'>sudo npm install -g jshint
+</span><span class='line'>sudo apt-get install python-sphinx
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>从<code>Lanunchpad</code>下载代码</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo apt-get install bzr
+</span><span class='line'>bzr launchpad-login yourid
+</span><span class='line'>bzr branch lp:juju-gui
+</span><span class='line'><span class="nb">cd </span>juju-gui
+</span><span class='line'>make server
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这就可以访问localhost:8888看到界面了。要能操作还需要一个Juju环境，根据文档说Juju默认版本里面没有api-server这功能，最好是使用<code>lp:~hazmat/juju/rapi-delta</code>这个分支。</p>
+
+<h4>安装Juju</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> ~
+</span><span class='line'>sudo bzr branch lp:~hazmat/juju/rapi-delta
+</span><span class='line'><span class="nb">cd </span>rapi-delta
+</span><span class='line'>python setup.py install
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然后修改用户目录下的<code>.juju/environments.yaml</code>，在最后添加<code>api-port: 8081</code>，特别要注意缩进，不然启动都出错。</p>
+
+<p>再到bin目录下启动Juju</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd </span>bin
+</span><span class='line'>sudo ./juju bootstrap
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>看到 Starting api server 就说明配置成功了</p>
+
+<p>这时用netstat查看会发现8081端口并没有开始监听，需要先手动部署一个服务。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo ./juju deploy mysql
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Juju默认是会到官方的<code>Charm Store</code>查找到mysql进行部署。</p>
+
+<p>8081端口也会看到是listen状态了。</p>
+
+<h4>连接Gui和Juju</h4>
+
+<p>默认连接Juju的方式是在页面使用<code>Websocket</code>去连接<code>http://localhost:8081/ws</code>，所以需要修改配置把localhost改了，不然只能在本地访问。</p>
+
+<p>修改Juju-gui里的config.js和app/config.js，把里面的localhost都改成服务器ip或者能解析的域名，重启一下服务，再访问就能看到已经有一个mysql部署好了，其他的charm也随你意安装了。</p>
+]]></content>
+  </entry>
+  
+</feed>

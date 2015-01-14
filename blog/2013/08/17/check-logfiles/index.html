@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>在Nagios中实时监控日志 - Darcy Tang's Blog</title>
+  <meta name="author" content="Darcy Tang">
+
+  
+  <meta name="description" content="最近需要利用Nagios对Linux和Windows上的某个日志文件进行实时的监控，虽然这个活由Nagios来做不太合适，但最后
+还是记录一下找到的解决方案。 Windows 在Windows系统上使用NSClient++自带了对系统日志和日志文件的实时监控功能，只需要简单的配置下就可以使用了。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://txworking.github.io/blog/2013/08/17/check-logfiles">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Darcy Tang's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Darcy Tang's Blog</a></h1>
+  
+    <h2>记录一点编程心得</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:txworking.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">在Nagios中实时监控日志</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-17T17:30:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近需要利用Nagios对Linux和Windows上的某个日志文件进行实时的监控，虽然这个活由Nagios来做不太合适，但最后
+还是记录一下找到的解决方案。</p>
+
+<h2>Windows</h2>
+
+<p>在Windows系统上使用NSClient++自带了对系统日志和日志文件的实时监控功能，只需要简单的配置下就可以使用了。当然还需要在服务器
+上运行NSCA服务才能接收客户端主动推送的数据。</p>
+
+<p>以下为开启对Windows系统日志监控的客户端配置，更详细配置可以参考<a href="http://blog.medin.name/blog/2012/03/20/real-time-event-log-monitoring-with-nsclient/">Real time event-log monitoring with NSClient++</a>和NSClient++的<a href="http://www.nsclient.org">文档</a></p>
+
+<pre><code>[/modules]
+CheckLogFile = enabled
+CheckEventLog = enabled
+
+[/settings/NSCA/client]
+hostname=&lt;nagios_hostname&gt; # 需要和服务器端设定的nagios host一致
+
+[/settings/NSCA/client/targets/default]
+address=168.1.194.1  
+password=nagios   # password和encryption配置需要和服务器端的nsca配置一致
+encryption=1
+
+[/settings/eventlog/real-time]
+enabled = true
+
+[/settings/eventlog/real-time/filters/run_log]  # run_log为nagios service名称
+filter=type in ( 'warning', 'error') AND source = 'Puppet' 
+target=NSCA
+severity=OK
+syntax=%type%: %strings%
+</code></pre>
+
+<h2>Linux</h2>
+
+<h3>配合incron</h3>
+
+<p>在nagios exchange里找到了<a href="labs.consol.de/nagios/check_logfiles/">check_logfiles</a>这个插件，配合<a href="http://inotify.aiken.cz/?section=incron&amp;page=about&amp;lang=en">incron</a>就可以实现实时的日志监控了。</p>
+
+<p>incron是类似cron的工具，cron是基于时间，incron则是基于文件事件，底层使用了inotify系统调用。</p>
+
+<p>以下是check_logfiles的配置文件，主要功能就在<code>supersmartscript</code>，意思就是在每找到一行新的日志信息时执行script指定的perl脚本。
+类似的配置有<code>supersmartpostscript</code>，在一次检查完后执行perl脚本。
+在脚本中也支持部分变量的调用，在$MACROS中定义即可在script中使用。
+在这段配置里script部分调用系统命令，执行<code>send_nsca</code>发送监控信息到服务器。</p>
+
+<pre><code>$scriptpath = '/usr/bin/nagios/libexec:/usr/local/nagios/bin';
+$MACROS = {
+    CL_NAGIOS_HOST_ADDRESS =&gt; '%server_ip%',
+    CL_NSCA_HOSTNAME =&gt; '%node_name%',
+    CL_NSCA_PORT =&gt; 5667,
+    CL_NSCA_CONFIG_FILE =&gt; '%send_nsca.cfg%'
+};
+@searches = (
+  {
+    options =&gt; 'supersmartscript,noprotocol',
+    tag =&gt; 'puppet',
+    logfile =&gt; '%puppet_run_log%',
+    criticalpatterns =&gt; [
+      'Tongtech',
+      'err'
+    ],
+    script =&gt; sub {
+      (my $line = "$ENV{CHECK_LOGFILES_NSCA_HOSTNAME}\t$ENV{CHECK_LOGFILES_SERVICEDESC}\t$ENV{CHECK_LOGFILES_SERVICESTATEID}\t$ENV{CHECK_LOGFILES_SERVICEOUTPUT}");
+      #system("echo '$line'");
+      system("echo '$line'|%send_nsca% -H $ENV{CHECK_LOGFILES_NAGIOS_HOST_ADDRESS} -c $ENV{CHECK_LOGFILES_NSCA_CONFIG_FILE} " );
+    }
+  },
+);
+</code></pre>
+
+<p>按照常规的<code>./configure &amp;&amp; make &amp;&amp; make install</code>安装好incron，使用incrontab -e 命令编辑，基本的格式为</p>
+
+<pre><code>&lt;path-to-puppet_log&gt; MODIFY &lt;path-to-check_logfiles&gt; -f &lt;配置文件路径&gt; --rununique
+# &lt;path&gt; &lt;mask&gt; &lt;command&gt;
+# path - 监控的文件
+# mask - 监控的文件事件，MODIFY表示文件有改变
+# command - 监控到指定文件的指定事件后执行的命令
+</code></pre>
+
+<p>具体的使用可以参考此文章<a href="http://wlx.westgis.ac.cn/879/">incron的使用</a></p>
+
+<p>这样利用incron监控puppet的日志文件，当文件有改变时执行check_logfiles检查，就会发送日志信息到服务器。
+注意&mdash;rununique选项，如果不加此选项，文件改变可能会触发多次检查，check_logfiles就会发送重复的信息。</p>
+
+<h3>只使用check_logfiles</h3>
+
+<p>check_logfiles支持以daemon方式运行，所以可以指定较短的检查周期，实现实时发送。</p>
+
+<p>之前的check_logfiles配置不变，只是不使用incron执行命令，直接在shell中执行</p>
+
+<pre><code>&lt;path-to-check_logfiles&gt; -f &lt;配置文件路径&gt; --rununique --daemon 1
+</code></pre>
+
+<p>check_logfiles就会变成守护进程，每隔一秒检查一次日志文件，如果有新的日志写入，就发送到服务器。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Darcy Tang</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-17T17:30:00+08:00" pubdate data-updated="true">Aug 17<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/monitor/'>Monitor</a>, <a class='category' href='/blog/categories/nagios/'>Nagios</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://txworking.github.io/blog/2013/08/17/check-logfiles/" data-via="" data-counturl="http://txworking.github.io/blog/2013/08/17/check-logfiles/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/07/08/a-bug-of-facter/" title="Previous Post: Facter在Windows上的一个小问题">&laquo; Facter在Windows上的一个小问题</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/12/02/ruby2-dot-0/" title="Next Post: Ruby和Ruby2.0相关文章汇总">Ruby和Ruby2.0相关文章汇总 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/01/14/use-spark-with-elasticsearch/">使用Spark对ElasticSearch进行读取</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/02/angular-plus-springmvc/">AngularJS+SpringMVC构建应用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/02/ruby2-dot-0/">Ruby和Ruby2.0相关文章汇总</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/17/check-logfiles/">在Nagios中实时监控日志</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/08/a-bug-of-facter/">Facter在Windows上的一个小问题</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Darcy Tang -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'darcytang';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://txworking.github.io/blog/2013/08/17/check-logfiles/';
+        var disqus_url = 'http://txworking.github.io/blog/2013/08/17/check-logfiles/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
